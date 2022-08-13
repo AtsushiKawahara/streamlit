@@ -1,0 +1,10 @@
+streamlit==1.11.1
+numpy
+pandas
+seaborn
+sklearn
+tqdm
+pycaret
+urllib3
+webdriver-manager
+selenium

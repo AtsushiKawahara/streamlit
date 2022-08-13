@@ -3,3 +3,8 @@ numpy
 pandas
 seaborn
 sklearn
+tqdm
+pycaret
+urllib
+webdriver-manager
+selenium

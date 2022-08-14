@@ -60,13 +60,13 @@ def main():
         # 出馬テーブル・予測テーブルを表示する信号をONにする
         st.session_state["is_table_view"] = True
 
-        """
-        出馬テーブルをスクレイピングする関数を実行する
-        (補足説明)
-        streamlitの仕様上、複数のボタンが存在する場合は、直近で押下したボタンだけがTrueになってそれ以外のボタンはFalseになる
-        出馬テーブル切り替えで"press_button"がFalseになっても出馬テーブルスクレイピングが実行されないように、ここにcreate_predict_tableを書いている
-        """
-        # create_predict_table(target_date="8月7日", is_real_time=False, which_table="shutuba_table")
+        # """
+        # 出馬テーブルをスクレイピングする関数を実行する
+        # (補足説明)
+        # streamlitの仕様上、複数のボタンが存在する場合は、直近で押下したボタンだけがTrueになってそれ以外のボタンはFalseになる
+        # 出馬テーブル切り替えで"press_button"がFalseになっても出馬テーブルスクレイピングが実行されないように、ここにcreate_predict_tableを書いている
+        # """
+        create_predict_table(target_date="8月7日", is_real_time=False, which_table="shutuba_table")
 
     # スクレイピングした出馬テーブル・予測テーブルをstreamlit上に表示する
     # target_dateが変更されるとst.session_state["is_table_view"]がsession_change関数が実行されFalseになるため非表示となる

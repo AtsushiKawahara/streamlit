@@ -35,7 +35,6 @@ from apps.predict import Result_Table
 from apps.predict import labelencoder_ped
 from apps.data_get_program_file.horse_ped_get import scrape_horse_ped
 from apps.data_get_program_file.horse_result_get import scrape_horse_result
-from apps.predict import labelencoder_ped
 from apps.scraping_shutuba_table import Start_Horse_Table
 from functions.data_proessing import load_pickle
 from functions.data_proessing import save_pickle

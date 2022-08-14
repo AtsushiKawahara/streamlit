@@ -1,35 +1,40 @@
-# coding:utf-8
+# coding: utf-8
 """
 馬の血統データをスクレイピングするファイル
 """
 
-import requests
-from bs4 import BeautifulSoup
-import re
 import sys
 from tqdm import tqdm
 import time
 import pandas as pd
-import datetime
 import numpy as np
 import os
 
 # pathの設定
-FILE_PATH = '/Users/kawaharaatsushi/work2/daily-dev/atsushi/競馬予測/'
-sys.path.append(FILE_PATH)
-FILE_PATH2 = '/Users/kawaharaatsushi/work2/daily-dev/atsushi/競馬予測/function/'
-sys.path.append(FILE_PATH2)
-FILE_PATH_DATA = '/Users/kawaharaatsushi/work2/daily-dev/atsushi/競馬予測/data/'
-sys.path.append(FILE_PATH_DATA)
-FILE_PATH_DATA_RE = '/Users/kawaharaatsushi/work2/daily-dev/atsushi/競馬予測/data_re/'
-sys.path.append(FILE_PATH_DATA_RE)
+
+# memo-------------------------------------------------------------------------
+# pathの設定(hydrogen用)
+# FILE_PATH = "/Users/kawaharaatsushi/work2/daily-dev/atsushi/memo/競馬予想AI/streamlit_for_predict_race_result/streamlit"
+# sys.path.append(FILE_PATH)
+# FILE_PATH_BASE_DATA = FILE_PATH + '/data/base_data'
+# sys.path.append(FILE_PATH_BASE_DATA)
+# memo-------------------------------------------------------------------------
 
 # 取得する年を指定
 # GET_DATA_YEAR = 2019
+# このファイルの場所を取得してパスを通す(別階層のファイルから呼び出しても変化しない)
+# 参考)__file__: ~/streamlit/apps/data_get_program_file/horse_ped_get.py
+# path: ~/streamlit/data_get_program_file
+sys.path.append('/'.join(os.path.abspath(__file__).split('/')[:-1])+'/')
+# path: ~/streamlit
+sys.path.append('/'.join(os.path.abspath(__file__).split('/')[:-2])+'/')
+# path: ~/streamlit/data/base_data
+FILE_PATH_BASE_DATA = '/'.join(os.path.abspath(__file__).split('/')[:-2])+'/data/base_data'
+sys.path.append(FILE_PATH_BASE_DATA)
 
 # 自作関数のインポート
-from data_proessing import load_pickle
-from data_proessing import save_pickle
+from functions.data_proessing import load_pickle
+from functions.data_proessing import save_pickle
 
 
 def scrape_horse_ped(horse_id_list):
@@ -76,16 +81,16 @@ def main():
         print(f"--------------------------------{GET_DATA_YEAR}--------------------------------------------")
 
         # race_resultsデータの読み込み
-        pd_race_results = load_pickle(FILE_PATH_DATA_RE, f"pd_race_results_{GET_DATA_YEAR}")  # レース結果を読み込み
+        pd_race_results = load_pickle(FILE_PATH_BASE_DATA, f"pd_race_results_{GET_DATA_YEAR}")  # レース結果を読み込み
 
         # レース結果をから血統データをスクレイプするhorse_idを取得
         horse_id_list = pd_race_results["horse_id"].sort_values().unique()
 
         # 途中まで読み込んでいるpd_ped_datas_"year"ファイルがある場合は残りのhorse_idの結果を読み込む
-        if os.path.isfile(f"{FILE_PATH_DATA_RE}/pd_ped_datas_{GET_DATA_YEAR}"):
+        if os.path.isfile(f"{FILE_PATH_BASE_DATA}/pd_ped_datas_{GET_DATA_YEAR}"):
             print(f"pd_ped_datas_{GET_DATA_YEAR}　is exist")
 
-            pd_ped_datas_load = load_pickle(FILE_PATH_DATA_RE, f"pd_ped_datas_{GET_DATA_YEAR}")  # 途中まで抽出しているファイルを読み込み
+            pd_ped_datas_load = load_pickle(FILE_PATH_BASE_DATA, f"pd_ped_datas_{GET_DATA_YEAR}")  # 途中まで抽出しているファイルを読み込み
             drop_lists = pd_ped_datas_load.index.unique()  # 読み込み完了しているhorse_idを取得
             horse_id_list = np.array([horse_id for horse_id in horse_id_list if not horse_id in drop_lists])  # まだ読み込みが完了していないhorse_idを取得
             print(f"horse_id: {horse_id_list[0]} から取得開始")
@@ -108,11 +113,11 @@ def main():
             pd_ped_datas = pd_ped_datas.add_prefix("ped_")
 
             # 途中まで読み込みファイルがある場合は、新たに読み込んだデータと結合しておく
-            if os.path.isfile(f"{FILE_PATH_DATA_RE}/pd_ped_datas_{GET_DATA_YEAR}"):
+            if os.path.isfile(f"{FILE_PATH_BASE_DATA}/pd_ped_datas_{GET_DATA_YEAR}"):
                 pd_ped_datas = pd.concat([pd_ped_datas_load, pd_ped_datas], axis=1)
 
             # 馬ごとの成績データを保存
-            save_pickle(FILE_PATH_DATA_RE, f"pd_ped_datas_{GET_DATA_YEAR}", pd_ped_datas.sort_index())  # レース結果を保存
+            save_pickle(FILE_PATH_BASE_DATA, f"pd_ped_datas_{GET_DATA_YEAR}", pd_ped_datas.sort_index())  # レース結果を保存
 
 
 if __name__ == '__main__':

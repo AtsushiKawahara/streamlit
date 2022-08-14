@@ -687,12 +687,12 @@ class Calucurate_Return:
 
             # memo----------------------------------------------------------
             # pred_table_base = X_test_add_tansho_ninnki.copy()[["馬番", "単勝"]]  # ここにいろいろ情報を追加してpred_tableを完成させる
-            # pred_table_base["predict"] = lgb_clf.predict(X_test)
-            # pred_table_base["model_before"] = lgb_clf.predict_proba(X_test)[:, 1]  # モデルからの予測値(実数値)これを加工して、合計が"1"になるようにする
+            # pred_table_base["predict"] = lgb_clf_X_train.predict(X_test)
+            # pred_table_base["model_before"] = lgb_clf_X_train.predict_proba(X_test)[:, 1]  # モデルからの予測値(実数値)これを加工して、合計が"1"になるようにする
             # pred_table_base
 
-            # lgb_clf.predict_proba(X_test)[:]  # モデルからの予測値(実数値)これを加工して、合計が"1"になるようにする
-            # pred_table_base["model_before"] = lgb_clf.predict_proba(X_test)[:, 1]  # モデルからの予測値(実数値)これを加工して、合計が"1"になるようにする
+            # lgb_clf_X_train.predict_proba(X_test)[:]  # モデルからの予測値(実数値)これを加工して、合計が"1"になるようにする
+            # pred_table_base["model_before"] = lgb_clf_X_train.predict_proba(X_test)[:, 1]  # モデルからの予測値(実数値)これを加工して、合計が"1"になるようにする
 
             # # pycaret使用時
             # final_gbc = load_model("tuned_gbc")
@@ -1197,11 +1197,11 @@ class Calucurate_Return:
         """
 
         # memo------------------------------------------------------
-        # cr_sann = Calucurate_Return(lgb_clf, GET_DATA_YEAR_LIST, X_test_add_tansho_ninnki, X_test, "single_and_fukushou", is_standard_scarer=False, is_use_pycaret=False)
-        # pred_table = cr_sann.pred_table.copy()
-        # cr_sann.pred_table_sannrenntann
+        # cr_sann = Calucurate_Return(lgb_clf_X_train, GET_DATA_YEAR_LIST, X_test_add_tansho_ninnki, X_test, "single_and_fukushou", is_standard_scarer=False, is_use_pycaret=False)
+        # pred_table = cr_sann.pred_table_sannrenntann.copy()
+        # return_table = cr_sann.return_table_sannrenntann.copy()
         # pred_return_table = pd.merge(pred_table, return_table, how="left", left_index=True, right_index=True)
-        # cr_sann = Calucurate_Return(lgb_clf, GET_DATA_YEAR_LIST, X_test_add_tansho_ninnki, X_test, "sannrenntann_and_sannrennpuku", is_standard_scarer=False, is_use_pycaret=False)
+        # cr_sann = Calucurate_Return(lgb_clf_X_train, GET_DATA_YEAR_LIST, X_test_add_tansho_ninnki, X_test, "sannrenntann_and_sannrennpuku", is_standard_scarer=False, is_use_pycaret=False)
         # pred_table = cr_sann.pred_table_sannrennpuku.copy()
         # return_table = cr_sann.return_table_sannrennpuku.copy()
         # pred_return_table = pd.merge(pred_table, return_table, how="left", left_index=True, right_index=True)
@@ -1655,7 +1655,7 @@ def main():
 
     # 血統データを説明変数に追加
     rt.merge_ped_data(la.pd_ped_datas_la)
-    rt.data_ped
+    # rt.data_ped
 
     # 訓練データをhorse_id, jockey_idをラベルエンコードする
     # weather, ground_state, race_type, 性別もカテゴライズしてダミー変数化する
@@ -1718,7 +1718,7 @@ def main():
               }
 
     lgb_clf_X_train = lgb.LGBMClassifier(**params)
-    lgb_clf.fit(X_train.values, y_train.values)  # 学習
+    lgb_clf_X_train.fit(X_train.values, y_train.values)  # 学習
 
     # memo---------------------------------------------------------------------
     # 訓練データとテストデータに分割しないver.(実運用の際に使用する)
@@ -1736,15 +1736,15 @@ def main():
     save_pickle(FILE_PATH_FIT_DATA, "X.pickle", X)
 
     # 訓練データのroc
-    # roc_graph_plot(y_train, lgb_clf.predict_proba(X_train)[:, 1])  # roc_graphをplot
-    # print(f"roc_score:{roc_auc_score(y_train, lgb_clf.predict_proba(X_train)[:, 1])}")  # この値が大きいと過学習している(テストデータのrocと比較して判断する)
+    # roc_graph_plot(y_train, lgb_clf_X_train.predict_proba(X_train)[:, 1])  # roc_graphをplot
+    # print(f"roc_score:{roc_auc_score(y_train, lgb_clf_X_train.predict_proba(X_train)[:, 1])}")  # この値が大きいと過学習している(テストデータのrocと比較して判断する)
 
     # テストデータのroc
-    # roc_graph_plot(y_test, lgb_clf.predict_proba(X_test)[:, 1])  # roc_graphをplot
-    # print(f"roc_score:{roc_auc_score(y_test, lgb_clf.predict_proba(X_test)[:, 1])}")
+    # roc_graph_plot(y_test, lgb_clf_X_train.predict_proba(X_test)[:, 1])  # roc_graphをplot
+    # print(f"roc_score:{roc_auc_score(y_test, lgb_clf_X_train.predict_proba(X_test)[:, 1])}")
 
     # features_importance(モデルがどの説明変数を重要視しているのか確認できる指標)
-    # importance = pd.DataFrame({"features": X_test.columns, "importance": lgb_clf.feature_importances_})
+    # importance = pd.DataFrame({"features": X_test.columns, "importance": lgb_clf_X_train.feature_importances_})
     # importance.sort_values("importance", ascending=False)[0: 30]  # 重要な説明変数ほど上位に来ている
 
     # 回収率・的中率をグラフ化する際に、表示する最大取引回数を設定する(可視化したときに見やすくするため)
@@ -1756,7 +1756,7 @@ def main():
     # key: 取引回数, items: 獲得金額 の辞書を取得
     print("---------------------------------------------------------------パラメーター調整前--------------------------------------------------------------")
     print("--------------------------------三連単/三連複--------------------------------")
-    cr_sann = Calucurate_Return(lgb_clf, GET_DATA_YEAR_LIST, X_test_add_tansho_ninnki, X_test, "sannrenntann_and_sannrennpuku", is_standard_scarer=False, is_use_pycaret=False)
+    cr_sann = Calucurate_Return(lgb_clf_X_train, GET_DATA_YEAR_LIST, X_test_add_tansho_ninnki, X_test, "sannrenntann_and_sannrennpuku", is_standard_scarer=False, is_use_pycaret=False)
     print("--------------------------------三連単--------------------------------")
     print("---------------------diff-----------------------")
     min_appropriate_threshold, n, bins_ = get_appropriate_thresholds(cr_sann.pred_table_sannrenntann, bins=1000, ratio_threshold=20, pred_signal="diff")
@@ -1814,7 +1814,7 @@ def main():
     # 3-1.オッズとモデル予測値の差から”うまい馬券”の購入をする買い方
     # key: 取引回数, items: 獲得金額 の辞書を取得
     print("--------------------------------単勝/複勝--------------------------------")
-    cr_sin = Calucurate_Return(lgb_clf, GET_DATA_YEAR_LIST, X_test_add_tansho_ninnki, X_test, "single_and_fukushou", is_standard_scarer=False, is_use_pycaret=False)
+    cr_sin = Calucurate_Return(lgb_clf_X_train, GET_DATA_YEAR_LIST, X_test_add_tansho_ninnki, X_test, "single_and_fukushou", is_standard_scarer=False, is_use_pycaret=False)
     print("--------------------------------単勝--------------------------------")
     print("---------------------diff-----------------------")
     min_appropriate_threshold, n, bins_ = get_appropriate_thresholds(cr_sin.pred_table, bins=10, ratio_threshold=20, pred_signal="diff")
@@ -1872,7 +1872,7 @@ def main():
     # 5-1.オッズとモデル予測値の差から”うまい馬券”の購入をする買い方
     # key: 取引回数, items: 獲得金額 の辞書を取得
     print("--------------------------------馬単/馬連--------------------------------")
-    cr_two = Calucurate_Return(lgb_clf, GET_DATA_YEAR_LIST, X_test_add_tansho_ninnki, X_test, "umatan_and_umaren", is_standard_scarer=False, is_use_pycaret=False)
+    cr_two = Calucurate_Return(lgb_clf_X_train, GET_DATA_YEAR_LIST, X_test_add_tansho_ninnki, X_test, "umatan_and_umaren", is_standard_scarer=False, is_use_pycaret=False)
     print("--------------------------------馬連--------------------------------")
     print("---------------------diff-----------------------")
     min_appropriate_threshold, n, bins_ = get_appropriate_thresholds(cr_two.pred_table_umaren, bins=10, ratio_threshold=20, pred_signal="diff")
@@ -1968,7 +1968,7 @@ def main():
     }
 
     # チューニング
-    lgb_clf_o = lgb_o.train(params,
+    lgb_clf_X_train_o = lgb_o.train(params,
                             lgb_train,
                             valid_sets=(lgb_train, lgb_valid),
                             verbose_eval=100,
@@ -1990,7 +1990,7 @@ def main():
      'num_iterations': 1000,
      'early_stopping_round': 10}
     """
-    lgb_clf_o.params
+    lgb_clf_X_train_o.params
 
     # ハイパラメータ調整後の値をここにメモしておく
     params_o = {'objective': 'binary',
@@ -2020,19 +2020,19 @@ def main():
     X_train.drop(["単勝", "人気"], axis=1, inplace=True)
     X_test.drop(["単勝", "人気"], axis=1, inplace=True)
 
-    lgb_clf_o = lgb.LGBMClassifier(**params_o)
-    lgb_clf_o.fit(X_train.values, y_train.values)
+    lgb_clf_X_train_o = lgb.LGBMClassifier(**params_o)
+    lgb_clf_X_train_o.fit(X_train.values, y_train.values)
 
     # 訓練データのroc
-    # roc_graph_plot(y_train, lgb_clf_o.predict_proba(X_train)[:, 1])  # roc_graphをplot
-    # print(f"roc_score:{roc_auc_score(y_train, lgb_clf_o.predict_proba(X_train)[:, 1])}")  # この値が大きいと過学習している(テストデータのrocと比較して判断する)
+    # roc_graph_plot(y_train, lgb_clf_X_train_o.predict_proba(X_train)[:, 1])  # roc_graphをplot
+    # print(f"roc_score:{roc_auc_score(y_train, lgb_clf_X_train_o.predict_proba(X_train)[:, 1])}")  # この値が大きいと過学習している(テストデータのrocと比較して判断する)
 
     # テストデータのroc
-    # roc_graph_plot(y_test, lgb_clf_o.predict_proba(X_test)[:, 1])  # roc_graphをplot
-    # print(f"roc_score:{roc_auc_score(y_test, lgb_clf_o.predict_proba(X_test)[:, 1])}")
+    # roc_graph_plot(y_test, lgb_clf_X_train_o.predict_proba(X_test)[:, 1])  # roc_graphをplot
+    # print(f"roc_score:{roc_auc_score(y_test, lgb_clf_X_train_o.predict_proba(X_test)[:, 1])}")
 
     # features_importance(モデルがどの説明変数を重要視しているのか確認できる指標)
-    # importance = pd.DataFrame({"features": X_test.columns, "importance": lgb_clf_o.feature_importances_})
+    # importance = pd.DataFrame({"features": X_test.columns, "importance": lgb_clf_X_train_o.feature_importances_})
     # importance.sort_values("importance", ascending=False)[0: 30]  # 重要な説明変数ほど上位に来ている
 
     print("---------------------------------------------------------------パラメーター調整後--------------------------------------------------------------")
@@ -2041,7 +2041,7 @@ def main():
     # 1-1.オッズとモデル予測値の差から”うまい馬券”の購入をする買い方
     # key: 取引回数, items: 獲得金額 の辞書を取得
     print("--------------------------------三連単/三連複--------------------------------")
-    cr_sann_o = Calucurate_Return(lgb_clf_o, GET_DATA_YEAR_LIST, X_test_add_tansho_ninnki, X_test, "sannrenntann_and_sannrennpuku", is_standard_scarer=False, is_use_pycaret=False)
+    cr_sann_o = Calucurate_Return(lgb_clf_X_train_o, GET_DATA_YEAR_LIST, X_test_add_tansho_ninnki, X_test, "sannrenntann_and_sannrennpuku", is_standard_scarer=False, is_use_pycaret=False)
     print("--------------------------------三連単--------------------------------")
     print("---------------------diff-----------------------")
     min_appropriate_threshold, n, bins_ = get_appropriate_thresholds(cr_sann_o.pred_table_sannrenntann, bins=100, ratio_threshold=20, pred_signal="diff")
@@ -2099,7 +2099,7 @@ def main():
     # 3-1.オッズとモデル予測値の差から”うまい馬券”の購入をする買い方
     # key: 取引回数, items: 獲得金額 の辞書を取得
     print("--------------------------------単勝/複勝--------------------------------")
-    cr_sin_o = Calucurate_Return(lgb_clf_o, GET_DATA_YEAR_LIST, X_test_add_tansho_ninnki, X_test, "single_and_fukushou", is_standard_scarer=False, is_use_pycaret=False)
+    cr_sin_o = Calucurate_Return(lgb_clf_X_train_o, GET_DATA_YEAR_LIST, X_test_add_tansho_ninnki, X_test, "single_and_fukushou", is_standard_scarer=False, is_use_pycaret=False)
     print("--------------------------------単勝--------------------------------")
     print("---------------------diff-----------------------")
     min_appropriate_threshold, n, bins_ = get_appropriate_thresholds(cr_sin_o.pred_table, bins=10, ratio_threshold=20, pred_signal="diff")
@@ -2157,7 +2157,7 @@ def main():
     # 5-1.オッズとモデル予測値の差から”うまい馬券”の購入をする買い方
     # key: 取引回数, items: 獲得金額 の辞書を取得
     print("--------------------------------馬単/馬連--------------------------------")
-    cr_two_o = Calucurate_Return(lgb_clf_o, GET_DATA_YEAR_LIST, X_test_add_tansho_ninnki, X_test, "umatan_and_umaren", is_standard_scarer=False, is_use_pycaret=False)
+    cr_two_o = Calucurate_Return(lgb_clf_X_train_o, GET_DATA_YEAR_LIST, X_test_add_tansho_ninnki, X_test, "umatan_and_umaren", is_standard_scarer=False, is_use_pycaret=False)
     print("--------------------------------馬連--------------------------------")
     print("---------------------diff-----------------------")
     min_appropriate_threshold, n, bins_ = get_appropriate_thresholds(cr_two_o.pred_table_umaren, bins=7, ratio_threshold=20, pred_signal="diff")

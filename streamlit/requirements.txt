@@ -7,4 +7,6 @@ tqdm
 pycaret
 urllib3
 webdriver-manager
+webdriver_manager
 selenium
+ChromeDriverManager

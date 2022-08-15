@@ -1,1 +1,3 @@
 streamlit/data/result_data
+streamlit/__pycache__
+streamlit/apps/__pycache__

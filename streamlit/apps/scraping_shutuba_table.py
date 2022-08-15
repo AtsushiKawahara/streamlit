@@ -143,6 +143,7 @@ class Start_Horse_Table(Data_Processer):
 
         # googleを起動
         options = ChromeOptions()  # ここで拡張機能を本来は設定するけど今回は省略
+        options.add_argument("--headless")
         driver = Chrome(ChromeDriverManager().install(), options=options)
 
         # 競馬サイトのレース情報ページのトップを表示
@@ -209,6 +210,7 @@ class Start_Horse_Table(Data_Processer):
 
         # googleを起動
         options = ChromeOptions()  # ここで拡張機能を本来は設定するけど今回は省略
+        options.add_argument("--headless")
         driver = Chrome(ChromeDriverManager().install(), options=options)
 
         if which_table == "shutuba_table":

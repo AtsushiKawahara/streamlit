@@ -5,8 +5,6 @@ seaborn
 sklearn
 tqdm
 pycaret
-urllib3
-webdriver-manager
+urllib
 webdriver_manager
-firefox-esr
 selenium

@@ -52,12 +52,12 @@ def create_predict_table(target_date, is_real_time, which_table):
 
     # 出馬テーブルのスクレイピング(target_dateにより取得するレースの日付を指定する方法)
     sht = Start_Horse_Table()  # 予測したいレースのrace_id_listを渡す
-    # sht.scrape_by_ChromeDriverManager_at_target_date(target_date, is_real_time, which_table)  # 予測したいレースのrace_id_listを渡す
+    sht.scrape_by_ChromeDriverManager_at_target_date(target_date, is_real_time, which_table)  # 予測したいレースのrace_id_listを渡す
 
     # memo---------------------------------------------------------------------
     # 出馬テーブルのスクレイピング(race_id_listを作成して出馬テーブルを取得する方法)
-    race_id_list = ["202201010411", "202201010604"]
-    sht.scrape_by_ChromeDriverManager_at_race_id_list(race_id_list, which_table="shutuba_table", )  # 予測したいレースのrace_id_listを渡す
+    # race_id_list = ["202201010411", "202201010604"]
+    # sht.scrape_by_ChromeDriverManager_at_race_id_list(race_id_list, which_table="shutuba_table", )  # 予測したいレースのrace_id_listを渡す
     # memo---------------------------------------------------------------------
 
     save_pickle(FILE_PATH_FIT_DATA, "race_info_dict.pickle", sht.race_info_dict)  # レースごとのレース名、出走時刻などのデータdictを保存しておく(key: race_id)

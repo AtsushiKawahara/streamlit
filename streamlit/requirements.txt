@@ -8,5 +8,5 @@ pycaret
 urllib3
 webdriver-manager
 webdriver_manager
+firefox-esr
 selenium
-chromium-chromedriver

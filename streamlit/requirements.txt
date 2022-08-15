@@ -9,5 +9,4 @@ pycaret==2.3.5
 urllib3==1.26.5
 webdriver-manager==3.5.2
 selenium==4.1.0
-distutils.msvccompiler
 distutils

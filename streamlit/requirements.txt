@@ -3,6 +3,7 @@ numpy
 pandas
 seaborn
 sklearn
+scikit-learn
 tqdm
 pycaret
 urllib3

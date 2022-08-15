@@ -77,7 +77,7 @@ import os
 import pandas as pd
 import re
 from tqdm import tqdm
-from pycaret.regression import *  # pycaretのpredict_modelで使うかも
+# from pycaret.regression import *  # pycaretのpredict_modelで使うかも
 
 # 辞書型定義
 
@@ -708,13 +708,15 @@ class Calucurate_Return:
 
             pred_table_base = self.pred_table_base.copy()
 
-            # pycaretで取得したモデルの場合はpredict方法が違うため分岐させておく
-            if self.is_use_pycaret:
-                pred_table_base["predict"] = predict_model(self.model, data = X_test)["Label"]
-                pred_table_base["model_before"] = 1 - predict_model(self.model, data = X_test)["Score"]  # (1 - ○)としているのは、predict_modelから出力されるのは、"１位以外になる確率"だからである
-            else:
+            # pycaretで取得したモデルの場合はpredict方法が違うため分岐させておく(streamlit実装の際はpycaretのライブラリを使用するとエラーが生じるためとりあえずコメントアウトしておく)-----------
+            # if self.is_use_pycaret:
+            #     pred_table_base["predict"] = predict_model(self.model, data = X_test)["Label"]
+            #     pred_table_base["model_before"] = 1 - predict_model(self.model, data = X_test)["Score"]  # (1 - ○)としているのは、predict_modelから出力されるのは、"１位以外になる確率"だからである
+            # else:
                 # pred_table_base["predict"] = self.model.predict(X_test)
-                pred_table_base["model_before"] = self.model.predict_proba(X_test)[:, 1]  # モデルからの予測値(実数値)これを加工して、合計が"1"になるようにする
+            # pycaretで取得したモデルの場合はpredict方法が違うため分岐させておく(streamlit実装の際はpycaretのライブラリを使用するとエラーが生じるためとりあえずコメントアウトしておく)-----------
+
+            pred_table_base["model_before"] = self.model.predict_proba(X_test)[:, 1]  # モデルからの予測値(実数値)これを加工して、合計が"1"になるようにする
 
             # odd(単勝)を勝率に変換する
             odd_prob_list = [(0.75 / odd) for odd in pred_table_base["単勝"].values]  # 勝率 = 0.75 / オッズ  (競馬の場合は全体掛け金の２５％運営が持っていくから0.75)

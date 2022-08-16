@@ -7,5 +7,5 @@ tqdm==4.62.3
 urllib3==1.26.5
 selenium==4.1.0
 chromedriver
-libglib
+geckodriver
 webdriver_manager

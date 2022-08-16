@@ -8,6 +8,4 @@ urllib3==1.26.5
 selenium==4.1.0
 chromedriver
 chromedriver-binary==85.0.4183.83.0
-chromium
-chromium-driver
 webdriver_manager

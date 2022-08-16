@@ -30,7 +30,7 @@ from urllib.request import urlopen
 from selenium.webdriver import Chrome, ChromeOptions
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium import webdriver
-from webdriver_manager.utils import ChromeType
+from webdriver_manager.core.utils import ChromeType
 # mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
 # # 組み合わせ馬券の計算に使用
 # from scipy.special import comb, perm  # nCr nPr

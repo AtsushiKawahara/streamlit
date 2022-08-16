@@ -2,3 +2,4 @@ chromium
 chromium-driver
 firefox
 geckodriver
+firefox-esr

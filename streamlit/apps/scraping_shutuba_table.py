@@ -26,8 +26,12 @@ from urllib.request import urlopen
 # import math
 # from sklearn.preprocessing import LabelEncoder
 # # 出馬表のデータを作成する-------------------------------------------------------
+# mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
 from selenium.webdriver import Chrome, ChromeOptions
 from webdriver_manager.chrome import ChromeDriverManager
+from selenium import webdriver
+from webdriver_manager.utils import ChromeType
+# mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
 # # 組み合わせ馬券の計算に使用
 # from scipy.special import comb, perm  # nCr nPr
 # import itertools
@@ -144,7 +148,8 @@ class Start_Horse_Table(Data_Processer):
         # googleを起動
         options = ChromeOptions()  # ここで拡張機能を本来は設定するけど今回は省略
         options.add_argument("--headless")
-        driver = Chrome(ChromeDriverManager().install(), options=options)
+        # driver = Chrome(ChromeDriverManager().install(), options=options)
+        driver = webdriver.Chrome(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install(), options=options)
 
         # 競馬サイトのレース情報ページのトップを表示
         driver.get(url)
@@ -211,7 +216,8 @@ class Start_Horse_Table(Data_Processer):
         # googleを起動
         options = ChromeOptions()  # ここで拡張機能を本来は設定するけど今回は省略
         options.add_argument("--headless")
-        driver = Chrome(ChromeDriverManager().install(), options=options)
+        # driver = Chrome(ChromeDriverManager().install(), options=options)
+        driver = webdriver.Chrome(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install(), options=options)
 
         if which_table == "shutuba_table":
             df_shutuba_tables_X, df_shutuba_tables, race_info_dict = self.shutuba_tables_scrape(race_id_list, driver)

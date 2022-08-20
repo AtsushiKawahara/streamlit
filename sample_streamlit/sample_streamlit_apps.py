@@ -16,7 +16,7 @@ def installff():
 
 # memo----------------------------------------------
 # https://discuss.streamlit.io/t/issue-with-selenium-on-a-streamlit-app/11563/25?page=2
-# _ = installff()
+_ = installff()
 # firefoxOptions = Options()
 # firefoxOptions.add_argument("--headless")
 # # FirefoxBinary(r'/home/appuser/venv/lib/python3.9/site-packages/selenium/webdriver/firefox.exe')

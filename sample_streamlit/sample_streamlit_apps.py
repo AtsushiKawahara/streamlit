@@ -14,7 +14,7 @@ from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 
 options = Options()
-options.binary_location = r'/home/appuser/venv/lib/python3.9/site-packages/selenium/webdriver/firefox.exe'
+options.binary_location = r'/home/appuser/venv/lib/python3.9/site-packages/selenium/webdriver/firefox'
 driver = webdriver.Firefox(executable_path=r'/home/appuser/venv/bin/geckodriver', options=options)
 driver.get('http://google.com/')
 

@@ -19,19 +19,19 @@ from selenium.webdriver.firefox.options import Options
 from selenium.webdriver import FirefoxOptions
 from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
 
+_ = installff()
 options = Options()
 # options = FirefoxOptions()
 options.binary = FirefoxBinary(r'/home/appuser/venv/lib/python3.9/site-packages/selenium/webdriver/firefox.exe')
 options.add_argument("--headless")
 # options.binary_location = r'/home/appuser/venv/lib/python3.9/site-packages/selenium/webdriver/firefox'
 # options.binary_location = r'/home/appuser/venv/lib/python3.9/site-packages/selenium/webdriver/firefox'
-driver = webdriver.Firefox(executable_path=r'/home/appuser/venv/bin/geckodriver', options=options)
+driver = webdriver.Firefox(executable_path=r'/home/appuser/venv/bin/geckodriver.exe', options=options)
 driver.get('http://google.com/')
 
 # memo----------------------------------------------
 # from selenium import webdriver
 # from selenium.webdriver import FirefoxOptions
-# _ = installff()
 # options = FirefoxOptions()
 # options.add_argument("--headless")
 # browser = webdriver.Firefox(options=options)

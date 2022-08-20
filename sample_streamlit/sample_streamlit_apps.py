@@ -11,24 +11,26 @@ def installff():
   sys.path.append('/home/appuser/venv/bin/geckodriver')
 
 from selenium import webdriver
-# from selenium.webdriver.firefox.options import Options
+from selenium.webdriver.firefox.options import Options
 from selenium.webdriver import FirefoxOptions
+from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
 
-# options = Options()
-opts = FirefoxOptions()
-opts.add_argument("--headless")
+options = Options()
+# options = FirefoxOptions()
+options.binary = FirefoxBinary(r'/home/appuser/venv/lib/python3.9/site-packages/selenium/webdriver/firefox.exe')
+options.add_argument("--headless")
 # options.binary_location = r'/home/appuser/venv/lib/python3.9/site-packages/selenium/webdriver/firefox'
-opts.binary_location = r'/home/appuser/venv/lib/python3.9/site-packages/selenium/webdriver/firefox'
-driver = webdriver.Firefox(executable_path=r'/home/appuser/venv/bin/geckodriver', options=opts)
+# options.binary_location = r'/home/appuser/venv/lib/python3.9/site-packages/selenium/webdriver/firefox'
+driver = webdriver.Firefox(executable_path=r'/home/appuser/venv/bin/geckodriver.exe', options=options)
 driver.get('http://google.com/')
 
 # memo----------------------------------------------
 # from selenium import webdriver
 # from selenium.webdriver import FirefoxOptions
 # _ = installff()
-# opts = FirefoxOptions()
-# opts.add_argument("--headless")
-# browser = webdriver.Firefox(options=opts)
+# options = FirefoxOptions()
+# options.add_argument("--headless")
+# browser = webdriver.Firefox(options=options)
 #
 # browser.get('http://example.com')
 # st.write(browser.page_source)

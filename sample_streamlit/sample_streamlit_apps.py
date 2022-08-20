@@ -11,11 +11,15 @@ def installff():
   sys.path.append('/home/appuser/venv/bin/geckodriver')
 
 from selenium import webdriver
-from selenium.webdriver.firefox.options import Options
+# from selenium.webdriver.firefox.options import Options
+from selenium.webdriver import FirefoxOptions
 
-options = Options()
-options.binary_location = r'/home/appuser/venv/lib/python3.9/site-packages/selenium/webdriver/firefox'
-driver = webdriver.Firefox(executable_path=r'/home/appuser/venv/bin/geckodriver', options=options)
+# options = Options()
+opts = FirefoxOptions()
+opts.add_argument("--headless")
+# options.binary_location = r'/home/appuser/venv/lib/python3.9/site-packages/selenium/webdriver/firefox'
+opts.binary_location = r'/home/appuser/venv/lib/python3.9/site-packages/selenium/webdriver/firefox'
+driver = webdriver.Firefox(executable_path=r'/home/appuser/venv/bin/geckodriver', options=opts)
 driver.get('http://google.com/')
 
 # memo----------------------------------------------

@@ -63,7 +63,7 @@ service = Service(GeckoDriverManager().install())
 driver = webdriver.Firefox(
     options=firefoxOptions,
     service=service,
-    executable_path='/home/appuser/venv/bin/geckodriver/geckodriver-v0.31.0-linux64.tar.gz',
+    executable_path='/home/appuser/venv/bin/geckodriver/geckodriver-v0.31.0-linux64.tar.gz/geckodriver.exe',
 )
 driver.get(URL)
 # memo----------------------------------------------

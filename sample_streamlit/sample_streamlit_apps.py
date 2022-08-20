@@ -26,7 +26,7 @@ options.binary = FirefoxBinary(r'/home/appuser/venv/lib/python3.9/site-packages/
 options.add_argument("--headless")
 # options.binary_location = r'/home/appuser/venv/lib/python3.9/site-packages/selenium/webdriver/firefox'
 # options.binary_location = r'/home/appuser/venv/lib/python3.9/site-packages/selenium/webdriver/firefox'
-driver = webdriver.Firefox(executable_path=r'/home/appuser/venv/bin/geckodriver/geckodriver.exe', options=options)
+driver = webdriver.Firefox(executable_path=r'/home/appuser/venv/lib/python3.9/site-packages/seleniumbase/drivers/geckodriver/geckodriver.ext', options=options)
 driver.get('http://google.com/')
 
 # memo----------------------------------------------

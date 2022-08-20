@@ -5,8 +5,10 @@ import os, sys
 def installff():
   os.system('sbase install geckodriver')
   os.system('ln -s /home/appuser/venv/lib/python3.9/site-packages/seleniumbase/drivers/geckodriver /home/appuser/venv/bin/geckodriver')
+  print('pwd-------------------------------------------')
   print(os.system('pwd'))
   print(os.system('ls'))
+  print('pwd-------------------------------------------')
   # os.system('ln -s /home/appuser/venv/lib/python3.9/site-packages/seleniumbase/drivers/geckodriver')
   sys.path.append('/home/appuser/venv/lib/python3.9/site-packages/selenium/webdriver/firefox.exe')
   sys.path.append('/home/appuser/venv/lib/python3.9/site-packages/seleniumbase/drivers/geckodriver')

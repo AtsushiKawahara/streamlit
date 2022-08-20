@@ -57,6 +57,7 @@ URL = ""
 TIMEOUT = 20
 
 st.title("Test Selenium")
+st.write(os.system('ls /home/appuser/venv/bin/geckodriver/geckodriver-v0.31.0-linux64.tar.gz'))
 
 firefoxOptions = Options()
 firefoxOptions.add_argument("--headless")

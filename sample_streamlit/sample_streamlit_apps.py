@@ -11,14 +11,14 @@ def installff():
 
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
-from selenium.webdriver import FirefoxOptions
+# from selenium.webdriver import FirefoxOptions
 from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
 
 _ = installff()
 firefoxOptions = Options()
 firefoxOptions.add_argument("--headless")
 # FirefoxBinary(r'/home/appuser/venv/lib/python3.9/site-packages/selenium/webdriver/firefox.exe')
-FirefoxOptions.binary_location = r'/home/appuser/venv/lib/python3.9/site-packages/selenium/webdriver/firefox.exe'
+firefoxOptions.binary_location = r'/home/appuser/venv/lib/python3.9/site-packages/selenium/webdriver/firefox.exe'
 driver = webdriver.Firefox(
     options=firefoxOptions,
     executable_path="/home/appuser/venv/bin/geckodriver",

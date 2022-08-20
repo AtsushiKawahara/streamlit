@@ -5,7 +5,8 @@ import os, sys
 def installff():
   os.system('sbase install geckodriver')
   os.system('ln -s /home/appuser/venv/lib/python3.9/site-packages/seleniumbase/drivers/geckodriver /home/appuser/venv/bin/geckodriver')
-  st.write(os.system('ls /home/appuser/venv/bin/geckodriver/geckodriver-v0.31.0-linux64.tar.gz'))
+  st.write(os.system('ls /home/appuser/venv/bin/geckodriver'))
+  # st.write(os.system('ls /home/appuser/venv/bin/geckodriver/geckodriver-v0.31.0-linux64.tar.gz'))
   # os.system('ln -s /home/appuser/venv/lib/python3.9/site-packages/seleniumbase/drivers/geckodriver')
   # sys.path.append('/home/appuser/venv/lib/python3.9/site-packages/selenium/webdriver/firefox.exe')
   sys.path.append('/home/appuser/venv/bin/geckodriver')
@@ -57,6 +58,7 @@ URL = ""
 TIMEOUT = 20
 
 st.title("Test Selenium")
+st.write(os.system('ls /home/appuser/venv/bin/geckodriver'))
 st.write(os.system('ls /home/appuser/venv/bin/geckodriver/geckodriver-v0.31.0-linux64.tar.gz'))
 
 firefoxOptions = Options()

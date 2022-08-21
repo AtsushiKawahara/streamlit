@@ -92,7 +92,8 @@ from selenium.webdriver.common.by import By
 # os.system("find / -name chromedriver")
 # os.system("ls /home/appuser/venv/lib/python3.9/site-packages/chromedriver_binary/chromedriver")
 os.system("ls /home/appuser/venv/lib/python3.9/site-packages/chromedriver_binary")
-os.system("ls /home/appuser/venv/lib/python3.9/site-packages")
+# os.system("ls /home/appuser/venv/lib/python3.9/site-packages")
+os.system("find /home/appuser/venv/lib/python3.9/site-packages -type f")
 # os.system("find ./ -name `firefox.exe`")
 # os.system("pwd")  # /app/streamlit
 # os.system("ls ./")

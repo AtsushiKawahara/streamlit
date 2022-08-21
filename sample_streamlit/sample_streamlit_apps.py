@@ -87,6 +87,8 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.by import By
 
 st.write(os.system("ls /home/appuser/venv/lib/python3.9/site-packages/selenium/webdriver/firefox"))
+st.write("-------------------------------------------------------------------")
+st.write(os.system("ls /home/appuser/venv/lib/python3.9/site-packages/selenium/webdriver"))
 
 options = Options()
 options.add_argument("--headless")

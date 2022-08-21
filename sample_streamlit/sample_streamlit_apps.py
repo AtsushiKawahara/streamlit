@@ -76,6 +76,7 @@
 
 # memo----------------------------------------------
 # https://github.com/Franky1/Streamlit-Selenium/blob/main/streamlit_app.py
+
 import glob
 import os
 
@@ -84,6 +85,8 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.by import By
+
+st.write(os.system("ls /home/appuser/venv/lib/python3.9/site-packages/selenium/webdriver/firefox"))
 
 options = Options()
 options.add_argument("--headless")
@@ -111,7 +114,7 @@ def show_selenium_log():
 # def get_chromedriver_path():
 #     results = glob.glob('/**/chromedriver', recursive=True)  # workaround on streamlit sharing
 #     return results[0]
-st.write(os.system("ls /home/appuser/venv/lib/python3.9/site-packages/selenium/webdriver/firefox"))
+
 
 def run_selenium():
     name = str()

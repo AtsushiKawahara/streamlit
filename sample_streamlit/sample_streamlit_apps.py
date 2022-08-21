@@ -88,7 +88,8 @@ from selenium.webdriver.common.by import By
 
 # st.write(os.system("ls /home/appuser/venv/lib/python3.9/site-packages/selenium/webdriver/firefox"))
 # st.write(os.system("find /home/appuser/venv/lib/python3.9/site-packages/selenium/webdriver/firefox"))
-os.system("grep -r .exe /home/")
+# os.system("grep -r .exe /home/")
+os.system("find / -name `*.exe`")
 # st.write(os.system("ls /home/appuser/venv/lib/python3.9/site-packages/selenium/webdriver"))
 
 options = Options()

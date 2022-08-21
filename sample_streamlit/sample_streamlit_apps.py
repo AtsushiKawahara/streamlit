@@ -92,7 +92,7 @@ from selenium.webdriver.common.by import By
 # os.system("find ./ -name `firefox.exe`")
 os.system("pwd")
 os.system("ls ./")
-os.system("find /home/ -name `chrom`")
+os.system("find /home/ -name `*.exe`")
 # st.write(os.system("ls /home/appuser/venv/lib/python3.9/site-packages/selenium/webdriver"))
 options = Options()
 options.add_argument("--headless")

@@ -111,7 +111,7 @@ def show_selenium_log():
 # def get_chromedriver_path():
 #     results = glob.glob('/**/chromedriver', recursive=True)  # workaround on streamlit sharing
 #     return results[0]
-
+st.write(os.system("ls /home/appuser/venv/lib/python3.9/site-packages/selenium/webdriver/firefox"))
 
 def run_selenium():
     name = str()

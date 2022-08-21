@@ -88,11 +88,11 @@ from selenium.webdriver.common.by import By
 
 # st.write(os.system("ls /home/appuser/venv/lib/python3.9/site-packages/selenium/webdriver/firefox"))
 # st.write(os.system("find /home/appuser/venv/lib/python3.9/site-packages/selenium/webdriver/firefox"))
-os.system("grep -r chromedirver /home/")
+os.system("grep -r chromedriver /home/")
 # os.system("find ./ -name `firefox.exe`")
-os.system("pwd")
-os.system("ls ./")
-os.system("ls /home/appuser/venv/lib/python3.9/site-packages/webdriver_manager")
+# os.system("pwd")  # /app/streamlit
+# os.system("ls ./")
+# os.system("ls /home/appuser/venv/lib/python3.9/site-packages/webdriver_manager")
 # os.system("find /home/ -name `*.exe`")
 # st.write(os.system("ls /home/appuser/venv/lib/python3.9/site-packages/selenium/webdriver"))
 options = Options()

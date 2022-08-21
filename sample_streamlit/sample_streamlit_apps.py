@@ -89,7 +89,9 @@ from selenium.webdriver.common.by import By
 # st.write(os.system("ls /home/appuser/venv/lib/python3.9/site-packages/selenium/webdriver/firefox"))
 # st.write(os.system("find /home/appuser/venv/lib/python3.9/site-packages/selenium/webdriver/firefox"))
 # os.system("grep -r chromedriver /home/")
-os.system("find ~ -name chromedriver*")
+os.system("find / -name chromedriver")
+# os.system("ls /home/appuser/venv/lib/python3.9/site-packages/chromedriver_binary/chromedriver")
+os.system("ls /home/appuser/venv/lib/python3.9/site-packages/chromedriver_binary")
 # os.system("find ./ -name `firefox.exe`")
 # os.system("pwd")  # /app/streamlit
 # os.system("ls ./")
@@ -127,7 +129,7 @@ def show_selenium_log():
 
 def run_selenium():
     name = str()
-    with webdriver.Chrome(options=options, service_log_path='selenium.log') as driver:
+    with webdriver.Chrome(options=options, service_log_path='selenium.log', executable_path="/home/appuser/venv/lib/python3.9/site-packages/chromedriver_binary/chromedriver") as driver:
         url = "https://www.unibet.fr/sport/football/europa-league/europa-league-matchs"
         driver.get(url)
         xpath = '//*[@class="ui-mainview-block eventpath-wrapper"]'

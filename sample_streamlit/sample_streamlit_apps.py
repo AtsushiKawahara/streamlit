@@ -103,7 +103,7 @@ options.add_argument("--disable-gpu")
 options.add_argument("--disable-features=NetworkService")
 options.add_argument("--window-size=1920x1080")
 options.add_argument("--disable-features=VizDisplayCompositor")
-options.binary_location = "/home/appuser/venv/lib/python3.9/site-packages/webdriver_manager/firefox.py"
+# options.binary_location = "/home/appuser/venv/lib/python3.9/site-packages/webdriver_manager/firefox.py"
 
 
 def delete_selenium_log():

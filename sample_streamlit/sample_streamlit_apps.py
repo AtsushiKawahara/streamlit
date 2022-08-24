@@ -198,6 +198,7 @@ service = Service(GeckoDriverManager().install())
 driver = webdriver.Firefox(
     options=firefoxOptions,
     service=service,
+    executable_path="/home/appuser/.conda/bin/geckodriver"
 )
 driver.get(URL)
 

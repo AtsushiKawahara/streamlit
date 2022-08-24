@@ -133,9 +133,10 @@ def show_selenium_log():
 #     return results[0]
 
 
+
 def run_selenium():
     name = str()
-    with webdriver.Chrome(options=options, service_log_path='selenium.log', executable_path="/home/appuser/venv/lib/python3.9/site-packages/chromedriver_binary/chromedriver") as driver:
+    with webdriver.Chrome(options=options, service_log_path='selenium.log', executable_path="/home/appuser/venv/bin/chromedriver-path") as driver:
         url = "https://www.unibet.fr/sport/football/europa-league/europa-league-matchs"
         driver.get(url)
         xpath = '//*[@class="ui-mainview-block eventpath-wrapper"]'

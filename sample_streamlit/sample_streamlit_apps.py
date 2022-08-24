@@ -95,6 +95,7 @@ from selenium.webdriver.common.by import By
 # os.system("ls /home/appuser/venv/lib/python3.9/site-packages")
 # os.system("find /home/appuser/venv/lib/python3.9/site-packages -type f")
 os.system("find /home/appuser/venv/lib/python3.9/ -name `chrome*` -type f")
+os.system("find /home/appuser/venv/lib/python3.9/ -name `chrome*` -type d")
 # os.system("find /home/appuser/venv/lib/python3.9/ -type f")
 # os.system("find ./ -name `firefox.exe`")
 # os.system("pwd")  # /app/streamlit

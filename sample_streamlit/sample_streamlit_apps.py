@@ -93,7 +93,6 @@
 # # os.system("ls /home/appuser/venv/lib/python3.9/site-packages/chromedriver_binary/chromedriver")
 # # os.system("ls /home/appuser/venv/lib/python3.9/site-packages/chromedriver_binary")
 # # os.system("ls /home/appuser/venv/lib/python3.9/site-packages")
-# # os.system("find /home/appuser/venv/lib/python3.9/site-packages -type f")
 # os.system("find /home/appuser/venv/ -type f")
 # # os.system("find /home/appuser/venv/lib/python3.9/ -name `chrome*` -type f")
 # # os.system("find /home/appuser/venv/lib/python3.9/ -name `chrome*` -type d")
@@ -172,6 +171,8 @@
 
 # memo-------------------------------------------------------------------------
 # https://github.com/andfanilo/s4a-selenium/blob/main/app.py
+import os
+os.system("find /home/ -type f")
 import streamlit as st
 import time
 

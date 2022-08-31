@@ -34,7 +34,7 @@ def show_selenium_log():
 #     results = glob.glob('/**/chromedriver', recursive=True)  # workaround on streamlit sharing
 #     return results[0]
 
-os.system("find /home/appuser/venv/lib/python3.9/site-packages -name `chrome*`")
+os.system("find /home/appuser/venv/lib/python3.9/site-packages -name `chrome*` type -f")
 
 
 def run_selenium():

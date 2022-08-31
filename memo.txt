@@ -1,0 +1,47 @@
+# Streamlit-Selenium.py
+selenium.common.exceptions.WebDriverException: Message: 'chromedriver' executable needs to be in PATH. Please see https://chromedriver.chromium.org/home
+2022-08-28 02:06:02.959 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/appuser/venv/lib/python3.9/site-packages/selenium/webdriver/common/service.py", line 71, in start
+    self.process = subprocess.Popen(cmd, env=self.env,
+  File "/usr/local/lib/python3.9/subprocess.py", line 951, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/usr/local/lib/python3.9/subprocess.py", line 1821, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+FileNotFoundError: [Errno 2] No such file or directory: 'chromedriver'
+During handling of the above exception, another exception occurred:
+Traceback (most recent call last):
+  File "/home/appuser/venv/lib/python3.9/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 556, in _run_script
+    exec(code, module.__dict__)
+  File "/app/streamlit/Streamlit-Selenium/streamlit_app.py", line 71, in <module>
+    result = run_selenium()
+  File "/app/streamlit/Streamlit-Selenium/streamlit_app.py", line 40, in run_selenium
+    with webdriver.Chrome(options=options, service_log_path='selenium.log') as driver:
+  File "/home/appuser/venv/lib/python3.9/site-packages/selenium/webdriver/chrome/webdriver.py", line 70, in __init__
+    super(WebDriver, self).__init__(DesiredCapabilities.CHROME['browserName'], "goog",
+  File "/home/appuser/venv/lib/python3.9/site-packages/selenium/webdriver/chromium/webdriver.py", line 89, in __init__
+    self.service.start()
+  File "/home/appuser/venv/lib/python3.9/site-packages/selenium/webdriver/common/service.py", line 81, in start
+    raise WebDriverException(
+selenium.common.exceptions.WebDriverException: Message: 'chromedriver' executable needs to be in PATH. Please see https://chromedriver.chromium.org/home
+
+# sample_streamlit_apps.py
+/app/streamlit/sample_streamlit/sample_streamlit_apps.py:198: DeprecationWarning: executable_path has been deprecated, please pass in a Service object
+  driver = webdriver.Firefox(
+2022-08-28 02:17:33.854 Uncaught app exception
+Traceback (most recent call last):
+  File "/home/appuser/venv/lib/python3.9/site-packages/streamlit/runtime/scriptrunner/script_runner.py", line 556, in _run_script
+    exec(code, module.__dict__)
+  File "/app/streamlit/sample_streamlit/sample_streamlit_apps.py", line 198, in <module>
+    driver = webdriver.Firefox(
+  File "/home/appuser/venv/lib/python3.9/site-packages/selenium/webdriver/firefox/webdriver.py", line 177, in __init__
+    super().__init__(
+  File "/home/appuser/venv/lib/python3.9/site-packages/selenium/webdriver/remote/webdriver.py", line 270, in __init__
+    self.start_session(capabilities, browser_profile)
+  File "/home/appuser/venv/lib/python3.9/site-packages/selenium/webdriver/remote/webdriver.py", line 363, in start_session
+    response = self.execute(Command.NEW_SESSION, parameters)
+  File "/home/appuser/venv/lib/python3.9/site-packages/selenium/webdriver/remote/webdriver.py", line 428, in execute
+    self.error_handler.check_response(response)
+  File "/home/appuser/venv/lib/python3.9/site-packages/selenium/webdriver/remote/errorhandler.py", line 243, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.SessionNotCreatedException: Message: Expected browser binary location, but unable to find binary in default location, no 'moz:firefoxOptions.binary' capability provided, and no binary flag set on the command line

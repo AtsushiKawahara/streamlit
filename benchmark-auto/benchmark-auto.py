@@ -66,14 +66,18 @@ if sport == "Football":
         st.write("-scraping_start------------------------------------")
         bench_final = pd.DataFrame(index=[i for i in operateurs])
         for competition in options:
+            st.write(f"-----------------competition:{competition}--------------------")
             ts_trj = []
             for j in range(len(urls_foot)):
+                st.write(f"-----------------j:{j}--------------------")
                 if urls_foot.iloc[j, 0] == competition:
                     for ope in operateurs:
                         trj = 0
                         try:
                             for k in range(13):
                                 if urls_foot.iloc[0, k] == ope and ope in operateur_selectionne:
+                                    st.write(f"-----------------urls_foot.iloc[0, k]:{urls_foot.iloc[0, k]}--------------------")
+                                    st.write(f"-----------------ope:{ope}--------------------")
 
                                     if ope == "unibet":
                                         trj = (test.trois_issues(test.scrap(urls_foot.iloc[j, k],

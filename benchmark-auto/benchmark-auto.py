@@ -45,6 +45,13 @@ for i in range(len(urls_rugby)):
 
 sport = st.sidebar.radio('Sports', ("Football", "Basketball", "Tennis", "Rugby"))
 
+# memo
+from selenium import webdriver
+URL = "https://www.unibet.fr/sport/football/europa-league/europa-league-matchs"
+driver = webdriver.PhantomJS()
+driver.get(URL)
+# memo
+
 if sport == "Football":
     st.markdown(
         "<h3 style='text-align: center; color: grey; size = 0'>Benchmark Football</h3>",
@@ -407,4 +414,3 @@ if sport == "Rugby":
                 (bench_final[competition]).sum() / (
                         len(bench_final[competition]) - bench_final[competition].isnull().sum()), 2)
         st.table(bench_final.style.format("{:.2f}"))
-

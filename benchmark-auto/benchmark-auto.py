@@ -46,10 +46,10 @@ for i in range(len(urls_rugby)):
 sport = st.sidebar.radio('Sports', ("Football", "Basketball", "Tennis", "Rugby"))
 
 # memo
-from selenium import webdriver
-URL = "https://www.unibet.fr/sport/football/europa-league/europa-league-matchs"
-driver = webdriver.PhantomJS()
-driver.get(URL)
+# from selenium import webdriver
+# URL = "https://www.unibet.fr/sport/football/europa-league/europa-league-matchs"
+# driver = webdriver.PhantomJS()
+# driver.get(URL)
 # memo
 
 if sport == "Football":
@@ -63,6 +63,7 @@ if sport == "Football":
     lancement = st.button('Lancez le benchmark')
 
     if lancement:
+        st.write("-scraping_start------------------------------------")
         bench_final = pd.DataFrame(index=[i for i in operateurs])
         for competition in options:
             ts_trj = []

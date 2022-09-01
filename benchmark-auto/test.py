@@ -151,6 +151,7 @@ def scrap(urlpage, balise,sport):
     chrome_options.add_argument('--no-sandbox')
     driver = webdriver.Chrome(executable_path=CHROMEDRIVER_PATH, chrome_options=chrome_options)"""
 
+    st.write("-------------------------------------")
     driver = webdriver.PhantomJS()
     st.write(urlpage)
     st.write(balise)
@@ -179,4 +180,3 @@ def scrap(urlpage, balise,sport):
         cote_float = [0]
 
     return cote_float
-

@@ -69,6 +69,7 @@ if sport == "Football":
             st.write(f"-----------------competition:{competition}--------------------")
             ts_trj = []
             for j in range(len(urls_foot)):
+                st.write(f"-----------------urls_foot:{urls_foot}--------------------")
                 st.write(f"-----------------j:{j}--------------------")
                 if urls_foot.iloc[j, 0] == competition:
                     for ope in operateurs:

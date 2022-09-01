@@ -152,6 +152,9 @@ def scrap(urlpage, balise,sport):
     driver = webdriver.Chrome(executable_path=CHROMEDRIVER_PATH, chrome_options=chrome_options)"""
 
     st.write("-------------------------------------")
+    print(f"urlpage:{urlpage}")
+    print(f"balise:{balise}")
+    print(f"sport:{sport}")
     driver = webdriver.PhantomJS()
     st.write(urlpage)
     st.write(balise)
@@ -179,4 +182,5 @@ def scrap(urlpage, balise,sport):
     except:
         cote_float = [0]
 
+    print(f"cote_float:{cote_float}")
     return cote_float

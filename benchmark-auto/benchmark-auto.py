@@ -84,9 +84,10 @@ if sport == "Football":
                                     if ope == "unibet":
                                         st.write(f"000000000000000000000000-----------------test.scrape:start--------------------")
                                         st.write(f"-----------------urls_foot.iloc[j, k]:{urls_foot.iloc[j, k]}--------------------")
-                                        trj = (test.trois_issues(test.scrap(urls_foot.iloc[j, k],
-                                                                              "//*[@class=\"ui-mainview-block eventpath-wrapper\"]",sport),
-                                                                   nb_rencontres))
+                                        st.write(f"-----------------sport:{sport}--------------------")
+                                        st.write("dfjakldfjalksdjfkalsjfakl;fjadksl;jfakl;fjakl;fjklas;dfjkals;fjdksal;fjkals;fjkals;")
+                                        st.write({test.scrap(urls_foot.iloc[j, k], "//*[@class=\"ui-mainview-block eventpath-wrapper\"]",sport)})
+                                        trj = (test.trois_issues(test.scrap(urls_foot.iloc[j, k], "//*[@class=\"ui-mainview-block eventpath-wrapper\"]",sport), nb_rencontres))
                                         st.write(f"000000000000000000000000-----------------test.scrape:end--------------------")
                                     elif ope == "Zebet":
                                         trj = (test.trois_issues(test.scrap(urls_foot.iloc[j, k],

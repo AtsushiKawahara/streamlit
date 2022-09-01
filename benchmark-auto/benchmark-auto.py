@@ -82,9 +82,11 @@ if sport == "Football":
                                     st.write(f"-----------------ope:{ope}--------------------")
 
                                     if ope == "unibet":
+                                        st.write(f"000000000000000000000000-----------------test.scrape:start--------------------")
                                         trj = (test.trois_issues(test.scrap(urls_foot.iloc[j, k],
                                                                               "//*[@class=\"ui-mainview-block eventpath-wrapper\"]",sport),
                                                                    nb_rencontres))
+                                        st.write(f"000000000000000000000000-----------------test.scrape:end--------------------")
                                     elif ope == "Zebet":
                                         trj = (test.trois_issues(test.scrap(urls_foot.iloc[j, k],
                                                                               "//*[@class=\"uk-accordion-content uk-padding-remove uk-active\"]",sport),

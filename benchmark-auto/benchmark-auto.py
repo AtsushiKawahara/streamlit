@@ -46,10 +46,10 @@ for i in range(len(urls_rugby)):
 sport = st.sidebar.radio('Sports', ("Football", "Basketball", "Tennis", "Rugby"))
 
 # memo
-from selenium import webdriver
-URL = "https://www.unibet.fr/sport/football/europa-league/europa-league-matchs"
-driver = webdriver.phantomJS()
-driver.get(URL)
+# from selenium import webdriver
+# URL = "https://www.unibet.fr/sport/football/europa-league/europa-league-matchs"
+# driver = webdriver.phantomJS()
+# driver.get(URL)
 # memo
 
 if sport == "Football":

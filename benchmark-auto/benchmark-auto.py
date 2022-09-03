@@ -148,7 +148,7 @@ def deux_issues(cote_float, nb_rencontres):
     return trj_final
 
 
-def scrap(urlpage, balise,sport):
+def scrap(urlpage, balise, sport):
     """GOOGLE_CHROME_BIN = "/app/.apt/usr/bin/google-chrome"
     CHROMEDRIVER_PATH = "/app/.chromedriver/bin/chromedriver"
 
@@ -272,6 +272,7 @@ if sport == "Football":
                                         st.write(f"-----------------urls_foot.iloc[j, k]:{urls_foot.iloc[j, k]}--------------------")
                                         st.write(f"-----------------sport:{sport}--------------------")
                                         st.write("dfjakldfjalksdjfkalsjfakl;fjadksl;jfakl;fjakl;fjklas;dfjkals;fjdksal;fjkals;fjkals;")
+                                        print("scrape_start")
                                         st.write({scrap(urls_foot.iloc[j, k], "//*[@class=\"ui-mainview-block eventpath-wrapper\"]",sport)})
                                         trj = (trois_issues(scrap(urls_foot.iloc[j, k], "//*[@class=\"ui-mainview-block eventpath-wrapper\"]",sport), nb_rencontres))
                                         st.write(f"000000000000000000000000-----------------test.scrape:end--------------------")

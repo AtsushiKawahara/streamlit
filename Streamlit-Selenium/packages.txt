@@ -1,3 +1,1 @@
-chromium
-chromium-driver
 chromedriver_binary

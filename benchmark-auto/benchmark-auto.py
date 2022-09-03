@@ -272,8 +272,8 @@ if sport == "Football":
                                         st.write(f"-----------------urls_foot.iloc[j, k]:{urls_foot.iloc[j, k]}--------------------")
                                         st.write(f"-----------------sport:{sport}--------------------")
                                         st.write("dfjakldfjalksdjfkalsjfakl;fjadksl;jfakl;fjakl;fjklas;dfjkals;fjdksal;fjkals;fjkals;")
-                                        st.write({test.scrap(urls_foot.iloc[j, k], "//*[@class=\"ui-mainview-block eventpath-wrapper\"]",sport)})
-                                        trj = (test.trois_issues(test.scrap(urls_foot.iloc[j, k], "//*[@class=\"ui-mainview-block eventpath-wrapper\"]",sport), nb_rencontres))
+                                        st.write({scrap(urls_foot.iloc[j, k], "//*[@class=\"ui-mainview-block eventpath-wrapper\"]",sport)})
+                                        trj = (trois_issues(scrap(urls_foot.iloc[j, k], "//*[@class=\"ui-mainview-block eventpath-wrapper\"]",sport), nb_rencontres))
                                         st.write(f"000000000000000000000000-----------------test.scrape:end--------------------")
                                     elif ope == "Zebet":
                                         trj = (test.trois_issues(test.scrap(urls_foot.iloc[j, k],

@@ -126,6 +126,7 @@ def parse_joa_3_issues(cotes_initiales):
 
 
 def trois_issues(cote_float, nb_rencontres):
+    st.write("Start_trois_issues")
     liste_trj = []
     for a in range(int(len(cote_float) / 3)):
         liste_trj.append(

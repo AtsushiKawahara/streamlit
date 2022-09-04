@@ -3,4 +3,4 @@ streamlit>=1.10.0
 chromedriver
 chromedriver_binary
 lxml
-libnss3
+libnss

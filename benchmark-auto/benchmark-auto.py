@@ -164,36 +164,47 @@ def scrap(urlpage, balise, sport):
     print(f"balise:{balise}")
     print(f"sport:{sport}")
     driver = webdriver.PhantomJS()
+    print(f"driver_create")
     st.write(urlpage)
     st.write(balise)
     driver.get(urlpage)
     data = []
     t = 0
 
-    while len(data) == 0 and t < 15:
-        time.sleep(1)
-        results = driver.find_elements_by_xpath(balise)
-        for result in results:
-            product_name = result.text
-            if product_name != "":
-                data.append(product_name)
-        t += 1
-
-    driver.quit()
-    try:
-        cote_a_nettoyer = data[0]
-        cote = []
-        cote_float = []
-        cotes_parse = parse_cote(cote_a_nettoyer, cote, sport)
-        delete_fake_odds(cotes_parse)
-        go_to_float(cotes_parse, cote_float)
-    except:
-        cote_float = [0]
-
-    print(f"cote_float:{cote_float}")
+    # while len(data) == 0 and t < 15:
+    #     time.sleep(1)
+    #     results = driver.find_elements_by_xpath(balise)
+    #     for result in results:
+    #         product_name = result.text
+    #         if product_name != "":
+    #             data.append(product_name)
+    #     t += 1
+#
+    # driver.quit()
+    # try:
+    #     cote_a_nettoyer = data[0]
+    #     cote = []
+    #     cote_float = []
+    #     cotes_parse = parse_cote(cote_a_nettoyer, cote, sport)
+    #     delete_fake_odds(cotes_parse)
+    #     go_to_float(cotes_parse, cote_float)
+    # except:
+    #     cote_float = [0]
+#
+    # print(f"cote_float:{cote_float}")
     return cote_float
 
 # Opérateurs
+# memo-------------------------------------------------------------------------
+def test_driver():
+    driver = webdriver.PhantomJS()
+    return driver
+
+
+# driver = test_driver()
+scrap("https://www.youtube.com/watch?v=rWsiVWlvw2E", "//*[@class=\"ui-mainview-block eventpath-wrapper\"]", "s")
+# memo-------------------------------------------------------------------------
+
 zebet = "Zebet"
 winamax = "winamax"
 vbet = "vbet"
@@ -273,7 +284,6 @@ if sport == "Football":
                                         st.write(f"-----------------urls_foot.iloc[j, k]:{urls_foot.iloc[j, k]}--------------------")
                                         st.write(f"-----------------sport:{sport}--------------------")
                                         st.write("dfjakldfjalksdjfkalsjfakl;fjadksl;jfakl;fjakl;fjklas;dfjkals;fjdksal;fjkals;fjkals;")
-                                        print("scrape_start")
                                         st.write({scrap(urls_foot.iloc[j, k], "//*[@class=\"ui-mainview-block eventpath-wrapper\"]",sport)})
                                         trj = (trois_issues(scrap(urls_foot.iloc[j, k], "//*[@class=\"ui-mainview-block eventpath-wrapper\"]",sport), nb_rencontres))
                                         st.write(f"000000000000000000000000-----------------test.scrape:end--------------------")

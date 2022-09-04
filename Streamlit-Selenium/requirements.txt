@@ -2,4 +2,4 @@ selenium==4.2.0
 streamlit>=1.10.0
 chromedriver
 chromedriver_binary
-libgconf2-4
+libgconf-2-4

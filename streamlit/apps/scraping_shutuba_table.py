@@ -44,17 +44,6 @@ from webdriver_manager.core.utils import ChromeType
 # streamlit用に必要なライブラリのインポート
 import sys
 import os
-# memo-------------------------------------------------------------------------
-from selenium import webdriver
-from selenium.common.exceptions import TimeoutException
-from selenium.webdriver.common.by import By
-from selenium.webdriver.firefox.options import Options
-from selenium.webdriver.firefox.service import Service
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.ui import WebDriverWait
-from webdriver_manager.firefox import GeckoDriverManager
-
-# memo-------------------------------------------------------------------------
 # 辞書型定義
 
 PLACE_DICT = {
@@ -155,23 +144,25 @@ class Start_Horse_Table(Data_Processer):
 
         url = "https://race.netkeiba.com/top/"
 
-        firefoxOptions = Options()
-        firefoxOptions.add_argument("--headless")
-        service = Service(GeckoDriverManager().install())
-        driver = webdriver.Firefox(
-        options=firefoxOptions,
-        service=service,
-        )
-        driver.get(url)
+        # memo-----------------------------------------------------------------
+        # firefoxを使用する場合のコード
+        # firefoxOptions = Options()
+        # firefoxOptions.add_argument("--headless")
+        # service = Service(GeckoDriverManager().install())
+        # driver = webdriver.Firefox(
+        # options=firefoxOptions,
+        # service=service,
+        # )
+        # driver.get(url)
+        # memo-----------------------------------------------------------------
 
-        # # googleを起動
-        # options = ChromeOptions()  # ここで拡張機能を本来は設定するけど今回は省略
-        # options.add_argument("--headless")
-        # # driver = Chrome(ChromeDriverManager().install(), options=options)
-        # driver = webdriver.Chrome(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install(), options=options)
+        # googleを起動
+        options = ChromeOptions()  # ここで拡張機能を本来は設定するけど今回は省略
+        options.add_argument("--headless")
+        driver = Chrome(ChromeDriverManager().install(), options=options)
 
         # 競馬サイトのレース情報ページのトップを表示
-        # driver.get(url)
+        driver.get(url)
 
         if is_real_time:
             # 次に出走するレースのclassを取得
@@ -235,8 +226,7 @@ class Start_Horse_Table(Data_Processer):
         # googleを起動
         options = ChromeOptions()  # ここで拡張機能を本来は設定するけど今回は省略
         options.add_argument("--headless")
-        # driver = Chrome(ChromeDriverManager().install(), options=options)
-        driver = webdriver.Chrome(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install(), options=options)
+        driver = Chrome(ChromeDriverManager().install(), options=options)
 
         if which_table == "shutuba_table":
             df_shutuba_tables_X, df_shutuba_tables, race_info_dict = self.shutuba_tables_scrape(race_id_list, driver)

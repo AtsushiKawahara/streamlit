@@ -1,4 +1,14 @@
 # coding: UTF-8
+
+# """
+# app.pyの実装内容
+# →streamlitの表示画面の作成
+#
+# - 予測するレースをstreamlit画面上で選択して選択した日の予測結果と出馬テーブルを表示する
+# - 各馬券の予測結果を表示できる
+# - 勝率が高い馬券からsortできる
+# """
+
 import streamlit as st
 import sys
 import seaborn as sns
@@ -66,7 +76,7 @@ def main():
         # streamlitの仕様上、複数のボタンが存在する場合は、直近で押下したボタンだけがTrueになってそれ以外のボタンはFalseになる
         # 出馬テーブル切り替えで"press_button"がFalseになっても出馬テーブルスクレイピングが実行されないように、ここにcreate_predict_tableを書いている
         # """
-        create_predict_table(target_date, is_real_time=False, which_table="shutuba_table")
+        create_predict_table(target_date, is_real_time=False, table_type="shutuba_table")
 
     # スクレイピングした出馬テーブル・予測テーブルをstreamlit上に表示する
     # target_dateが変更されるとst.session_state["is_table_view"]がsession_change関数が実行されFalseになるため非表示となる

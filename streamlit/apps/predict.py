@@ -1,5 +1,4 @@
 # coding:utf-8
-# https://db.netkeiba.com/race/{race_id}"  # urlを作成
 """
 検証用データの取得プログラム
 ver_1.0
@@ -79,6 +78,9 @@ import re
 from tqdm import tqdm
 # from pycaret.regression import *  # pycaretのpredict_modelで使うかも
 
+# main()関数を実行するために必要な関数をimportしておく
+import matplotlib.pyplot as plt
+
 # 辞書型定義
 
 PLACE_DICT = {
@@ -98,24 +100,12 @@ GET_DATA_YEAR_LIST = [2017, 2018, 2019, 2020, 2021, 2022]  # 取得したい年�
 GET_DATA_YEAR_LIST = [2017]  # 取得したい年を指定
 GET_DATA_YEAR = "2017-2022"
 
-# pathの設定
-# github本来の場所の絶対path
-# FILE_PATH = '/Users/kawaharaatsushi/work2/daily-dev/atsushi/競馬予測'
-# sys.path.append(FILE_PATH)
-# FILE_PATH3 = '/Users/kawaharaatsushi/work2/daily-dev/atsushi/競馬予測/function'
-# sys.path.append(FILE_PATH3)
-# FILE_PATH_RESULT = f'/Users/kawaharaatsushi/work2/daily-dev/atsushi/競馬予測/result/{GET_DATA_YEAR}'
-# sys.path.append(FILE_PATH_RESULT)
-# FILE_PATH_FIT_DATA = '/Users/kawaharaatsushi/work2/daily-dev/atsushi/競馬予測/tmp_save'
-# sys.path.append(FILE_PATH_FIT_DATA)
-
 # 自作関数のインポート
-# memo-----------------------------------------------
 
 # PATHの設定(相対パス)
 
 # hydrogen実行用
-FILE_PATH = "/Users/kawaharaatsushi/work2/daily-dev/atsushi/memo/競馬予想AI/streamlit_for_predict_race_result/streamlit"
+FILE_PATH = "/Users/kawaharaatsushi/work_streamlit/streamlit/streamlit"
 sys.path.append(FILE_PATH)
 # path: ~/streamlit/base_data
 FILE_PATH_BASE_DATA = FILE_PATH+'/data/base_data'
@@ -128,7 +118,7 @@ FILE_PATH_RESULT_DATA = f'{FILE_PATH}/data/result_data/{GET_DATA_YEAR}'
 sys.path.append(FILE_PATH_RESULT_DATA)
 
 # path: ~/streamlit/apps/predict.py
-print(f"__file__:{__file__}")
+# print(f"__file__:{__file__}")
 
 # このファイルの場所を取得してパスを通す(別階層のファイルから呼び出しても変化しない)
 # 参考)__file__: ~/streamlit/apps/predict.py
@@ -145,8 +135,6 @@ sys.path.append(FILE_PATH_FIT_DATA)
 # path: ~/streamlit/result_data
 FILE_PATH_RESULT_DATA = '/'.join(os.path.abspath(__file__).split('/')[:-2])+f'/data/result_data/{GET_DATA_YEAR}'
 sys.path.append(FILE_PATH_RESULT_DATA)
-
-# memo-----------------------------------------------
 
 from functions.data_proessing import load_pickle
 from functions.data_proessing import save_pickle
@@ -1615,12 +1603,13 @@ def multi_graph_plot(graph_data_diff, graph_data_model, graph_title_list, graph_
     fig.tight_layout()
     # レイアウトの設定
     # plt.show()
-    fig.savefig(f"{FILE_PATH_RESULT}/{graph_main_title}.png")
-    (f"{FILE_PATH_RESULT}/{graph_main_title}.png")
+    fig.savefig(f"{FILE_PATH_RESULT_DATA}/{graph_main_title}.png")
+    (f"{FILE_PATH_RESULT_DATA}/{graph_main_title}.png")
     plt.close(fig)
 
 
 def main():
+
     # 1.データの取得・加工
 
     # 馬ごとの成績データの処理(過去データの着順・賞金の平均を説明変数にするために使用する)
@@ -1733,7 +1722,7 @@ def main():
 
     # 学習モデルの保存
     save_pickle(FILE_PATH_FIT_DATA, "lgb_clf_X.pickle", lgb_clf_X)
-    save_pickle(FILE_PATH_FIT_DATA, "lgb_clf_X_train.pickle", lgb_clf)
+    save_pickle(FILE_PATH_FIT_DATA, "lgb_clf_X_train.pickle", lgb_clf_X_train)
     save_pickle(FILE_PATH_FIT_DATA, "X_train.pickle", X_train)
     save_pickle(FILE_PATH_FIT_DATA, "X.pickle", X)
 
@@ -1995,19 +1984,20 @@ def main():
     lgb_clf_X_train_o.params
 
     # ハイパラメータ調整後の値をここにメモしておく
+    del lgb_clf_X_train_o.params["num_iterations"], lgb_clf_X_train_o.params["early_stopping_round"]
+
     params_o = {'objective': 'binary',
                 'random_state': 100,
                 'feature_pre_filter': False,
-                'lambda_l1': 5.279582699121983e-05,
-                'lambda_l2': 2.285010763763608,
-                'num_leaves': 122,
-                'feature_fraction': 0.62,
-                'bagging_fraction': 1.0,
-                'bagging_freq': 0,
-                'min_child_samples': 20,
-                # 'num_iterations': 1000,
-                # 'early_stopping_round': 10
+                'lambda_l1': 0.11295238575624765,
+                'lambda_l2': 1.1831583771042914e-08,
+                'num_leaves': 103,
+                'feature_fraction': 0.6839999999999999,
+                'bagging_fraction': 0.4393321382892497,
+                'bagging_freq': 7,
+                'min_child_samples': 50
                 }
+    params_o = lgb_clf_X_train_o.params
 
     # チューニング後のパラメータで学習してみる
 

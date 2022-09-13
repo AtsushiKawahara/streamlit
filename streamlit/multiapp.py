@@ -1,15 +1,29 @@
 # coding: UTF-8
+
+"""
+multiapp.pyの実装内容
+→create_predict_table関数が実行される
+
+(create_predict_table関数の実装内容)
+1.seleniumを使ったshutuba_table or result_tableのスクレイピング(どちらをスクレイピングするかはtable_typeで指定する)
+2.スクレイピングしたtableのデータ加工(データ型の変更、データの分割、過去成績データの追加、血統データの追加、ラベルエンコーディング)
+3.モデルの読み込み(モデルは事前に用意しておく)
+4.各馬券の予測テーブルを作成
+"""
+
 import sys
 import pandas as pd
 import os
 
-# pathの設定(hydrogen用)
-FILE_PATH = "/Users/kawaharaatsushi/work2/daily-dev/atsushi/memo/競馬予想AI/streamlit_for_predict_race_result/streamlit"
-sys.path.append(FILE_PATH)
-FILE_PATH_BASE_DATA = FILE_PATH + '/data/base_data'
-sys.path.append(FILE_PATH_BASE_DATA)
-FILE_PATH_FIT_DATA = FILE_PATH + '/data/fit_data'
-sys.path.append(FILE_PATH_FIT_DATA)
+# memo-------------------------------------------------------------------------
+# # pathの設定(hydrogen用)
+# FILE_PATH = "/Users/kawaharaatsushi/work_streamlit/streamlit/streamlit"
+# sys.path.append(FILE_PATH)
+# FILE_PATH_BASE_DATA = FILE_PATH + '/data/base_data'
+# sys.path.append(FILE_PATH_BASE_DATA)
+# FILE_PATH_FIT_DATA = FILE_PATH + '/data/fit_data'
+# sys.path.append(FILE_PATH_FIT_DATA)
+# memo-------------------------------------------------------------------------
 
 # このファイルの場所を取得してパスを通す(別階層のファイルから呼び出しても変化しない)
 # 参考)__file__: ~/streamlit/app.py
@@ -21,7 +35,6 @@ sys.path.append(FILE_PATH_BASE_DATA)
 # path: ~/streamlit/data/fit_data
 FILE_PATH_FIT_DATA = '/'.join(os.path.abspath(__file__).split('/')[:-1])+'/data/fit_data'
 sys.path.append(FILE_PATH_FIT_DATA)
-
 
 # 学習データとして使用する年を設定
 GET_DATA_YEAR_LIST = [2017, 2018, 2019, 2020, 2021, 2022]  # 取得したい年を指定
@@ -40,8 +53,10 @@ from functions.data_proessing import load_pickle
 from functions.data_proessing import save_pickle
 
 
-def create_predict_table(target_date, is_real_time, which_table):
+def create_predict_table(target_date, is_real_time, table_type):
+
     # 1.学習データの読み込み-------------------------------------------------------
+
     # 学習時に使用したデータを用意(ラベルエンコーディング等をするときに必要なため)
     # 馬ごとの成績データの処理(過去データの着順・賞金の平均を説明変数にするために使用する)
     hr = Preprocessing_Horse_Result.load_pickle(GET_DATA_YEAR_LIST)
@@ -49,28 +64,29 @@ def create_predict_table(target_date, is_real_time, which_table):
     # 2.出馬テーブルを取得---------------------------------------------------------
 
     # 取得したいレース日を指定してスクレイピングする
-
     # 出馬テーブルのスクレイピング(target_dateにより取得するレースの日付を指定する方法)
     sht = Start_Horse_Table()  # 予測したいレースのrace_id_listを渡す
-    sht.scrape_by_ChromeDriverManager_at_target_date(target_date, is_real_time, which_table)  # 予測したいレースのrace_id_listを渡す
+    sht.scrape_by_ChromeDriverManager_at_target_date(target_date, is_real_time, table_type)  # 予測したいレースのrace_id_listを渡す
 
     # memo---------------------------------------------------------------------
     # 出馬テーブルのスクレイピング(race_id_listを作成して出馬テーブルを取得する方法)
     # race_id_list = ["202201010411", "202201010604"]
-    # sht.scrape_by_ChromeDriverManager_at_race_id_list(race_id_list, which_table="shutuba_table", )  # 予測したいレースのrace_id_listを渡す
+    # sht.scrape_by_ChromeDriverManager_at_race_id_list(race_id_list, table_type="shutuba_table", )  # 予測したいレースのrace_id_listを渡す
     # memo---------------------------------------------------------------------
 
     save_pickle(FILE_PATH_FIT_DATA, "race_info_dict.pickle", sht.race_info_dict)  # レースごとのレース名、出走時刻などのデータdictを保存しておく(key: race_id)
-    save_pickle(FILE_PATH_FIT_DATA, "shutuba_tables.pickle", sht.shutuba_tables)  # レースごとのレース名、出走時刻などのデータdictを保存しておく(key: race_id)
+    save_pickle(FILE_PATH_FIT_DATA, "shutuba_tables.pickle", sht.shutuba_tables)
 
     # 3.出馬テーブルの加工(データ型の変更やデータの分割など)------------------------------
+
     sht.preprocessing_shutuba_table()
 
-    # 3-1.過去成績データを追加-----------------------------------------------------
+    # 3-1.過去成績データを追加------------------------------------------------------
 
     # データベースに過去成績データが存在しない馬のhorse_idを取得
     not_exist_horse_results_horse_id_list = sht.data_p[~sht.data_p["horse_id"].isin(hr.pd_horse_results.index)]["horse_id"]
 
+    # データベースに過去成績データが存在しない馬のhorse_idがある場合の処理
     if len(not_exist_horse_results_horse_id_list) != 0:
 
         # 過去成績データがないhorse_idの過去成績データをスクレイピングする
@@ -81,6 +97,7 @@ def create_predict_table(target_date, is_real_time, which_table):
             pd_horse_results_dict_add[key].index = [key]*len(pd_horse_results_dict_add[key])
 
         if len(pd_horse_results_dict_add) > 0:
+
             # スクレイピングしてきた過去成績データをhorse_idをindexにして結合する(dict → dataframe)
             pd_horse_results_add = pd.concat([pd_horse_results_dict_add[key] for key in pd_horse_results_dict_add.keys()], axis=0)
 
@@ -97,6 +114,7 @@ def create_predict_table(target_date, is_real_time, which_table):
     sht.merge_n_samples(hr)  # 過去成績データからレースの賞金データを出馬表に追加する
 
     # 3-2.血統データを追加---------------------------------------------------------
+
     # 血統データをlabelencodeするためのclassをインスタンス化
     la = labelencoder_ped.load_pickle(GET_DATA_YEAR_LIST)
 
@@ -112,7 +130,9 @@ def create_predict_table(target_date, is_real_time, which_table):
     # 血統データがデータベースに存在しない馬のhorse_idを取得
     not_exist_pd_ped_datas_horse_id_list = sht.data_r[~sht.data_r["horse_id"].isin(la.pd_ped_datas.index)]["horse_id"]
 
+    # 血統データがデータベースに存在しない馬のhorse_idがある場合の処理
     if len(not_exist_pd_ped_datas_horse_id_list) != 0:
+
         # 血統データがないhorse_idの血統データをスクレイピングする
         pd_ped_datas_dict_add = scrape_horse_ped(not_exist_pd_ped_datas_horse_id_list)
         pd_ped_datas_add = pd.concat([pd_ped_datas_dict_add[key] for key in pd_ped_datas_dict_add.keys()], axis=1).T  # スクレイピングしてきたデータをhorse_idをindexにして結合する(dict → dataframe)
@@ -158,7 +178,6 @@ def create_predict_table(target_date, is_real_time, which_table):
     model = load_pickle(FILE_PATH_FIT_DATA, "lgb_clf_X.pickle")
 
     # 三連単・三連複の予測テーブルの作成
-    # memo---------------------------------------------------------------------
     cr_sann = Calucurate_Return(model, GET_DATA_YEAR_LIST, X_add_tansho_ninnki, X, "sannrenntann_and_sannrennpuku", is_standard_scarer=False, is_use_pycaret=False)
     save_pickle(FILE_PATH_FIT_DATA, "predict_table_sannrenntann.pickle", cr_sann.pred_table_sannrenntann)  # 三連単予測テーブル保存
     save_pickle(FILE_PATH_FIT_DATA, "predict_table_sannrennpuku.pickle", cr_sann.pred_table_sannrennpuku)  # 三連複予測テーブル保存

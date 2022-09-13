@@ -25,13 +25,11 @@ from urllib.request import urlopen
 # from sklearn.preprocessing import MinMaxScaler
 # import math
 # from sklearn.preprocessing import LabelEncoder
-# # 出馬表のデータを作成する-------------------------------------------------------
-# mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
 from selenium.webdriver import Chrome, ChromeOptions
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium import webdriver
+from selenium.webdriver.common.by import By
 from webdriver_manager.core.utils import ChromeType
-# mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
 # # 組み合わせ馬券の計算に使用
 # from scipy.special import comb, perm  # nCr nPr
 # import itertools
@@ -44,6 +42,7 @@ from webdriver_manager.core.utils import ChromeType
 # streamlit用に必要なライブラリのインポート
 import sys
 import os
+
 # 辞書型定義
 
 PLACE_DICT = {
@@ -78,26 +77,17 @@ print('/'.join(os.path.abspath(__file__).split('/')[:-1])+'/')
 sys.path.append('/'.join(os.path.abspath(__file__).split('/')[:-2])+'/')
 print('/'.join(os.path.abspath(__file__).split('/')[:-2])+'/')
 
-# hydrogen実行用
-FILE_PATH = "/Users/kawaharaatsushi/work2/daily-dev/atsushi/memo/競馬予想AI/streamlit_for_predict_race_result/streamlit"
-sys.path.append(FILE_PATH)
-# path: ~/streamlit/base_data
-FILE_PATH_BASE_DATA = FILE_PATH+'/data/base_data'
-sys.path.append(FILE_PATH_BASE_DATA)
-# path: ~/streamlit/fit_data
-FILE_PATH_FIT_DATA = FILE_PATH+'/data/fit_data'
-sys.path.append(FILE_PATH_BASE_DATA)
-
-# FILE_PATH = '/Users/kawaharaatsushi/work2/daily-dev/atsushi/競馬予測'
+# memo-------------------------------------------------------------------------
+# # hydrogen実行用
+# FILE_PATH = "/Users/kawaharaatsushi/work_streamlit/streamlit/streamlit"
 # sys.path.append(FILE_PATH)
-# FILE_PATH3 = '/Users/kawaharaatsushi/work2/daily-dev/atsushi/競馬予測/function'
-# sys.path.append(FILE_PATH3)
-# FILE_PATH_DATA = '/Users/kawaharaatsushi/work2/daily-dev/atsushi/競馬予測/data'
-# sys.path.append(FILE_PATH_DATA)
-# FILE_PATH_PREDICT = '/Users/kawaharaatsushi/work2/daily-dev/atsushi/競馬予測/predict_file'
-# sys.path.append(FILE_PATH_PREDICT)
-# FILE_PATH_DATA_GET_PROGRAM_FILE = '/Users/kawaharaatsushi/work2/daily-dev/atsushi/競馬予測/data_get_program_file'
-# sys.path.append(FILE_PATH_DATA_GET_PROGRAM_FILE)
+# # path: ~/streamlit/base_data
+# FILE_PATH_BASE_DATA = FILE_PATH+'/data/base_data'
+# sys.path.append(FILE_PATH_BASE_DATA)
+# # path: ~/streamlit/fit_data
+# FILE_PATH_FIT_DATA = FILE_PATH+'/data/fit_data'
+# sys.path.append(FILE_PATH_BASE_DATA)
+# memo-------------------------------------------------------------------------
 
 # sys.path.append(FILE_PATH_TMP)
 
@@ -107,7 +97,7 @@ sys.path.append(FILE_PATH_BASE_DATA)
 # from data_proessing import re_specific_text_get
 # from data_proessing import train_test_split
 # from data_proessing import roc_graph_plot
-from predict import Preprocessing_Horse_Result  # 不要
+from apps.predict import Preprocessing_Horse_Result  # 不要
 # from predict import Calucurate_Return
 # from predict import Return
 from apps.predict import Data_Processer
@@ -125,7 +115,7 @@ class Start_Horse_Table(Data_Processer):
         self.shutuba_tables = 0  # streamlitで表示用の出馬テーブル
         self.result_tables = 0  # 回収率算出用のresultテーブル
 
-    def scrape_by_ChromeDriverManager_at_target_date(self, target_date, is_real_time, which_table="shutuba_table"):
+    def scrape_by_ChromeDriverManager_at_target_date(self, target_date, is_real_time, table_type="shutuba_table"):
         """
         target_dateで指定した日に開催されるraceの出馬テーブルを取得(ChromeDriverManagerにより取得)
 
@@ -138,8 +128,9 @@ class Start_Horse_Table(Data_Processer):
         pd_shutuba_table(DataFrame): target_dateで指定した日に開催されるレースの出馬テーブルをすべて結合したもの
         """
         # memo-----------------------------------------------------------------
-        # target_date
+        # target_date = "9月11日"
         # memo-----------------------------------------------------------------
+
         # 日付を入力するとその日のレース情報(説明変数情報)を取得できるようにする
 
         url = "https://race.netkeiba.com/top/"
@@ -158,7 +149,7 @@ class Start_Horse_Table(Data_Processer):
 
         # googleを起動
         options = ChromeOptions()  # ここで拡張機能を本来は設定するけど今回は省略
-        options.add_argument("--headless")
+        # options.add_argument("--headless")
         driver = Chrome(ChromeDriverManager().install(), options=options)
 
         # 競馬サイトのレース情報ページのトップを表示
@@ -166,21 +157,23 @@ class Start_Horse_Table(Data_Processer):
 
         if is_real_time:
             # 次に出走するレースのclassを取得
-            elements_at_active_race = driver.find_elements_by_css_selector(".RaceList_DataItem.Race_Main")  # class_nameに空白がある場合はcss_selectorを使う.行頭と空白部分は"."とする.
+            # elements_at_active_race = driver.find_elements_by_css_selector(".RaceList_DataItem.Race_Main")  # class_nameに空白がある場合はcss_selectorを使う.行頭と空白部分は"."とする.
+            elements_at_active_race = driver.find_elements(By.CSS_SELECTOR, ".RaceList_DataItem.Race_Main")  # class_nameに空白がある場合はcss_selectorを使う.行頭と空白部分は"."とする.
 
             # 次のレースのurlを入れるlistを作成
             target_date_race_url_list = []
 
             # 次のレースのurlを取得
             for element_at_active_race in elements_at_active_race:
-                elements = element_at_active_race.find_elements_by_tag_name("a")
+                # elements = element_at_active_race.find_elements_by_tag_name("a")
+                elements = element_at_active_race.find_elements(By.TAG_NAME, "a")
                 #  elementsの中に出馬テーブルとレース動画のhrefも存在するため出馬テーブルのみ取得する
                 for element in elements:
                     if "movie" not in element.get_attribute("href"):
                         target_date_race_url_list.append(element.get_attribute("href"))
         else:
             # 最近開催されるレース情報が掲載されている箇所を取得する
-            elements = driver.find_elements_by_class_name("ui-tabs-anchor")
+            elements = driver.find_elements(By.CLASS_NAME, "ui-tabs-anchor")
             # target_dateで指定した日の出馬テーブル一覧が取得できるurlを取得
             target_element = [element for element in elements if target_date in element.get_attribute("title")][0]
             target_date_url = target_element.get_attribute("href")
@@ -189,7 +182,7 @@ class Start_Horse_Table(Data_Processer):
             driver.get(target_date_url)
 
             # target_dateで指定した日に開催予定のレース一覧情報を取得する
-            elements = driver.find_elements_by_xpath("//li/a")
+            elements = driver.find_elements(By.XPATH, "//li/a")
 
             # target_dateで指定した日に開催されるレースの出馬テーブルのurlが格納されたリストを作成
             target_date_race_url_list = [element.get_attribute("href") for element in elements if "movie" not in element.get_attribute("href")]
@@ -197,19 +190,19 @@ class Start_Horse_Table(Data_Processer):
         # urlからrace_idを取得(set()で重複するrace_idは削除しておく)
         race_id_list = sorted(list(set([re.findall(r"\d+", url)[0] for url in target_date_race_url_list])))
 
-        if which_table == "shutuba_table":
+        if table_type == "shutuba_table":
             print("通過")
             df_shutuba_tables_X, df_shutuba_tables, race_info_dict = self.shutuba_tables_scrape(race_id_list, driver)
             self.data = df_shutuba_tables_X  # 説明変数作成用
             self.shutuba_tables = df_shutuba_tables  # streamlitで表示用の出馬テーブル
             self.race_info_dict = race_info_dict
-        elif which_table == "result_table":
+        elif table_type == "result_table":
             df_result_tables = self.result_tables_scrape(race_id_list)
             self.result_tables = df_result_tables
         else:
-            raise Exception("which_table is not match please check which_table")
+            raise Exception("table_type is not match please check table_type")
 
-    def scrape_by_ChromeDriverManager_at_race_id_list(self, race_id_list, which_table="shutuba_table"):
+    def scrape_by_ChromeDriverManager_at_race_id_list(self, race_id_list, table_type="shutuba_table"):
         """
         race_id_listで指定したraceの出馬テーブルを取得(ChromeDriverManagerにより取得)
 
@@ -219,27 +212,28 @@ class Start_Horse_Table(Data_Processer):
         return:
         pd_shutuba_table(DataFrame): race_idで指定したレースの出馬テーブルをすべて結合したもの
         """
+
         # memo-----------------------------------------------------------------
         # race_id = 202204020201
         # memo-----------------------------------------------------------------
 
         # googleを起動
         options = ChromeOptions()  # ここで拡張機能を本来は設定するけど今回は省略
-        options.add_argument("--headless")
+        # options.add_argument("--headless")
         driver = Chrome(ChromeDriverManager().install(), options=options)
 
-        if which_table == "shutuba_table":
+        if table_type == "shutuba_table":
             df_shutuba_tables_X, df_shutuba_tables, race_info_dict = self.shutuba_tables_scrape(race_id_list, driver)
             self.data = df_shutuba_tables_X  # 説明変数作成用
             self.shutuba_tables = df_shutuba_tables  # streamlitで表示用の出馬テーブル
             self.race_info_dict = race_info_dict
-        elif which_table == "result_table":
+        elif table_type == "result_table":
             # result_tableの取得にはdriverは使用しないため閉じておく
             driver.close()
             df_result_tables = self.result_tables_scrape(race_id_list)
             self.result_tables = df_result_tables
         else:
-            raise Exception("which_table is not match please check which_table")
+            raise Exception("table_type is not match please check table_type")
 
     def shutuba_tables_scrape(self, race_id_list, driver):
         """
@@ -251,7 +245,7 @@ class Start_Horse_Table(Data_Processer):
         """
 
         # memo-----------------------------------------------------------------
-        # race_id = 202204020201
+        # race_id = 202206040201
         # memo-----------------------------------------------------------------
 
         print(race_id_list)
@@ -267,20 +261,27 @@ class Start_Horse_Table(Data_Processer):
 
             driver.get(url)
 
-            elements = driver.find_elements_by_class_name("HorseList")  # find_element"s"にすると指定のclass_nameを複数取得する"s"をつけないと１つだけ取得する
+            # elements = driver.find_elements_by_class_name("HorseList")  # find_element"s"にすると指定のclass_nameを複数取得する"s"をつけないと１つだけ取得する
+            elements = driver.find_elements(By.CLASS_NAME, "HorseList")  # find_element"s"にすると指定のclass_nameを複数取得する"s"をつけないと１つだけ取得する
+            elements
 
             # 馬、騎手、調教師情報が記載されている箇所を取得する
             for element in elements:
-                tds = element.find_elements_by_tag_name("td")
+                # tds = element.find_elements_by_tag_name("td")
+                tds = element.find_elements(By.TAG_NAME, "td")
                 info = []
                 for td in tds:
                     if td.get_attribute("class") in ["HorseInfo", "Jockey", "Trainer"]:
-                        find_text = td.find_element_by_tag_name("a").get_attribute("href")
-                        td.find_element_by_tag_name("a").text
+                        # find_text = td.find_element_by_tag_name("a").get_attribute("href")
+                        find_text = td.find_element(By.TAG_NAME, "a").get_attribute("href")
+                        # td.find_element_by_tag_name("a").text
+                        td.find_element(By.TAG_NAME, "a").text
                         info.append(re.findall(r"\d+", find_text)[0])
                     info.append(td.text)
-                df = df.append(pd.Series(info, name=race_id))
-            RaceData01 = driver.find_element_by_class_name("RaceData01").text
+                # df = df.append(pd.Series(info, name=race_id))
+                df = pd.concat([df, pd.DataFrame([info], index=[race_id])])
+            # RaceData01 = driver.find_element_by_class_name("RaceData01").text
+            RaceData01 = driver.find_element(By.CLASS_NAME, "RaceData01").text
             RaceData01_texts = re.findall(r"\w+", RaceData01)
 
             for text in RaceData01_texts:
@@ -321,10 +322,12 @@ class Start_Horse_Table(Data_Processer):
             shutuba_table_dict[race_id] = df_shutuba_table
 
             # レース名を文字列で取得
-            race_name_str = driver.find_element_by_class_name("RaceName").text
+            # race_name_str = driver.find_element_by_class_name("RaceName").text
+            race_name_str = driver.find_element(By.CLASS_NAME, "RaceName").text
 
             # 出走時刻を文字列で取得
-            start_time_element = driver.find_element_by_class_name("RaceData01").text  # 出走時刻が記載されたelementを取得
+            # start_time_element = driver.find_element_by_class_name("RaceData01").text  # 出走時刻が記載されたelementを取得
+            start_time_element = driver.find_element(By.CLASS_NAME, "RaceData01").text  # 出走時刻が記載されたelementを取得
             start_time_str = re.search(r"(.+)発走", start_time_element).group()  # 出走時刻を正規表現により文字列で抽出
 
             # レース開催箇所をrace_idから取得する.race_idは８桁の整数により表される.
@@ -436,6 +439,9 @@ class Start_Horse_Table(Data_Processer):
 
 
 def main():
+    # main()関数を実行するために必要な関数をimportしておく
+    from functions.data_proessing import save_pickle
+
     # 1.学習データの読み込み-------------------------------------------------------
 
     # 学習時に使用したデータを用意(ラベルエンコーディング等をするときに必要なため)
@@ -463,7 +469,7 @@ def main():
 
     # 出馬テーブルのスクレイピング(target_dateにより取得するレースの日付を指定する方法)
     sht = Start_Horse_Table()  # 予測したいレースのrace_id_listを渡す
-    sht.scrape_by_ChromeDriverManager_at_target_date(target_date, is_real_time=True, which_table="shutuba_table")  # 予測したいレースのrace_id_listを渡す
+    sht.scrape_by_ChromeDriverManager_at_target_date(target_date, is_real_time=True, table_type="shutuba_table")  # 予測したいレースのrace_id_listを渡す
 
     # memo---------------------------------------------------------------------
     # 出馬テーブルのスクレイピング(race_id_listを作成して出馬テーブルを取得する方法)
@@ -629,8 +635,8 @@ def main():
     # 回収率算出
     target_date_reuslt = "7月31日"
     sht = Start_Horse_Table()
-    sht.scrape_by_ChromeDriverManager_at_target_date(target_date_reuslt, is_real_time=False, which_table="shutuba_table")  # レース結果を取得したいrace_id_listを渡す
-    sht.scrape_by_ChromeDriverManager_at_target_date(target_date_reuslt, is_real_time=False, which_table="result_table")  # レース結果を取得したいrace_id_listを渡す
+    sht.scrape_by_ChromeDriverManager_at_target_date(target_date_reuslt, is_real_time=False, table_type="shutuba_table")  # レース結果を取得したいrace_id_listを渡す
+    sht.scrape_by_ChromeDriverManager_at_target_date(target_date_reuslt, is_real_time=False, table_type="result_table")  # レース結果を取得したいrace_id_listを渡す
     sht.result_tables
     sht.data  # 説明変数作成用
     sht.race_info_dict

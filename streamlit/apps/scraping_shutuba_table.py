@@ -51,15 +51,15 @@ sys.path.append('/'.join(os.path.abspath(__file__).split('/')[:-2])+'/')
 print('/'.join(os.path.abspath(__file__).split('/')[:-2])+'/')
 
 # memo-------------------------------------------------------------------------
-# # hydrogen実行用
-# FILE_PATH = "/Users/kawaharaatsushi/work_streamlit/streamlit/streamlit"
-# sys.path.append(FILE_PATH)
-# # path: ~/streamlit/base_data
-# FILE_PATH_BASE_DATA = FILE_PATH+'/data/base_data'
-# sys.path.append(FILE_PATH_BASE_DATA)
-# # path: ~/streamlit/fit_data
-# FILE_PATH_FIT_DATA = FILE_PATH+'/data/fit_data'
-# sys.path.append(FILE_PATH_BASE_DATA)
+# hydrogen実行用
+FILE_PATH = "/Users/kawaharaatsushi/work_streamlit/streamlit/streamlit"
+sys.path.append(FILE_PATH)
+# path: ~/streamlit/base_data
+FILE_PATH_BASE_DATA = FILE_PATH+'/data/base_data'
+sys.path.append(FILE_PATH_BASE_DATA)
+# path: ~/streamlit/fit_data
+FILE_PATH_FIT_DATA = FILE_PATH+'/data/fit_data'
+sys.path.append(FILE_PATH_BASE_DATA)
 # memo-------------------------------------------------------------------------
 
 # sys.path.append(FILE_PATH_TMP)
@@ -90,7 +90,7 @@ class Start_Horse_Table(Data_Processer):
         pd_shutuba_table(DataFrame): target_dateで指定した日に開催されるレースの出馬テーブルをすべて結合したもの
         """
         # memo-----------------------------------------------------------------
-        # target_date = "9月11日"
+        target_date = "9月2日"
         # memo-----------------------------------------------------------------
 
         # 日付を入力するとその日のレース情報(説明変数情報)を取得できるようにする
@@ -124,6 +124,8 @@ class Start_Horse_Table(Data_Processer):
         else:
             # 最近開催されるレース情報が掲載されている箇所を取得する
             elements = driver.find_elements(By.CLASS_NAME, "ui-tabs-anchor")
+            elements
+            elements
             # target_dateで指定した日の出馬テーブル一覧が取得できるurlを取得
             target_element = [element for element in elements if target_date in element.get_attribute("title")][0]
             target_date_url = target_element.get_attribute("href")
@@ -169,7 +171,7 @@ class Start_Horse_Table(Data_Processer):
 
         # googleを起動
         options = ChromeOptions()  # ここで拡張機能を本来は設定するけど今回は省略
-        # options.add_argument("--headless")
+        options.add_argument("--headless")
         driver = Chrome(ChromeDriverManager().install(), options=options)
 
         if table_type == "shutuba_table":

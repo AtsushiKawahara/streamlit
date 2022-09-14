@@ -17,12 +17,12 @@ import os
 
 # memo-------------------------------------------------------------------------
 # # pathの設定(hydrogen用)
-# FILE_PATH = "/Users/kawaharaatsushi/work_streamlit/streamlit/streamlit"
-# sys.path.append(FILE_PATH)
-# FILE_PATH_BASE_DATA = FILE_PATH + '/data/base_data'
-# sys.path.append(FILE_PATH_BASE_DATA)
-# FILE_PATH_FIT_DATA = FILE_PATH + '/data/fit_data'
-# sys.path.append(FILE_PATH_FIT_DATA)
+FILE_PATH = "/Users/kawaharaatsushi/work_streamlit/streamlit/streamlit"
+sys.path.append(FILE_PATH)
+FILE_PATH_BASE_DATA = FILE_PATH + '/data/base_data'
+sys.path.append(FILE_PATH_BASE_DATA)
+FILE_PATH_FIT_DATA = FILE_PATH + '/data/fit_data'
+sys.path.append(FILE_PATH_FIT_DATA)
 # memo-------------------------------------------------------------------------
 
 # このファイルの場所を取得してパスを通す(別階層のファイルから呼び出しても変化しない)
@@ -54,6 +54,12 @@ from functions.data_proessing import save_pickle
 
 
 def create_predict_table(target_date, is_real_time, table_type):
+
+    # memo---------------------------------------------------------------------
+    # target_date = "9月11日"
+    # is_real_time = False
+    # table_type = "shutuba_table"
+    # memo---------------------------------------------------------------------
 
     # 1.学習データの読み込み-------------------------------------------------------
 

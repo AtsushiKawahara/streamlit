@@ -14,10 +14,10 @@ import os
 
 # memo-------------------------------------------------------------------------
 # pathの設定(hydrogen用)
-# FILE_PATH = "/Users/kawaharaatsushi/work2/daily-dev/atsushi/memo/競馬予想AI/streamlit_for_predict_race_result/streamlit"
-# sys.path.append(FILE_PATH)
-# FILE_PATH_BASE_DATA = FILE_PATH + '/data/base_data'
-# sys.path.append(FILE_PATH_BASE_DATA)
+FILE_PATH = "/Users/kawaharaatsushi/work_streamlit/streamlit/streamlit"
+sys.path.append(FILE_PATH)
+FILE_PATH_BASE_DATA = FILE_PATH + '/data/base_data'
+sys.path.append(FILE_PATH_BASE_DATA)
 # memo-------------------------------------------------------------------------
 
 # 取得する年を指定
@@ -41,6 +41,9 @@ def scrape_horse_ped(horse_id_list):
     """
     race_id_listから馬ごとのレース結果を取得する関数
     """
+    # memo--------------------------------------------------------------------
+    horse_id = 2020102381
+    # memo--------------------------------------------------------------------
     ped_data = {}
     for horse_id in tqdm(horse_id_list):
 

@@ -1722,9 +1722,9 @@ def main():
 
     # 学習モデルの保存
     save_pickle(FILE_PATH_FIT_DATA, "lgb_clf_X.pickle", lgb_clf_X)
-    save_pickle(FILE_PATH_FIT_DATA, "lgb_clf_X_train.pickle", lgb_clf_X_train)
-    save_pickle(FILE_PATH_FIT_DATA, "X_train.pickle", X_train)
-    save_pickle(FILE_PATH_FIT_DATA, "X.pickle", X)
+    # save_pickle(FILE_PATH_FIT_DATA, "lgb_clf_X_train.pickle", lgb_clf_X_train)
+    # save_pickle(FILE_PATH_FIT_DATA, "X_train.pickle", X_train)
+    # save_pickle(FILE_PATH_FIT_DATA, "X.pickle", X)
 
     # 訓練データのroc
     # roc_graph_plot(y_train, lgb_clf_X_train.predict_proba(X_train)[:, 1])  # roc_graphをplot

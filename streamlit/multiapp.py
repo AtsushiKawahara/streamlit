@@ -56,8 +56,8 @@ from functions.data_proessing import save_pickle
 def create_predict_table(target_date, is_real_time, table_type):
 
     # memo---------------------------------------------------------------------
-    # target_date = "9月11日"
-    # is_real_time = False
+    # target_date = "9月18日"
+    # is_real_time = True
     # table_type = "shutuba_table"
     # memo---------------------------------------------------------------------
 
@@ -71,6 +71,7 @@ def create_predict_table(target_date, is_real_time, table_type):
 
     # 取得したいレース日を指定してスクレイピングする
     # 出馬テーブルのスクレイピング(target_dateにより取得するレースの日付を指定する方法)
+    print(target_date)
     sht = Start_Horse_Table()  # 予測したいレースのrace_id_listを渡す
     sht.scrape_by_ChromeDriverManager_at_target_date(target_date, is_real_time, table_type)  # 予測したいレースのrace_id_listを渡す
 

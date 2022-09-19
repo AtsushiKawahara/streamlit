@@ -56,10 +56,15 @@ def main():
                                 max_value=date.today(),
                                 value=date.today(),
                                 on_change=session_change  # target_dateが変更されると実行される関数を設置
-                                ).strftime("%-m月%-d日")
+                                ).strftime("%Y年%-m月%-d日")
+
+    table_type = st.selectbox('取得するテーブルタイプを選択してください?',('shutuba_table', 'result_table'))
+
+    st.write('table_type:', table_type)
 
     # target_dateを表示
     st.write(target_date)
+    st.write(table_type)
 
     # このボタンを押すとtarget_dataで指定している日の出馬テーブルの取得を開始する
     press_button = st.button("出馬テーブル取得開始")
@@ -76,7 +81,7 @@ def main():
         # streamlitの仕様上、複数のボタンが存在する場合は、直近で押下したボタンだけがTrueになってそれ以外のボタンはFalseになる
         # 出馬テーブル切り替えで"press_button"がFalseになっても出馬テーブルスクレイピングが実行されないように、ここにcreate_predict_tableを書いている
         # """
-        create_predict_table(target_date, is_real_time=False, table_type="shutuba_table")
+        create_predict_table(target_date, is_real_time=True, table_type="shutuba_table")
 
     # スクレイピングした出馬テーブル・予測テーブルをstreamlit上に表示する
     # target_dateが変更されるとst.session_state["is_table_view"]がsession_change関数が実行されFalseになるため非表示となる

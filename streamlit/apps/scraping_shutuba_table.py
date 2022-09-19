@@ -7,6 +7,7 @@
 # 必要な関数のインポート
 import pandas as pd
 import time
+import datetime
 from tqdm import tqdm
 import re
 from urllib.request import urlopen
@@ -90,7 +91,10 @@ class Start_Horse_Table(Data_Processer):
         pd_shutuba_table(DataFrame): target_dateで指定した日に開催されるレースの出馬テーブルをすべて結合したもの
         """
         # memo-----------------------------------------------------------------
-        target_date = "9月2日"
+        # target_date = "2022年9月18日"
+        # is_real_time = True
+        # table_type = "shutuba_table"
+        # create_predict_table(target_date, is_real_time=True, table_type="shutuba_table")
         # memo-----------------------------------------------------------------
 
         # 日付を入力するとその日のレース情報(説明変数情報)を取得できるようにする
@@ -106,26 +110,112 @@ class Start_Horse_Table(Data_Processer):
         driver.get(url)
 
         if is_real_time:
-            # 次に出走するレースのclassを取得
-            # elements_at_active_race = driver.find_elements_by_css_selector(".RaceList_DataItem.Race_Main")  # class_nameに空白がある場合はcss_selectorを使う.行頭と空白部分は"."とする.
-            elements_at_active_race = driver.find_elements(By.CSS_SELECTOR, ".RaceList_DataItem.Race_Main")  # class_nameに空白がある場合はcss_selectorを使う.行頭と空白部分は"."とする.
 
-            # 次のレースのurlを入れるlistを作成
-            target_date_race_url_list = []
+            # target_dateで指定した日のurlを取得する
 
-            # 次のレースのurlを取得
-            for element_at_active_race in elements_at_active_race:
-                # elements = element_at_active_race.find_elements_by_tag_name("a")
-                elements = element_at_active_race.find_elements(By.TAG_NAME, "a")
-                #  elementsの中に出馬テーブルとレース動画のhrefも存在するため出馬テーブルのみ取得する
-                for element in elements:
-                    if "movie" not in element.get_attribute("href"):
-                        target_date_race_url_list.append(element.get_attribute("href"))
+            # target_dateをstr型からdatetime型へ変換する
+            target_date_str = datetime.datetime.strptime(target_date, "%Y年%m月%d日").strftime("%Y%m%d")
+
+            # target_dateの部分のelementを取得する
+            element = driver.find_element(By.CSS_SELECTOR, f'li[date="{target_date_str}"]')  # class_nameに空白がある場合はcss_selectorを使う.行頭と空白部分は"."とする.
+            element_tag_a = element.find_element(By.TAG_NAME, "a")
+            target_date_url = element_tag_a.get_attribute("href")  # 出馬テーブルのurlの文字列を取得する
+            driver.get(target_date_url)
+
+            # target_dateで指定した日にレースがある会場名を取得(基本２会場)
+
+            place_list = []  # レース会場名(ex:中京)を格納するlist
+
+            # 開催される会場でのレース情報があるclassを取得する
+            elements_at_place = driver.find_elements(By.CLASS_NAME, "RaceList_DataTitle")  # class_nameに空白がある場合はcss_selectorを使う.行頭と空白部分は"."とする.
+
+            # 会場ごとのレース情報が入っている部分から会場名のみ取得
+            for element_at_place in elements_at_place:
+                place_contain_str_list = element_at_place.text.split(" ")  # ex)['5回', '中京', '4日目']
+                for str_ in place_contain_str_list:
+                    # 数字を含んでいない会場を表す文字列のみを抽出
+                    if not any(chr.isdigit() for chr in str_):
+                        place_list.append(str_)
+
+            # target_dateで指定した日に開催されるレースidを取得する
+
+            all_race_id_list = []  # 取得したrace_idを格納するリストを作成
+
+            # 会場ごとにレースごとの出走実行を把握するための辞書を作成する(基本２会場でレースが開催されるため2つの辞書を用意)
+            start_time_and_race_id_dict_place_1 = {}  # key: race_id, value: timeの辞書を作成
+            start_time_and_race_id_dict_place_2 = {}  # key: race_id, value: timeの辞書を作成
+
+            # ２つの会場のレース情報が格納されている箇所を取得(1会場だいたい12レース(R)ある)
+            elements_at_all_place_race_list = driver.find_elements(By.CLASS_NAME, "RaceList_Data")  # class_nameに空白がある場合はcss_selectorを使う.行頭と空白部分は"."とする.
+
+            # memo-------------------------------------------------------------
+            # element_at_all_place_race_list = elements_at_all_place_race_list[0]
+            # memo-------------------------------------------------------------
+
+            # １会場ごとにrace_idを取得する
+            # レース会場ごとに格納するdictを分けるためzip()を使用している→もっといい方法ありそうだけどとりまこれで
+            for element_at_all_place_race_list, i in zip(elements_at_all_place_race_list, range(len(elements_at_all_place_race_list))):
+
+                elements_at_all_race_list = element_at_all_place_race_list.find_elements(By.TAG_NAME, "a")
+
+                # memo----------------------------------------------------------
+                # element = elements_at_all_race_list[0]
+                # memo----------------------------------------------------------
+
+                for element in elements_at_all_race_list:
+                    # １つのrace_idに出馬テーブルか動画テーブルがあるから動画テーブルの方はpassする
+                    if not "movie" in element.get_attribute("href"):
+                        start_time = element.find_element(By.CLASS_NAME, "RaceList_Itemtime").text  # レースの出走時刻
+                        href_str = element.get_attribute("href")  # 出馬テーブルのurlの文字列
+                        # hrefは"https://race.netkeiba.com/race/movie.html?race_id=202207050412&rf=race_list"
+                        # ↑こんな形状をしていて"race_id=〇〇"の部分を取得する処理を以下で行っている
+                        target_str = "race_id="  # href(url)のrace_id以降の文字列を取得するためにtarget_strを設定
+                        idx = href_str.find(target_str)  # href(url)のrace_idが始まる文字列の位置を取得(それ以降を取得する)
+                        race_id = re.findall(r"\d+", href_str[idx+len(target_str):])[0]
+                        all_race_id_list.append(race_id)
+                        if i == 0:  # 1会場目のレースidを格納
+                            start_time_and_race_id_dict_place_1[race_id] = start_time
+                        if i == 1:  # 2会場目のレースidを格納
+                            start_time_and_race_id_dict_place_2[race_id] = start_time
+
+            # 取得したrade_id_listの重複するidを削除かつ昇順にソートする
+            all_race_id_list = sorted(set(all_race_id_list), key=all_race_id_list.index)
+
+            # target_dateで指定した日のレースでまだ出走していないレースを入れるlist(all_race_id_listから抽出)
+            race_id_list = []
+
+            # 現在時刻を取得
+            now_time = datetime.datetime.today().time()
+
+            # 現在時刻と出走時刻を比較して未出走のレースを抽出
+            for race_id in start_time_and_race_id_dict_place_1:
+                start_hour = datetime.datetime.strptime(start_time_and_race_id_dict_place_1[race_id], "%H:%M").hour
+                start_minute = datetime.datetime.strptime(start_time_and_race_id_dict_place_1[race_id], "%H:%M").minute
+                start_time = datetime.time(hour=start_hour, minute=start_minute)
+                if start_time > now_time:  # 未出走のレースの場合
+                    race_id_list.append(race_id)
+
+            for race_id in start_time_and_race_id_dict_place_2:
+                start_hour = datetime.datetime.strptime(start_time_and_race_id_dict_place_2[race_id], "%H:%M").hour
+                start_minute = datetime.datetime.strptime(start_time_and_race_id_dict_place_2[race_id], "%H:%M").minute
+                start_time = datetime.time(hour=start_hour, minute=start_minute)
+                if start_time > now_time:  # 未出走のレースの場合
+                    race_id_list.append(race_id)
+
+            # # 次のレースのurlを入れるlistを作成
+            # target_date_race_url_list = []
+            #
+            # # 次のレースのurlを取得
+            # for element_at_active_race in elements_at_active_race:
+            #     # elements = element_at_active_race.find_elements_by_tag_name("a")
+            #     elements = element_at_active_race.find_elements(By.TAG_NAME, "a")
+            #     #  elementsの中に出馬テーブルとレース動画のhrefも存在するため出馬テーブルのみ取得する
+            #     for element in elements:
+            #         if "movie" not in element.get_attribute("href"):
+            #             target_date_race_url_list.append(element.get_attribute("href"))
         else:
             # 最近開催されるレース情報が掲載されている箇所を取得する
             elements = driver.find_elements(By.CLASS_NAME, "ui-tabs-anchor")
-            elements
-            elements
             # target_dateで指定した日の出馬テーブル一覧が取得できるurlを取得
             target_element = [element for element in elements if target_date in element.get_attribute("title")][0]
             target_date_url = target_element.get_attribute("href")
@@ -139,11 +229,10 @@ class Start_Horse_Table(Data_Processer):
             # target_dateで指定した日に開催されるレースの出馬テーブルのurlが格納されたリストを作成
             target_date_race_url_list = [element.get_attribute("href") for element in elements if "movie" not in element.get_attribute("href")]
 
-        # urlからrace_idを取得(set()で重複するrace_idは削除しておく)
-        race_id_list = sorted(list(set([re.findall(r"\d+", url)[0] for url in target_date_race_url_list])))
+            # urlからrace_idを取得(set()で重複するrace_idは削除しておく)
+            race_id_list = sorted(list(set([re.findall(r"\d+", url)[0] for url in target_date_race_url_list])))
 
         if table_type == "shutuba_table":
-            print("通過")
             df_shutuba_tables_X, df_shutuba_tables, race_info_dict = self.shutuba_tables_scrape(race_id_list, driver)
             self.data = df_shutuba_tables_X  # 説明変数作成用
             self.shutuba_tables = df_shutuba_tables  # streamlitで表示用の出馬テーブル
@@ -200,7 +289,6 @@ class Start_Horse_Table(Data_Processer):
         # race_id = 202206040201
         # memo-----------------------------------------------------------------
 
-        print(race_id_list)
         race_id_dict = {}  # 説明変数を作成するのに必要なデータを格納する
         race_info_dict = {}  # レース名 出走時刻 何レース目 の情報を格納する
         shutuba_table_dict = {}  # 出馬テーブルを格納する(streamlit用)
@@ -215,7 +303,6 @@ class Start_Horse_Table(Data_Processer):
 
             # elements = driver.find_elements_by_class_name("HorseList")  # find_element"s"にすると指定のclass_nameを複数取得する"s"をつけないと１つだけ取得する
             elements = driver.find_elements(By.CLASS_NAME, "HorseList")  # find_element"s"にすると指定のclass_nameを複数取得する"s"をつけないと１つだけ取得する
-            elements
 
             # 馬、騎手、調教師情報が記載されている箇所を取得する
             for element in elements:

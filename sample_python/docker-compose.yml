@@ -1,0 +1,9 @@
+version: '3'
+services:
+  sample-python:
+    container_name: sample-python-server
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    image: sample-python:1.0
+    tty: true

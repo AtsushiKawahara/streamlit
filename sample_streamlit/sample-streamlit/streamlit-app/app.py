@@ -1,5 +1,8 @@
 # coding:utf-8
 
+import os
+print(os.system("ls"))
+print(os.system("pwd"))
 # 必要なパッケージのインストール
 from selenium import webdriver
 from selenium.webdriver import ChromeOptions, Chrome
@@ -8,7 +11,6 @@ from selenium.webdriver import ChromeOptions
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 import streamlit as st
-import os
 import sys
 import pickle
 

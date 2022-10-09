@@ -92,9 +92,9 @@ class Start_Horse_Table(Data_Processer):
         pd_shutuba_table(DataFrame): target_dateで指定した日に開催されるレースの出馬テーブルをすべて結合したもの
         """
         # memo-----------------------------------------------------------------
-        target_date = "2022年9月24日"
-        is_real_time = True
-        table_type = "shutuba_table"
+        # target_date = "2022年9月24日"
+        # is_real_time = True
+        # table_type = "shutuba_table"
         # create_predict_table(target_date, is_real_time=True, table_type="shutuba_table")
         # memo-----------------------------------------------------------------
 

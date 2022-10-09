@@ -53,5 +53,4 @@ WORKDIR /app
 # ENTRYPOINT: コンテナ実行時(docker run)に実行
 COPY . /app
 COPY app.py .
-COPY app0.py .
 # ENTRYPOINT ["streamlit", "run", "app.py", "--server.port=8501", "--server.address=0.0.0.0"]

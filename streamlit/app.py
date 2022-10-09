@@ -27,7 +27,6 @@ FILE_PATH_FIT_DATA = '/'.join(os.path.abspath(__file__).split('/')[:-1])+'/data/
 sys.path.append(FILE_PATH_FIT_DATA)
 
 # 自作関数のimport
-
 from multiapp import create_predict_table
 from functions.data_proessing import load_pickle
 

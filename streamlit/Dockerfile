@@ -1,5 +1,6 @@
 # ベースのコンテナイメージを設定　FROM ~
-FROM python:3.9-slim
+# FROM python:3.9-slim
+FROM python:3.9
 
 # EXPOSE 80 → 指定したポートをリッスンするようになる
 # docker run -p コマンドと合わせて使用することで初めて意味がある
@@ -33,6 +34,7 @@ RUN python3.9 -m pip install -r requirements.txt
 
 # 環境変数を設定
 ENV SITE_DOMAIN=ohenzi.com
+ENV PYTHONIOENCODING utf-8
 
 # 作業ディレクトリを変更
 WORKDIR /app
@@ -49,6 +51,7 @@ WORKDIR /app
 # コンテナ実行時に動かしたいシェルコマンドを指定 ENTRYPOINT ["実行ファイル", ”パラメータ１", ”パラメータ2"]
 #  RUN: コンテナイメージ作成時に時刻
 # ENTRYPOINT: コンテナ実行時(docker run)に実行
+COPY . /app
 COPY app.py .
 COPY app0.py .
-ENTRYPOINT ["streamlit", "run", "app.py", "--server.port=8501", "--server.address=0.0.0.0"]
+# ENTRYPOINT ["streamlit", "run", "app.py", "--server.port=8501", "--server.address=0.0.0.0"]

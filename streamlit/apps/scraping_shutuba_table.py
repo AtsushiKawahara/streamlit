@@ -15,6 +15,7 @@ from selenium.webdriver import Chrome, ChromeOptions
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 from webdriver_manager.core.utils import ChromeType
 # streamlit用に必要なライブラリのインポート
 import sys
@@ -91,9 +92,9 @@ class Start_Horse_Table(Data_Processer):
         pd_shutuba_table(DataFrame): target_dateで指定した日に開催されるレースの出馬テーブルをすべて結合したもの
         """
         # memo-----------------------------------------------------------------
-        # target_date = "2022年9月18日"
-        # is_real_time = True
-        # table_type = "shutuba_table"
+        target_date = "2022年9月24日"
+        is_real_time = True
+        table_type = "shutuba_table"
         # create_predict_table(target_date, is_real_time=True, table_type="shutuba_table")
         # memo-----------------------------------------------------------------
 
@@ -104,7 +105,15 @@ class Start_Horse_Table(Data_Processer):
         # googleを起動
         options = ChromeOptions()  # ここで拡張機能を本来は設定するけど今回は省略
         # options.add_argument("--headless")
-        driver = Chrome(ChromeDriverManager().install(), options=options)
+
+        # dockerを使用する場合とそれ以外の場合でseleniumの起動方法が違うため例外処理により、どっちがの方法が適用できるようにしている
+        try:
+            # docker使用時
+            driver = webdriver.Remote(command_executor="http://selenium:4444/wd/hub", options=options)
+        except Exception as e:
+            # docker未使用時
+            print(f"selenium error RemoteではないためChrome(~)により起動 error code:{e}")
+            driver = Chrome(ChromeDriverManager().install(), options=options)
 
         # 競馬サイトのレース情報ページのトップを表示
         driver.get(url)
@@ -186,6 +195,7 @@ class Start_Horse_Table(Data_Processer):
 
             # 現在時刻を取得
             now_time = datetime.datetime.today().time()
+            now_time
 
             # 現在時刻と出走時刻を比較して未出走のレースを抽出
             for race_id in start_time_and_race_id_dict_place_1:

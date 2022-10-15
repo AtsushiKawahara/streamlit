@@ -6,6 +6,7 @@ import urllib3
 import json
 from selenium.webdriver import Chrome, ChromeOptions
 from webdriver_manager.chrome import ChromeDriverManager
+from selenium import webdriver
 
 press_button = st.button("出馬テーブル取得開始")
 

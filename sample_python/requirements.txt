@@ -1,2 +1,2 @@
+streamlit
 urllib3
-json

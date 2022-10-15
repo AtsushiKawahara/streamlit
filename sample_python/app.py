@@ -20,7 +20,7 @@ if press_button:
     url = "https://race.netkeiba.com/top/"
     options = ChromeOptions()  # ここで拡張機能を本来は設定するけど今回は省略
     options.add_argument("--headless")
-    driver = webdriver.Remote(command_executor="http://selenium:4444/wd/hub", options=options)
+    driver = webdriver.Remote(command_executor="http://127.0.0.1:4444/wd/hub", options=options)
     # driver = Chrome(ChromeDriverManager().install(), options=options)
     driver.get(url)
     driver.close()

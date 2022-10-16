@@ -19,7 +19,7 @@ if press_button:
     http = urllib3.PoolManager()
     r = http.request('GET', url)
     st.write(r.status)
-    st.write(r.data.decode("shift-jis"))
+    st.write(r.data.decode('shift-jis'))
     st.write(json.dumps(dict(r.headers), ensure_ascii=False, indent=4, sort_keys=True, separators=(',', ': ')))
 
     # seleniumnによる通信

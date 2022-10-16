@@ -8,6 +8,7 @@ from selenium.webdriver import Chrome, ChromeOptions
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium import webdriver
 import requests
+from bs4 import BeautifulSoup
 
 press_button = st.button("出馬テーブル取得開始")
 
@@ -29,6 +30,11 @@ if press_button:
     response = requests.get(url)
     st.write(response)
     st.write(response.text)
+
+    # BeautifulSoupによるデータ取得(requestsにより取得したデータから抽出)
+    st.write("beautifulsoupによるhttpリクエスト")
+    soup = BeautifulSoup(response.text)
+    st.write(soup.find_all("body"))
 
     # seleniumnによる通信
     # options = ChromeOptions()  # ここで拡張機能を本来は設定するけど今回は省略

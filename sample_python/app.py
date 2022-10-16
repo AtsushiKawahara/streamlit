@@ -12,7 +12,7 @@ press_button = st.button("出馬テーブル取得開始")
 
 # ボタンが押されたときに実行される箇所
 if press_button:
-    # url = 'https://example.com/'
+    url = 'https://example.com/'
     url = "https://race.netkeiba.com/top/"
 
     # urllib3によるサーバーへのhttpリクエスト
@@ -20,7 +20,7 @@ if press_button:
     r = http.request('GET', url)
     st.write(r.status)
     st.write(json.dumps(dict(r.headers), ensure_ascii=False, indent=4, sort_keys=True, separators=(',', ': ')))
-    st.write(r.data.decode('shift-jis'))
+    st.write(r.data.decode('ascii', errors="ignore"))
 
     # seleniumnによる通信
     options = ChromeOptions()  # ここで拡張機能を本来は設定するけど今回は省略

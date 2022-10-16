@@ -19,8 +19,8 @@ if press_button:
     http = urllib3.PoolManager()
     r = http.request('GET', url)
     st.write(r.status)
-    st.write(r.data.decode('shift-jis'))
     st.write(json.dumps(dict(r.headers), ensure_ascii=False, indent=4, sort_keys=True, separators=(',', ': ')))
+    st.write(r.data.decode('shift-jis'))
 
     # seleniumnによる通信
     options = ChromeOptions()  # ここで拡張機能を本来は設定するけど今回は省略

@@ -48,7 +48,8 @@ if press_button:
     # seleniumnによる通信
     # chrome_driver_path = "../.././home/appuser/.wdm/drivers/chromedriver/linux64/106.0.5249/chromedriver"
     # chrome_driver_path = "/home/appuser/.wdm/drivers/chromedriver/linux64/106.0.5249/chromedriver"
-    chrome_driver_path = "/home/appuser/.wdm/drivers/chromedriver"
+    # chrome_driver_path = "/home/appuser/.wdm/drivers/chromedriver"
+    chrome_driver_path = "./benchmark-auto/chromedriver.exe"
     # chrome_driver_path = "../.././app/streamlit/benchmark-auto/chromedriver.exe"
     # chrome_driver_path = "/app/streamlit/benchmark-auto/chromedriver.exe"
     options = ChromeOptions()  # ここで拡張機能を本来は設定するけど今回は省略

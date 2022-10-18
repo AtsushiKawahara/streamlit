@@ -34,10 +34,10 @@ if press_button:
     st.write(r.data.decode('ascii', errors="ignore"))
 
     # request(サードパーティー)によるhttpリクエスト
-    st.write("requestによるhttpリクエスト")
-    response = requests.get(url)
-    st.write(response)
-    st.write(response.text)
+    # st.write("requestによるhttpリクエスト")
+    # response = requests.get(url)
+    # st.write(response)
+    # st.write(response.text)
 
     # BeautifulSoupによるデータ取得(requestsにより取得したデータから抽出)
     # st.write("beautifulsoupによるhttpリクエスト")
@@ -51,7 +51,7 @@ if press_button:
     options = ChromeOptions()  # ここで拡張機能を本来は設定するけど今回は省略
     options.add_argument("--headless")
     # driver = webdriver.Remote(command_executor="http://127.0.0.1:4444/wd/hub", options=options)
-    # driver = Chrome(ChromeDriverManager().install(), options=options)
-    driver = Chrome(chrome_driver_path, options=options)
+    driver = Chrome(ChromeDriverManager().install(), options=options)
+    # driver = Chrome(chrome_driver_path, options=options)
     driver.get(url)
     driver.close()

@@ -14,8 +14,8 @@ press_button = st.button("出馬テーブル取得開始")
 
 # ボタンが押されたときに実行される箇所
 if press_button:
-    url = 'https://example.com/'
-    # url = "https://race.netkeiba.com/top/"
+    # url = 'https://example.com/'
+    url = "https://race.netkeiba.com/top/"
 
     # urllib3によるサーバーへのhttpリクエスト
     st.write("urllib3によるhttpリクエスト")
@@ -34,7 +34,11 @@ if press_button:
     # BeautifulSoupによるデータ取得(requestsにより取得したデータから抽出)
     st.write("beautifulsoupによるhttpリクエスト")
     soup = BeautifulSoup(response.text)
+    soup
     st.write(soup.find_all("body"))
+
+    st.write("pathの確認")
+    st.write(os.system("pwd"))
 
     # seleniumnによる通信
     # options = ChromeOptions()  # ここで拡張機能を本来は設定するけど今回は省略

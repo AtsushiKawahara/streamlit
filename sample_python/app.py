@@ -49,7 +49,7 @@ if press_button:
     # chrome_driver_path = "../.././home/appuser/.wdm/drivers/chromedriver/linux64/106.0.5249/chromedriver"
     # chrome_driver_path = "/home/appuser/.wdm/drivers/chromedriver/linux64/106.0.5249/chromedriver"
     # chrome_driver_path = "../.././app/streamlit/benchmark-auto/chromedriver.exe"
-    # chrome_driver_path = "/app/streamlit/benchmark-auto/chromedriver.exe"
+    chrome_driver_path = "/app/streamlit/benchmark-auto/chromedriver.exe"
     options = ChromeOptions()  # ここで拡張機能を本来は設定するけど今回は省略
     options.add_argument("--headless")
     # driver = webdriver.Remote(command_executor="http://127.0.0.1:4444/wd/hub", options=options)

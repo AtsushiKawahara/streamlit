@@ -12,7 +12,7 @@ from bs4 import BeautifulSoup
 import os
 
 st.write("pathの確認")
-st.write(os.system("pwd"))
+st.write(f"pwd:{os.system("pwd")}")
 
 press_button = st.button("出馬テーブル取得開始")
 

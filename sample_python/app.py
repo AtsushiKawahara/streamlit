@@ -14,8 +14,8 @@ import subprocess as sp
 
 st.write("pathの確認")
 st.write(f"pwd:{os.system('pwd')}")
-st.writer(os.system("ls"))
-st.writer(sp.call("ls"))
+st.write(os.system("ls"))
+st.write(sp.call("ls"))
 
 press_button = st.button("出馬テーブル取得開始")
 

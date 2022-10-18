@@ -9,6 +9,10 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium import webdriver
 import requests
 from bs4 import BeautifulSoup
+import os
+
+st.write("pathの確認")
+st.write(os.system("pwd"))
 
 press_button = st.button("出馬テーブル取得開始")
 
@@ -37,8 +41,6 @@ if press_button:
     soup
     st.write(soup.find_all("body"))
 
-    st.write("pathの確認")
-    st.write(os.system("pwd"))
 
     # seleniumnによる通信
     # options = ChromeOptions()  # ここで拡張機能を本来は設定するけど今回は省略

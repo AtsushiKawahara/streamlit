@@ -13,10 +13,12 @@ import os
 import subprocess as sp
 
 st.write("pathの確認")
-print(f"pwd:{os.system('pwd')}")
-print(f"cd ~ :{os.system('cd ..')}")
-print(f"pwd:{os.system('pwd')}")
-print(os.system('find . -type f -name "*hrome*river*"'))
+# print(f"pwd:{os.system('pwd')}")
+# print(f"cd ~ :{os.system('cd ..')}")
+# print(f"pwd:{os.system('pwd')}")
+print(f"os.getcwd:{os.getcwd()}")
+# print(os.system('find . -type f -name "*hrome*river*"'))
+# print(os.system('find ../../. -type f -name "*hrome*river*"'))
 
 press_button = st.button("出馬テーブル取得開始")
 

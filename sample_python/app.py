@@ -27,7 +27,7 @@ firefoxOptions.add_argument("--headless")
 # service = Service(GeckoDriverManager().install())
 driver = webdriver.Firefox(
     options=firefoxOptions,
-    executable_path="/home/appuser/.conda/bin/geckodriver",
+    executable_path="/home/appuser/.wdm/drivers/geckodriver/linux64/0.32/geckodriver",
     # service=service,
 )
 driver.get(URL)

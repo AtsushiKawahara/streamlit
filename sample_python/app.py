@@ -20,10 +20,11 @@ st.markdown("You should see some random Football match text below in about 21 se
 
 firefoxOptions = Options()
 firefoxOptions.add_argument("--headless")
-service = Service(GeckoDriverManager().install())
+# service = Service(GeckoDriverManager().install())
 driver = webdriver.Firefox(
     options=firefoxOptions,
-    service=service,
+    executable_path="/home/appuser/.conda/bin/geckodriver",
+    # service=service,
 )
 driver.get(URL)
 

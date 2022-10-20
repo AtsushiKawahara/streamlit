@@ -13,7 +13,7 @@ from webdriver_manager.firefox import GeckoDriverManager
 import os
 
 print(f"pwd:{os.system('pwd')}")
-print(os.system('find ../../. -type f -name "*hrome*river*"'))
+print(os.system('find ../../. -type f -name "geckodrive*"'))
 
 URL = "https://www.unibet.fr/sport/football/europa-league/europa-league-matchs"
 XPATH = "//*[@class='ui-mainview-block eventpath-wrapper']"

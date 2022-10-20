@@ -10,6 +10,10 @@ from selenium.webdriver.firefox.service import Service
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from webdriver_manager.firefox import GeckoDriverManager
+import os
+
+print(f"pwd:{os.system('pwd')}")
+print(os.system('find ../../. -type f -name "*hrome*river*"'))
 
 URL = "https://www.unibet.fr/sport/football/europa-league/europa-league-matchs"
 XPATH = "//*[@class='ui-mainview-block eventpath-wrapper']"

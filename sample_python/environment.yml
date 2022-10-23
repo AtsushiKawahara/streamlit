@@ -1,9 +1,9 @@
-name: sample_python
-channels:
-  - defaults
-dependencies:
-  - streamlit
-  - selenium
-  - urllib3
-  - webdrivermanager
-  - beautifulsoup4
+# name: sample_python
+# channels:
+#   - defaults
+# dependencies:
+#   - streamlit
+#   - selenium
+#   - urllib3
+#   - webdrivermanager
+#   - beautifulsoup4

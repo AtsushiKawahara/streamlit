@@ -1,0 +1,6 @@
+name: sample_python
+channels:
+ - defaults
+dependencies:
+  - streamlit
+  - selenium

@@ -1,12 +1,12 @@
 # coding:utf-8
 # 必要なライブラリのimport
 import streamlit as st
-import urllib3
+# import urllib3
 import json
 from selenium.webdriver import Chrome, ChromeOptions
-from webdriver_manager.chrome import ChromeDriverManager
+# from webdriver_manager.chrome import ChromeDriverManager
 from selenium import webdriver
-import requests
+# import requests
 # from bs4 import BeautifulSoup
 import os
 import subprocess as sp
@@ -27,12 +27,12 @@ if press_button:
     url = 'https://example.com/'
     # url = "https://race.netkeiba.com/top/"
     # urllib3によるサーバーへのhttpリクエスト
-    st.write("urllib3によるhttpリクエスト")
-    http = urllib3.PoolManager()
-    r = http.request('GET', url)
-    st.write(r.status)
-    st.write(json.dumps(dict(r.headers), ensure_ascii=False, indent=4, sort_keys=True, separators=(',', ': ')))
-    st.write(r.data.decode('ascii', errors="ignore"))
+    # st.write("urllib3によるhttpリクエスト")
+    # http = urllib3.PoolManager()
+    # r = http.request('GET', url)
+    # st.write(r.status)
+    # st.write(json.dumps(dict(r.headers), ensure_ascii=False, indent=4, sort_keys=True, separators=(',', ': ')))
+    # st.write(r.data.decode('ascii', errors="ignore"))
     # request(サードパーティー)によるhttpリクエスト
     # st.write("requestによるhttpリクエスト")
     # response = requests.get(url)
@@ -44,7 +44,7 @@ if press_button:
     # st.write(soup.find_all("body"))
     # seleniumnによる通信
     # chrome_driver_path = "../.././home/appuser/.wdm/drivers/chromedriver/linux64/106.0.5249/chromedriver"
-    # chrome_driver_path = "/home/appuser/.wdm/drivers/chromedriver/linux64/106.0.5249/chromedriver"
+    chrome_driver_path = "/home/appuser/.wdm/drivers/chromedriver/linux64/106.0.5249/chromedriver"
     # chrome_driver_path = "/home/appuser/.wdm/drivers/chromedriver"
     # chrome_driver_path = "./benchmark-auto/chromedriver.exe"
     # chrome_driver_path = "../.././app/streamlit/benchmark-auto/chromedriver.exe"
@@ -55,11 +55,12 @@ if press_button:
     options.add_argument("--headless")
     # driver = webdriver.Remote(command_executor="http://127.0.0.1:4444/wd/hub", options=options)
     # driver = Chrome(ChromeDriverManager().install(), options=options)
-    # driver = Chrome(chrome_driver_path, options=options)
-    CHROMEDRIVER = ChromeDriverManager().install()
-    print(CHROMEDRIVER)
-    chrome_service = fs.Service(executable_path=CHROMEDRIVER)
-    driver = Chrome(service=chrome_service, options=options)
+    driver = Chrome(chrome_driver_path, options=options)
+    # CHROMEDRIVER = ChromeDriverManager().install()
+    # print(CHROMEDRIVER)
+
+    # chrome_service = fs.Service(executable_path=CHROMEDRIVER)
+    # driver = Chrome(service=chrome_service, options=options)
     # driver = Chrome(ChromeDriverManager().install(), options=options)
     driver.get(url)
     driver.close()

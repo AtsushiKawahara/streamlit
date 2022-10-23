@@ -1,2 +1,2 @@
-seleniumbase
+selenium
 webdriver-manager

@@ -50,13 +50,14 @@ if press_button:
     # chrome_driver_path = "../.././app/streamlit/benchmark-auto/chromedriver.exe"
     # chrome_driver_path = os.getcwd() + "\chromedriver.exe"
     # chrome_driver_path = "/app/streamlit/benchmark-auto/chromedriver.exe"
-    CHROMEDRIVER  = "/app/streamlit/sample_python/chromedriver"
+    # CHROMEDRIVER  = "/app/streamlit/sample_python/chromedriver"
     options = ChromeOptions()  # ここで拡張機能を本来は設定するけど今回は省略
     options.add_argument("--headless")
     # driver = webdriver.Remote(command_executor="http://127.0.0.1:4444/wd/hub", options=options)
     # driver = Chrome(ChromeDriverManager().install(), options=options)
     # driver = Chrome(chrome_driver_path, options=options)
     CHROMEDRIVER = ChromeDriverManager().install()
+    print(CHROMEDRIVER)
     chrome_service = fs.Service(executable_path=CHROMEDRIVER)
     driver = Chrome(service=chrome_service, options=options)
     # driver = Chrome(ChromeDriverManager().install(), options=options)

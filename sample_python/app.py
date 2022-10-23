@@ -51,6 +51,7 @@ if press_button:
     options.add_argument("--headless")
     # driver = webdriver.Remote(command_executor="http://127.0.0.1:4444/wd/hub", options=options)
     # driver = Chrome(ChromeDriverManager().install(), options=options)
-    driver = Chrome(chrome_driver_path, options=options)
+    # driver = Chrome(chrome_driver_path, options=options)
+    driver = Chrome(ChromeDriverManager().install(), options=options)
     driver.get(url)
     driver.close()

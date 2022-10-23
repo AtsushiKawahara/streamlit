@@ -5,5 +5,5 @@ dependencies:
   - streamlit
   - selenium
   - urllib3
-  - webdriver_manager
+  - webdriver-manager
   - beautifulsoup4

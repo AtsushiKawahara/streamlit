@@ -21,7 +21,7 @@ st.write("pathの確認")
 print(f"os.getcwd:{os.getcwd()}")
 # print(os.system('find . -type f -name "*hrome*river*"'))
 print(os.system('find ../../. -type f -name "*hrome*"'))
-print(os.system('find ../../. -type f -name "*"'))
+# print(os.system('find ../../. -type f -name "*"'))
 press_button = st.button("出馬テーブル取得開始")
 # ボタンが押されたときに実行される箇所
 if press_button:

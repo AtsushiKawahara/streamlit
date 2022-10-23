@@ -4,4 +4,5 @@ channels:
 dependencies:
   - streamlit
   - selenium
-  - firefox-ers
+  - chrome
+  - chromedriver

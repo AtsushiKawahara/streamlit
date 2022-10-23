@@ -1,8 +1,8 @@
-name: sample_python
-channels:
- - defaults
-dependencies:
-  - streamlit
-  - selenium
-  - chrome
-  - chromedriver
+# name: sample_python
+# channels:
+#  - defaults
+# dependencies:
+#   - streamlit
+#   - selenium
+#   - chrome
+#   - chromedriver

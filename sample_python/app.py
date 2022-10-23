@@ -4,7 +4,7 @@ import streamlit as st
 # import urllib3
 import json
 from selenium.webdriver import Chrome, ChromeOptions
-# from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.chrome import ChromeDriverManager
 from selenium import webdriver
 # import requests
 # from bs4 import BeautifulSoup
@@ -48,7 +48,7 @@ if press_button:
     # chrome_driver_path = "../.././home/appuser/.wdm/drivers/chromedriver/linux64/106.0.5249/chromedriver"
     # chrome_driver_path = "/home/appuser/.wdm/drivers/chromedriver/linux64/106.0.5249/chromedriver"
     # chrome_driver_path = "/home/appuser/.wdm/drivers/chromedriver"
-    chrome_driver_path = "./benchmark-auto/chromedriver.exe"
+    # chrome_driver_path = "./benchmark-auto/chromedriver.exe"
     # chrome_driver_path = "../.././app/streamlit/benchmark-auto/chromedriver.exe"
     # chrome_driver_path = os.getcwd() + "\chromedriver.exe"
     # chrome_driver_path = "/app/streamlit/benchmark-auto/chromedriver.exe"
@@ -57,12 +57,12 @@ if press_button:
     options.add_argument("--headless")
     # driver = webdriver.Remote(command_executor="http://127.0.0.1:4444/wd/hub", options=options)
     # driver = Chrome(ChromeDriverManager().install(), options=options)
-    driver = Chrome(chrome_driver_path, options=options)
-    # CHROMEDRIVER = ChromeDriverManager().install()
+    # driver = Chrome(chrome_driver_path, options=options)
     # print(CHROMEDRIVER)
 
-    # chrome_service = fs.Service(executable_path=CHROMEDRIVER)
-    # driver = Chrome(service=chrome_service, options=options)
+    CHROMEDRIVER = ChromeDriverManager().install()
+    chrome_service = fs.Service(executable_path=CHROMEDRIVER)
+    driver = Chrome(service=chrome_service, options=options)
     # driver = Chrome(ChromeDriverManager().install(), options=options)
     driver.get(url)
     driver.close()

@@ -30,7 +30,7 @@ if press_button:
         )
     driver.get(URL)
     driver.close()
-    st.title("complete Selenium")
+    st.title("selenium succeeded")
 
 # # 必要なライブラリのimport
 # import streamlit as st

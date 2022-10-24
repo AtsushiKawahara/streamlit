@@ -9,9 +9,12 @@ from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.firefox.service import Service
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
+# from webdriver_manager.firefox import GeckoDriverManager
+
+# chrome 関係
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome import service as fs
-# from webdriver_manager.firefox import GeckoDriverManager
+from selenium.webdriver import Chrome, ChromeOptions
 import os
 
 # os.system("find . -type f -name `*eckodrive*`")
@@ -27,8 +30,10 @@ if press_button:
     st.title("Test Selenium")
     st.markdown("You should see some random Football match text below in about 21 seconds")
 
-    firefoxOptions = Options()
-    firefoxOptions.add_argument("--headless")
+    # firefoxOptions = Options()
+    # firefoxOptions.add_argument("--headless")
+    options = ChromeOptions()  # ここで拡張機能を本来は設定するけど今回は省略
+    options.add_argument("--headless")
     # geckodriver_path = "/home/appuser/.wdm/drivers/geckodriver/linux64/0.32/geckodriver"
     # geckodriver_path = "/home/appuser/venv/lib/python3.9/site-packages/seleniumbase/drivers/geckodriver"
     # service = Service(geckodriver_path)
@@ -36,7 +41,8 @@ if press_button:
     service = fs.Service(executable_path=CHROMEDRIVER)
     # service = Service(GeckoDriverManager().install())
     driver = webdriver.Chrome(
-        options=firefoxOptions,
+        # options=firefoxOptions,
+        options=options,
         service=service,
         )
     driver.get(URL)

@@ -27,7 +27,7 @@ if press_button:
     XPATH = "//*[@class='ui-mainview-block eventpath-wrapper']"
     TIMEOUT = 20
 
-    st.title("Test Selenium")
+    st.title("Test Selenium for chromium and chromium-driver")
     st.markdown("You should see some random Football match text below in about 21 seconds")
 
     # firefoxOptions = Options()

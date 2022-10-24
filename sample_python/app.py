@@ -27,7 +27,8 @@ if press_button:
 
     firefoxOptions = Options()
     firefoxOptions.add_argument("--headless")
-    geckodriver_path = "/home/appuser/.wdm/drivers/geckodriver/linux64/0.32/geckodriver"
+    # geckodriver_path = "/home/appuser/.wdm/drivers/geckodriver/linux64/0.32/geckodriver"
+    geckodriver_path = "/home/appuser/venv/lib/python3.9/site-packages/seleniumbase/drivers/geckodriver"
     service = Service(geckodriver_path)
     # service = Service(GeckoDriverManager().install())
     driver = webdriver.Firefox(

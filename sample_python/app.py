@@ -10,6 +10,7 @@ from selenium.webdriver.firefox.service import Service
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from webdriver_manager.firefox import GeckoDriverManager
+import os
 
 os.system("find . -type f -name `*eckodrive*`")
 press_button = st.button("出馬テーブル取得開始")

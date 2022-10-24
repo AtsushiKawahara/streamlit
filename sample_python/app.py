@@ -31,7 +31,7 @@ if press_button:
     geckodriver_path = "/home/appuser/venv/lib/python3.9/site-packages/seleniumbase/drivers/geckodriver"
     service = Service(geckodriver_path)
     # service = Service(GeckoDriverManager().install())
-    driver = webdriver.Firefox(
+    driver = webdriver.Chrome(
         options=firefoxOptions,
         service=service,
         )

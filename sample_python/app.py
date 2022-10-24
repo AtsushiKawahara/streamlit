@@ -9,6 +9,8 @@ from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.firefox.service import Service
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome import service as fs
 # from webdriver_manager.firefox import GeckoDriverManager
 import os
 
@@ -28,8 +30,10 @@ if press_button:
     firefoxOptions = Options()
     firefoxOptions.add_argument("--headless")
     # geckodriver_path = "/home/appuser/.wdm/drivers/geckodriver/linux64/0.32/geckodriver"
-    geckodriver_path = "/home/appuser/venv/lib/python3.9/site-packages/seleniumbase/drivers/geckodriver"
-    service = Service(geckodriver_path)
+    # geckodriver_path = "/home/appuser/venv/lib/python3.9/site-packages/seleniumbase/drivers/geckodriver"
+    # service = Service(geckodriver_path)
+    CHROMEDRIVER = ChromeDriverManager().install()
+    service = fs.Service(executable_path=CHROMEDRIVER)
     # service = Service(GeckoDriverManager().install())
     driver = webdriver.Chrome(
         options=firefoxOptions,

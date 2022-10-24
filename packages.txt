@@ -1,2 +1,2 @@
-firefox
-geckodriver
+chrome
+chromedriver

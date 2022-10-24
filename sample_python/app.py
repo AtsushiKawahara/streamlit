@@ -12,7 +12,9 @@ from selenium.webdriver.support.ui import WebDriverWait
 from webdriver_manager.firefox import GeckoDriverManager
 import os
 
-os.system("find . -type f -name `*eckodrive*`")
+# os.system("find . -type f -name `*eckodrive*`")
+# # print(os.system('find . -type f -name "*hrome*river*"'))
+print(os.system('find ../../. -type f -name "*eckodrive*"'))
 press_button = st.button("出馬テーブル取得開始")
 if press_button:
     # URL = "https://www.unibet.fr/sport/football/europa-league/europa-league-matchs"

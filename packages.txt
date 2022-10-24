@@ -1,2 +1,2 @@
-firefox
+chromium
 chromedriver

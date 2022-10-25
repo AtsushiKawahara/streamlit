@@ -47,7 +47,7 @@ if press_button:
     CHROMEDRIVER = ChromeDriverManager().install()
     service = fs.Service(executable_path=CHROMEDRIVER)
     # service = Service(GeckoDriverManager().install())
-    driver = webdriver.Chrome(
+    driver = webdriver.ChromiumEdge(
         # options=firefoxOptions,
         options=options,
         service=service,

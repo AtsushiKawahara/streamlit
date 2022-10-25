@@ -21,6 +21,7 @@ import os
 # # print(os.system('find . -type f -name "*hrome*river*"'))
 # print(os.system('find ../../. -type f -name "*romium*"'))
 print(os.system('apt search chromium'))
+print("--------------------")
 print(os.system('apt search chrome'))
 print(os.system('configure'))
 press_button = st.button("出馬テーブル取得開始")

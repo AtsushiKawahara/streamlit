@@ -20,6 +20,9 @@ import os
 # os.system("find . -type f -name `*eckodrive*`")
 # # print(os.system('find . -type f -name "*hrome*river*"'))
 print(os.system('find ../../. -type f -name "*romium*"'))
+print(os.system('apt search chromium'))
+print(os.system('apt search chrome'))
+print(os.system('configure'))
 press_button = st.button("出馬テーブル取得開始")
 if press_button:
     # URL = "https://www.unibet.fr/sport/football/europa-league/europa-league-matchs"

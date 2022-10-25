@@ -11,10 +11,11 @@ import datetime
 from tqdm import tqdm
 import re
 from urllib.request import urlopen
-from selenium.webdriver import Chrome, ChromeOptions
+from selenium.webdriver import ChromeOptions
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome import service as fs
 from selenium.webdriver.common.keys import Keys
 from webdriver_manager.core.utils import ChromeType
 # streamlit用に必要なライブラリのインポート
@@ -104,7 +105,12 @@ class Start_Horse_Table(Data_Processer):
 
         # googleを起動
         options = ChromeOptions()  # ここで拡張機能を本来は設定するけど今回は省略
-        # options.add_argument("--headless")
+        # Chromeのoptionを設定（メインの理由はメモリの削減）
+        options.add_argument("--headless")
+        options.add_argument('--disable-gpu')
+        options.add_argument('--no-sandbox')
+        options.add_argument('--disable-dev-shm-usage')
+        options.add_argument('--remote-debugging-port=9222')
 
         # dockerを使用する場合とそれ以外の場合でseleniumの起動方法が違うため例外処理により、どっちがの方法が適用できるようにしている
         try:
@@ -113,7 +119,14 @@ class Start_Horse_Table(Data_Processer):
         except Exception as e:
             # docker未使用時
             print(f"selenium error RemoteではないためChrome(~)により起動 error code:{e}")
-            driver = Chrome(ChromeDriverManager().install(), options=options)
+            # driver = Chrome(ChromeDriverManager().install(), options=options)
+            # webdriver_managerによりwebdriverをインストール
+            CHROMEDRIVER = ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()  # chromiumを使用したいので引数でchromiumを指定しておく
+            service = fs.Service(CHROMEDRIVER)
+            driver = webdriver.Chrome(
+                options=options,
+                service=service,
+                )
 
         # 競馬サイトのレース情報ページのトップを表示
         driver.get(url)
@@ -270,8 +283,20 @@ class Start_Horse_Table(Data_Processer):
 
         # googleを起動
         options = ChromeOptions()  # ここで拡張機能を本来は設定するけど今回は省略
+        # Chromeのoptionを設定（メインの理由はメモリの削減）
         options.add_argument("--headless")
-        driver = Chrome(ChromeDriverManager().install(), options=options)
+        options.add_argument('--disable-gpu')
+        options.add_argument('--no-sandbox')
+        options.add_argument('--disable-dev-shm-usage')
+        options.add_argument('--remote-debugging-port=9222')
+        CHROMEDRIVER = ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()  # chromiumを使用したいので引数でchromiumを指定しておく
+        service = fs.Service(CHROMEDRIVER)
+        driver = webdriver.Chrome(
+                options=options,
+                service=service,
+                )
+
+        # driver = Chrome(ChromeDriverManager().install(), options=options)
 
         if table_type == "shutuba_table":
             df_shutuba_tables_X, df_shutuba_tables, race_info_dict = self.shutuba_tables_scrape(race_id_list, driver)

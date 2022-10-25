@@ -15,6 +15,8 @@ from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome import service as fs
 from selenium.webdriver import Chrome, ChromeOptions
+import webdriver_manager
+from webdriver_manager.core.utils import ChromeType
 import os
 
 # os.system("find . -type f -name `*eckodrive*`")
@@ -45,7 +47,7 @@ if press_button:
     # geckodriver_path = "/home/appuser/.wdm/drivers/geckodriver/linux64/0.32/geckodriver"
     # geckodriver_path = "/home/appuser/venv/lib/python3.9/site-packages/seleniumbase/drivers/geckodriver"
     # service = Service(geckodriver_path)
-    CHROMEDRIVER = ChromeDriverManager().install()
+    CHROMEDRIVER = ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()
     service = fs.Service(executable_path=CHROMEDRIVER)
     # service = Service(GeckoDriverManager().install())
     driver = webdriver.ChromiumEdge(

@@ -19,7 +19,7 @@ import os
 
 # os.system("find . -type f -name `*eckodrive*`")
 # # print(os.system('find . -type f -name "*hrome*river*"'))
-print(os.system('find ../../. -type f -name "*romium*"'))
+# print(os.system('find ../../. -type f -name "*romium*"'))
 print(os.system('apt search chromium'))
 print(os.system('apt search chrome'))
 print(os.system('configure'))

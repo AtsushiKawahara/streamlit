@@ -1,5 +1,6 @@
 streamlit/data/result_data
 streamlit/__pycache__
 streamlit/apps/__pycache__
+streamlit/apps/data_get_program_file/__pycache__
 streamlit/functions/__pycache__
 .python-version

@@ -13,35 +13,35 @@ import os
 # pathの設定
 
 # memo-------------------------------------------------------------------------
-# pathの設定(hydrogen用)
-# FILE_PATH = "/Users/kawaharaatsushi/work2/daily-dev/atsushi/memo/競馬予想AI/streamlit_for_predict_race_result/streamlit"
-# sys.path.append(FILE_PATH)
-# FILE_PATH_BASE_DATA = FILE_PATH + '/data/base_data'
-# sys.path.append(FILE_PATH_BASE_DATA)
+# hydrogen実行用
+# streamlitリポジトリ用
+FILE_PATH = "/Users/kawaharaatsushi/work_streamlit/streamlit/streamlit"
+# dailydevリポジトリ用
+FILE_PATH = "/Users/kawaharaatsushi/work2/daily-dev/atsushi/競馬予測/streamlit"
+sys.path.append(FILE_PATH)
+# path: ~/streamlit/data/base_data
+FILE_PATH_BASE_DATA = FILE_PATH+'/data/base_data'
+sys.path.append(FILE_PATH_BASE_DATA)
 # memo-------------------------------------------------------------------------
 
-# 取得する年を指定
-# GET_DATA_YEAR = 2019
 # このファイルの場所を取得してパスを通す(別階層のファイルから呼び出しても変化しない)
-# 参考)__file__: ~/streamlit/apps/data_get_program_file/horse_ped_get.py
-# path: ~/streamlit/data_get_program_file
-sys.path.append('/'.join(os.path.abspath(__file__).split('/')[:-1])+'/')
-# path: ~/streamlit
-sys.path.append('/'.join(os.path.abspath(__file__).split('/')[:-2])+'/')
+# 参考)__file__: ~/streamlit/apps/data_get_program_file/race_result_get.py
+# path: ~/streamlit/
+FILE_PATH = '/'.join(os.path.abspath(__file__).split('/')[:-3])+'/'
+sys.path.append(FILE_PATH)
 # path: ~/streamlit/data/base_data
-FILE_PATH_BASE_DATA = '/'.join(os.path.abspath(__file__).split('/')[:-2])+'/data/base_data'
+FILE_PATH_BASE_DATA = '/'.join(os.path.abspath(__file__).split('/')[:-3])+'/data/base_data'
 sys.path.append(FILE_PATH_BASE_DATA)
 
 # 自作関数のインポート
-from functions.data_proessing import load_pickle
-from functions.data_proessing import save_pickle
-from functions.data_proessing import preprocessing
+from functions.date_split_plot_pickle_functions import load_pickle
+from functions.date_split_plot_pickle_functions import save_pickle
 
 # 取得する年を指定
 # GET_DATA_YEAR = 2019
 
 
-def scrape_race_info_soup(race_id_list):
+def scrape_race_info(race_id_list):
     """
     BeautifulSoupで必要データを競馬サイトから抽出する
     """
@@ -132,7 +132,7 @@ def main():
             pass
 
         # GET_DATA_YEARで指定した年のrace_info(レース情報)を取得　
-        race_infos_dict = scrape_race_info_soup(race_id_list)
+        race_infos_dict = scrape_race_info(race_id_list)
 
         if len(race_infos_dict) == 0:
             # 新たに取得したデータがない場合(すでに全データを取得できている場合)は保存はしない

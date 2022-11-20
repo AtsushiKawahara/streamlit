@@ -14,6 +14,20 @@ import sys
 import seaborn as sns
 import os
 from datetime import date
+from datetime import datetime
+
+# memo-------------------------------------------------------------------------
+# pathの設定(hydrogen用)
+# streamlitリポジトリ用
+FILE_PATH = "/Users/kawaharaatsushi/work_streamlit/streamlit/streamlit"
+# dailydevリポジトリ用
+FILE_PATH = "/Users/kawaharaatsushi/work2/daily-dev/atsushi/競馬予測/streamlit"
+sys.path.append(FILE_PATH)
+FILE_PATH_BASE_DATA = FILE_PATH + '/data/base_data'
+sys.path.append(FILE_PATH_BASE_DATA)
+FILE_PATH_FIT_DATA = FILE_PATH + '/data/fit_data'
+sys.path.append(FILE_PATH_FIT_DATA)
+# memo-------------------------------------------------------------------------
 
 # このファイルの場所を取得してパスを通す(別階層のファイルから呼び出しても変化しない)
 # 参考)__file__: ~/streamlit/app.py
@@ -27,8 +41,8 @@ FILE_PATH_FIT_DATA = '/'.join(os.path.abspath(__file__).split('/')[:-1])+'/data/
 sys.path.append(FILE_PATH_FIT_DATA)
 
 # 自作関数のimport
-from multiapp import create_predict_table
-from functions.data_proessing import load_pickle
+from apps import create_predict_table
+from functions.date_split_plot_pickle_functions import load_pickle
 
 
 def get_swap_dict(d):
@@ -40,48 +54,37 @@ def get_swap_dict(d):
 
 def main():
 
-    def session_change():
-        """
-        traget_dataが更新されると現在表示されている出馬テーブル・予測テーブルを非表示にするための関数
-        """
-        st.session_state["is_table_view"] = False
+    # タイトル表示
+    st.title("AIによる競馬予測")
+
+    # あらかじめ予測したレースの日付・予測結果を更新した時刻を読み込む
+    # 予測したレースの年月日
+    target_date = datetime.strptime(load_pickle(FILE_PATH_FIT_DATA, 'target_date'), "%Y%m%d")  # pickleに保存している年月日の８桁の数字をdatetime型に変換
+    target_year = target_date.year  # 年
+    target_month = target_date.month  # 月
+    target_day = target_date.day  # 日
+    # 予測レース情報をスクレイピングした時間
+    scraping_time = load_pickle(FILE_PATH_FIT_DATA, "scraping_time")
+    scraping_hour = scraping_time.hour  # 時
+    scraping_minute = scraping_time.minute  # 分
+
+    # 予測したレース日を表示
+    st.write(f"レース予測日:{target_year}年{target_month}月{target_day}日")
+    st.write(f"更新時間:{scraping_hour}時{scraping_minute}分")
 
     # "is_table_view"のkeyが存在しない場合に実行される(=一度しか実行されない)
     # st.sessionstateに格納する変数は際読み込みされても保持される
     if "is_table_view" not in st.session_state:
         st.session_state["is_table_view"] = None
 
-    target_date = st.date_input('出馬テーブルを取得する日を指定してください',
-                                min_value=date(2017, 1, 1),
-                                max_value=date.today(),
-                                value=date.today(),
-                                on_change=session_change  # target_dateが変更されると実行される関数を設置
-                                ).strftime("%Y年%-m月%-d日")
-
-    table_type = st.selectbox('取得するテーブルタイプを選択してください?',('shutuba_table', 'result_table'))
-
-    st.write('table_type:', table_type)
-
-    # target_dateを表示
-    st.write(target_date)
-    st.write(table_type)
-
     # このボタンを押すとtarget_dataで指定している日の出馬テーブルの取得を開始する
-    press_button = st.button("出馬テーブル取得開始")
+    press_button = st.button("予測結果表示")
 
     # ボタンが押されたときに実行される箇所
     if press_button:
 
         # 出馬テーブル・予測テーブルを表示する信号をONにする
         st.session_state["is_table_view"] = True
-
-        # """
-        # 出馬テーブルをスクレイピングする関数を実行する
-        # (補足説明)
-        # streamlitの仕様上、複数のボタンが存在する場合は、直近で押下したボタンだけがTrueになってそれ以外のボタンはFalseになる
-        # 出馬テーブル切り替えで"press_button"がFalseになっても出馬テーブルスクレイピングが実行されないように、ここにcreate_predict_tableを書いている
-        # """
-        create_predict_table(target_date, is_real_time=True, table_type="shutuba_table")
 
     # スクレイピングした出馬テーブル・予測テーブルをstreamlit上に表示する
     # target_dateが変更されるとst.session_state["is_table_view"]がsession_change関数が実行されFalseになるため非表示となる
@@ -110,12 +113,7 @@ def main():
 
         cm = sns.light_palette("blue", as_cmap=True)
 
-        # 4.タイトル表示
-
-        st.title("競馬予想")
-        st.write(f"●レース開催日:{target_date}")
-
-        # 5.表示するレースを選択できるように race_info(レース名 + 出走時刻)のセレクトボックスを作成
+        # 4.表示するレースを選択できるように race_info(レース名 + 出走時刻)のセレクトボックスを作成
         race_info_list = list(race_info_dict.values())  # レース名＋出走時刻をlistにしておく(selectbox表示用)
         race_info = st.selectbox(
             "予測結果を表示するレースを選択してください",
@@ -128,7 +126,7 @@ def main():
         # 作成した辞書からrace_idを取得
         race_id = race_info_dict_swap[race_info]  # selectboxにより選択したレースのrace_idを取得
 
-        # 6.予測テーブルの表示する
+        # 5.予測テーブルの表示する
 
         # それぞれの馬券の該当レースのみを抽出
         pred_table_sannrenntann = pred_tables_sannrenntann[pred_tables_sannrenntann["race_id"] == race_id].sort_values("うまい馬券", ascending=False).reset_index(drop=True)

@@ -18,7 +18,10 @@ import datetime
 
 # memo-------------------------------------------------------------------------
 # # pathの設定(hydrogen用)
+# streamlitリポジトリ用
 FILE_PATH = "/Users/kawaharaatsushi/work_streamlit/streamlit/streamlit"
+# dailydevリポジトリ用
+FILE_PATH = "/Users/kawaharaatsushi/work2/daily-dev/atsushi/競馬予測/streamlit"
 sys.path.append(FILE_PATH)
 FILE_PATH_BASE_DATA = FILE_PATH + '/data/base_data'
 sys.path.append(FILE_PATH_BASE_DATA)
@@ -77,6 +80,7 @@ def main():
     now_time = datetime.datetime.now().time()  # 現在時刻 ex)datetime.time(23, 37, 22, 964472)
     current_weekday = now_date.weekday()  # 曜日を取得(0:月曜日 1:火曜日 ... 6:日曜日)
     # 取得する曜日を土・日のどちらかを現在日時により決定する（指定条件は上記のとおり）
+
     if current_weekday == 5:  # 現在が土曜日のとき
         if now_time > datetime.time(18, 00, 00):
             target_weekday = 6  # 日曜日
@@ -98,13 +102,14 @@ def main():
     diff_days = datetime.timedelta(days=diff)
     target_date = (now_date + diff_days).strftime('%Y%m%d')
 
+    # memo----------------------------------------------------------------------
+    target_date = 20221120
+    # memo----------------------------------------------------------------------
+
     print(f"target_date{target_date}")
-    # 機能確認ようにとりあえず上の部分はとりまコメントアウト
-    # target_date = "20221105"  # とりまの値
 
     # スクレイピングをした日付・時刻を保存しておく(streamlitアプリ上で表示するため)
     save_pickle(FILE_PATH_FIT_DATA, "target_date", target_date)
-    # save_pickle(FILE_PATH_FIT_DATA, "scraping_time", now_time)
 
     # 1.学習データの読み込み-------------------------------------------------------
 
@@ -119,7 +124,7 @@ def main():
     sht = Start_Horse_Table()  # 予測したいレースのrace_id_listを渡す
     sht.start_up_chromedriver()  # chromedriverを起動
     race_id_list = sht.scrape_specified_date_race_id(target_date)
-    sht.shutuba_tables_scrape(target_date)  # 予測したいレースのrace_id_listを渡す
+    sht.shutuba_tables_scrape(race_id_list)  # 予測したいレースのrace_id_listを渡す
 
     # memo---------------------------------------------------------------------
     # 出馬テーブルのスクレイピング(race_id_listを作成して出馬テーブルを取得する方法)
@@ -181,6 +186,7 @@ def main():
     la.pd_ped_datas.drop(["horse_id"], axis=1, inplace=True)
 
     # 血統データがデータベースに存在しない馬のhorse_idを取得
+    # https://db.netkeiba.com/horse/ped/2020104740/
     not_exist_pd_ped_datas_horse_id_list = sht.data_r[~sht.data_r["horse_id"].isin(la.pd_ped_datas.index)]["horse_id"]
 
     # 血統データがデータベースに存在しない馬のhorse_idがある場合の処理

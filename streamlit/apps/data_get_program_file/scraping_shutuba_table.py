@@ -51,18 +51,18 @@ sys.path.append('/'.join(os.path.abspath(__file__).split('/')[:-3])+'/')
 sys.path.append('/'.join(os.path.abspath(__file__).split('/')[:-2])+'/')
 
 # memo-------------------------------------------------------------------------
-# hydrogen実行用
-# streamlitリポジトリ用
-FILE_PATH = "/Users/kawaharaatsushi/work_streamlit/streamlit/streamlit"
-# dailydevリポジトリ用
-FILE_PATH = "/Users/kawaharaatsushi/work2/daily-dev/atsushi/競馬予測/streamlit"
-sys.path.append(FILE_PATH)
-# path: ~/streamlit/base_data
-FILE_PATH_BASE_DATA = FILE_PATH+'/data/base_data'
-sys.path.append(FILE_PATH_BASE_DATA)
-# path: ~/streamlit/fit_data
-FILE_PATH_FIT_DATA = FILE_PATH+'/data/fit_data'
-sys.path.append(FILE_PATH_BASE_DATA)
+# # hydrogen実行用
+# # streamlitリポジトリ用
+# FILE_PATH = "/Users/kawaharaatsushi/work_streamlit/streamlit/streamlit"
+# # dailydevリポジトリ用
+# FILE_PATH = "/Users/kawaharaatsushi/work2/daily-dev/atsushi/競馬予測/streamlit"
+# sys.path.append(FILE_PATH)
+# # path: ~/streamlit/base_data
+# FILE_PATH_BASE_DATA = FILE_PATH+'/data/base_data'
+# sys.path.append(FILE_PATH_BASE_DATA)
+# # path: ~/streamlit/fit_data
+# FILE_PATH_FIT_DATA = FILE_PATH+'/data/fit_data'
+# sys.path.append(FILE_PATH_BASE_DATA)
 # memo-------------------------------------------------------------------------
 
 # sys.path.append(FILE_PATH_TMP)

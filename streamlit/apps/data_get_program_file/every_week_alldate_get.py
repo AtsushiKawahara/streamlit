@@ -17,16 +17,16 @@ import os
 import datetime
 
 # memo-------------------------------------------------------------------------
-# hydrogen実行用
-# streamlitリポジトリ用
-FILE_PATH = "/Users/kawaharaatsushi/work_streamlit/streamlit/streamlit"
-# dailydevリポジトリ用
-# FILE_PATH = "/Users/kawaharaatsushi/work2/daily-dev/atsushi/競馬予測/streamlit"
-sys.path.append(FILE_PATH)
-FILE_PATH_BASE_DATA = FILE_PATH + '/data/base_data'
-sys.path.append(FILE_PATH_BASE_DATA)
-FILE_PATH_FIT_DATA = FILE_PATH + '/data/fit_data'
-sys.path.append(FILE_PATH_FIT_DATA)
+# # hydrogen実行用
+# # streamlitリポジトリ用
+# FILE_PATH = "/Users/kawaharaatsushi/work_streamlit/streamlit/streamlit"
+# # dailydevリポジトリ用
+# # FILE_PATH = "/Users/kawaharaatsushi/work2/daily-dev/atsushi/競馬予測/streamlit"
+# sys.path.append(FILE_PATH)
+# FILE_PATH_BASE_DATA = FILE_PATH + '/data/base_data'
+# sys.path.append(FILE_PATH_BASE_DATA)
+# FILE_PATH_FIT_DATA = FILE_PATH + '/data/fit_data'
+# sys.path.append(FILE_PATH_FIT_DATA)
 # memo-------------------------------------------------------------------------
 
 # このファイルの場所を取得してパスを通す(別階層のファイルから呼び出しても変化しない)
@@ -103,6 +103,7 @@ def main():
     # 直近の土曜日・日曜日に開催されたレースのIDを取得
     race_id_list_saturday = sht.scrape_specified_date_race_id(target_date_at_saturday)
     race_id_list_sunday = sht.scrape_specified_date_race_id(target_date_at_sunday)
+    sht.driver.close()
 
     # 土日のrace_id を結合
     race_id_list = race_id_list_saturday + race_id_list_sunday

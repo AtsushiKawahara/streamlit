@@ -32,13 +32,13 @@ sys.path.append(FILE_PATH_FIT_DATA)
 # このファイルの場所を取得してパスを通す(別階層のファイルから呼び出しても変化しない)
 # 参考)__file__: ~/streamlit/app.py
 # path: ~/streamlit/
-FILE_PATH = '/'.join(os.path.abspath(__file__).split('/')[:-2])+'/'
+FILE_PATH = '/'.join(os.path.abspath(__file__).split('/')[:-3])+'/'
 sys.path.append(FILE_PATH)
 # path: ~/streamlit/data/base_data
-FILE_PATH_BASE_DATA = '/'.join(os.path.abspath(__file__).split('/')[:-2])+'/data/base_data'
+FILE_PATH_BASE_DATA = '/'.join(os.path.abspath(__file__).split('/')[:-3])+'/data/base_data'
 sys.path.append(FILE_PATH_BASE_DATA)
 # path: ~/streamlit/data/fit_data
-FILE_PATH_FIT_DATA = '/'.join(os.path.abspath(__file__).split('/')[:-2])+'/data/fit_data'
+FILE_PATH_FIT_DATA = '/'.join(os.path.abspath(__file__).split('/')[:-3])+'/data/fit_data'
 sys.path.append(FILE_PATH_FIT_DATA)
 
 # 学習データとして使用する年を設定

@@ -228,7 +228,7 @@ def main():
     X.drop(["単勝", "人気"], axis=1, inplace=True)
 
     # 学習済みのモデルを読み込み
-    model = load_pickle(FILE_PATH_FIT_DATA, "lgb_clf_X.pickle")
+    model = load_pickle(FILE_PATH_FIT_DATA, "model.pickle")
 
     # 三連単・三連複の予測テーブルの作成
     cr_sann = Calucurate_Return(model, GET_DATA_YEAR_LIST, X_add_tansho_ninnki, X, "sannrenntann_and_sannrennpuku", is_standard_scarer=False, is_use_pycaret=False)

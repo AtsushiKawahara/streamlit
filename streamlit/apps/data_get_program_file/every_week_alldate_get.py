@@ -21,7 +21,7 @@ import datetime
 # streamlitリポジトリ用
 FILE_PATH = "/Users/kawaharaatsushi/work_streamlit/streamlit/streamlit"
 # dailydevリポジトリ用
-FILE_PATH = "/Users/kawaharaatsushi/work2/daily-dev/atsushi/競馬予測/streamlit"
+# FILE_PATH = "/Users/kawaharaatsushi/work2/daily-dev/atsushi/競馬予測/streamlit"
 sys.path.append(FILE_PATH)
 FILE_PATH_BASE_DATA = FILE_PATH + '/data/base_data'
 sys.path.append(FILE_PATH_BASE_DATA)
@@ -59,6 +59,7 @@ from apps.data_get_program_file.horse_result_get import scrape_horse_result
 from apps.data_get_program_file.scraping_shutuba_table import Start_Horse_Table
 from functions.date_split_plot_pickle_functions import load_pickle
 from functions.date_split_plot_pickle_functions import save_pickle
+from functions.date_split_plot_pickle_functions import drop_duplicates_for_id
 
 
 def main():
@@ -121,9 +122,14 @@ def main():
     # 新たに取得したレース結果を取得済みのbase_dataに追記する
     GET_DATA_YEAR = target_date_at_saturday[0:4]  # 指定した日の書式は ex)"20221010"のように年月日のため最初の4文字の年を取得
     pd_race_results_base = load_pickle(FILE_PATH_BASE_DATA, f"pd_race_results_{GET_DATA_YEAR}")  # base_data
+    pd_race_results_base
     pd_race_results = pd.concat([pd_race_results_base, pd_race_results_new], axis=0)  # 新しいデータをベースデータを結合
     pd_race_results_new.shape
     pd_race_results_base.shape
+    pd_race_results.shape
+
+    # 重複データの削除
+    pd_race_results = drop_duplicates_for_id(pd_race_results)
     pd_race_results.shape
 
     # race_resultsデータを保存
@@ -141,6 +147,10 @@ def main():
     pd_race_infos = pd.concat([pd_race_infos_base, pd_race_infos], axis=0)
     pd_race_infos.shape
 
+    # 重複データの削除
+    pd_race_infos = drop_duplicates_for_id(pd_race_infos)
+    pd_race_infos.shape
+
     save_pickle(FILE_PATH_BASE_DATA, f"pd_race_infos_{GET_DATA_YEAR}", pd_race_infos)
 
     # return_tablesの取得--------------------------------------------------------
@@ -153,13 +163,14 @@ def main():
     pd_return_tables_new
 
     pd_return_tables_base = load_pickle(FILE_PATH_BASE_DATA, f"pd_return_tables_{GET_DATA_YEAR}")  # 途中まで抽出しているファイルを読み込み
-    pd_return_tables_test = pd.concat([pd_return_tables_base, pd_return_tables_new], axis=0)
+    pd_return_tables = pd.concat([pd_return_tables_base, pd_return_tables_new], axis=0)
 
-    pd_return_tables_test["race_id"] = pd_return_tables_test.index  # columnにrace_idを一時的に追加(次の処理で重複行を削除するときに消したらいけない行を消さないため)
-    pd_return_tables_test = pd_return_tables_test.drop_duplicates().drop("race_id", axis=1).copy()  # 重複行の削除とhorse_idの列を削除
+    # 重複データの削除
+    pd_return_tables = drop_duplicates_for_id(pd_return_tables)
+    pd_return_tables.shape
 
     # return_tablesの保存
-    save_pickle(FILE_PATH_BASE_DATA, f"pd_return_tables_{GET_DATA_YEAR}", pd_return_tables_test)
+    save_pickle(FILE_PATH_BASE_DATA, f"pd_return_tables_{GET_DATA_YEAR}", pd_return_tables)
 
     # 馬の過去成績(horse_result)を取得---------------------------------------------
     # レースに出馬した馬のhorse_idを取得
@@ -182,9 +193,13 @@ def main():
     pd_horse_results_new.shape
     pd_horse_results.shape
 
+    # 重複データの削除
+    pd_horse_results = drop_duplicates_for_id(pd_horse_results)
+    pd_horse_results.shape
+
     # 馬の過去成績(horse_result)を保存
     # ベースデータと重複するデータがあれば削除して保存(drop_duplicates)
-    save_pickle(FILE_PATH_BASE_DATA, f"pd_horse_results_{GET_DATA_YEAR}", pd_horse_results.drop_duplicates().sort_index())  # レース結果を保存
+    save_pickle(FILE_PATH_BASE_DATA, f"pd_horse_results_{GET_DATA_YEAR}", pd_horse_results.sort_index())  # レース結果を保存
 
     # 血統データ(ped_datas)を取得--------------------------------------------------
     ped_datas_dict = scrape_horse_ped(horse_id_list)
@@ -194,10 +209,14 @@ def main():
     pd_ped_datas_new = pd_ped_datas.add_prefix("ped_")
 
     # 途中まで読み込みファイルがある場合は、新たに読み込んだデータと結合しておく
-    pd_ped_datas_base = load_pickle(FILE_PATH_BASE_DATA, f"pd_ped_datas_{GET_DATA_YEAR}")  # 途中まで抽出しているファイルを読み込み
-    pd_ped_datas = pd.concat([pd_ped_datas_base, pd_ped_datas_new], axis=1)
+    pd_ped_datas_base = load_pickle(FILE_PATH_BASE_DATA, f"pd_ped_datas_{GET_DATA_YEAR}0")  # 途中まで抽出しているファイルを読み込み
+    pd_ped_datas = pd.concat([pd_ped_datas_base, pd_ped_datas_new], axis=0)
     pd_ped_datas_base.shape
     pd_ped_datas_new.shape
+    pd_ped_datas.shape
+
+    # 重複データの削除
+    pd_ped_datas = drop_duplicates_for_id(pd_ped_datas)
     pd_ped_datas.shape
 
     # 馬ごとの成績データを保存

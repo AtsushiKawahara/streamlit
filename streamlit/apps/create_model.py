@@ -145,6 +145,7 @@ from functions.date_split_plot_pickle_functions import load_pickle
 from functions.date_split_plot_pickle_functions import save_pickle
 from functions.date_split_plot_pickle_functions import train_test_split
 from functions.date_split_plot_pickle_functions import roc_graph_plot
+from functions.date_split_plot_pickle_functions import drop_duplicates_for_id
 
 
 class Preprocessing_Horse_Result:
@@ -158,8 +159,15 @@ class Preprocessing_Horse_Result:
 
     @classmethod
     def load_pickle(cls, GET_DATA_YEAR_LIST):
-        print(FILE_PATH_BASE_DATA)
-        GET_DATA_YEAR_LIST
+        # memo------------------------------------------------------------------
+        # print(FILE_PATH_BASE_DATA)
+        # GET_DATA_YEAR_LIST
+        # GET_DATA_YEAR = 2017
+        # GET_DATA_YEAR = 2019
+        # GET_DATA_YEAR = 2021
+        # GET_DATA_YEAR = 2022
+        # df = load_pickle(FILE_PATH_BASE_DATA, f"pd_horse_results_{GET_DATA_YEAR}")
+        # memo------------------------------------------------------------------
         # あらかじめスクレイピングしてある馬の過去成績データを読み込む(pd_horse_results_〇〇〇〇: DataFrame型)
         df = pd.concat([load_pickle(FILE_PATH_BASE_DATA, f"pd_horse_results_{GET_DATA_YEAR}") for GET_DATA_YEAR in GET_DATA_YEAR_LIST])
         return cls(df)  # dfがclass内のpd_horse_resultsとして扱われる
@@ -1491,6 +1499,12 @@ class labelencoder_ped:
 
     @classmethod
     def load_pickle(cls, GET_DATA_YEAR_LIST):
+        # memo-----------------------------------------------------------------
+        # GET_DATA_YEAR = 2022
+        # for GET_DATA_YEAR in GET_DATA_YEAR_LIST:
+        #     df = load_pickle(FILE_PATH_BASE_DATA, f"pd_ped_datas_{GET_DATA_YEAR}")
+        #     print(df.shape)
+        # memo-----------------------------------------------------------------
         df = pd.concat([load_pickle(FILE_PATH_BASE_DATA, f"pd_ped_datas_{GET_DATA_YEAR}") for GET_DATA_YEAR in GET_DATA_YEAR_LIST])
         return cls(df)
 
@@ -1634,33 +1648,36 @@ def main():
 
     # 馬ごとの成績データの処理(過去データの着順・賞金の平均を説明変数にするために使用する)
     hr = Preprocessing_Horse_Result.load_pickle(GET_DATA_YEAR_LIST)
+    hr.pd_horse_results.shape
+    hr.pd_horse_results = drop_duplicates_for_id(hr.pd_horse_results)  # 重複行を削除
+    hr.pd_horse_results.shape
+    hr.pd_horse_results
 
     # pd_resultsを加工
     rt = Result_Table.load_pickle(GET_DATA_YEAR_LIST)
+    rt.data.shape
     rt.data
+    rt.data = drop_duplicates_for_id(rt.data)  # 重複行を削除
+    rt.data.shape
 
     # preprocessing
     rt.preprocessing()
-    rt.data_p
+    rt.data_p.shape
+    rt.data_p = drop_duplicates_for_id(rt.data_p)  # 重複行を削除
+    rt.data_p.shape
 
     # 過去データから賞金データを説明変数に追加
     rt.merge_n_samples(hr)
-    rt.data_r
+    rt.data_r.shape
+    rt.data_r = drop_duplicates_for_id(rt.data_r)  # 重複行を削除
+    rt.data_r.shape
 
     # 血統データをlabelencodeするためのclassをインスタンス化
     la = labelencoder_ped.load_pickle(GET_DATA_YEAR_LIST)
-    la.pd_ped_datas
+    la.pd_ped_datas.shape
+    la.pd_ped_datas = drop_duplicates_for_id(la.pd_ped_datas)  # 重複行を削除
+    la.pd_ped_datas.shape
 
-    # 重複して取得してしまっている血統データを削除する
-    la.pd_ped_datas["horse_id"] = la.pd_ped_datas.index  # horse_idが同一の行を削除するため一時的にcolumnにhorse_idを加える
-    # la.pd_ped_datas.shape
-
-    # horse_idが同一データの行を削除する(この処理をするためにhorse_idをcolumnに加える)
-    # subsetに指定したcolumnで重複行を探す
-    # keep:重複した場合にlastの行を削除する
-    la.pd_ped_datas = la.pd_ped_datas.drop_duplicates(subset=["horse_id"], keep="last")
-    la.pd_ped_datas.drop(["horse_id"], axis=1, inplace=True)
-    # la.pd_ped_datas.shape
     la.labelencode_ped()
 
     # 血統データを説明変数に追加
@@ -1691,10 +1708,9 @@ def main():
 
     # 一旦コピーしておく(result_3Rは下でまた使用するため)
     results_d = rt.data_id.copy()
-    results_d.columns
-    results_d.duplicated()
-    results_d.duplicated().sum()
-    results_d
+    results_d.shape
+    results_d = drop_duplicates_for_id(results_d)
+    results_d.shape
     # --------------------------------------------------------------------------
 
     # 2.学習
@@ -1734,17 +1750,7 @@ def main():
     lgb_clf_X_train = lgb.LGBMClassifier(**params)
     lgb_clf_X_train.fit(X_train.values, y_train.values)  # 学習
 
-    # memo---------------------------------------------------------------------
-    # 訓練データとテストデータに分割しないver.(実運用の際に使用する)
-    X = results_d_single.drop(["rank", "date"], axis=1)
-    y = results_d_single["rank"].copy()
-    X.drop(["単勝", "人気"], axis=1, inplace=True)
-    lgb_clf_X = lgb.LGBMClassifier(**params)
-    lgb_clf_X.fit(X.values, y.values)  # 学習
-    # memo---------------------------------------------------------------------
-
     # 学習モデルの保存
-    save_pickle(FILE_PATH_FIT_DATA, "lgb_clf_X.pickle", lgb_clf_X)
     # save_pickle(FILE_PATH_FIT_DATA, "lgb_clf_X_train.pickle", lgb_clf_X_train)
     # save_pickle(FILE_PATH_FIT_DATA, "X_train.pickle", X_train)
     # save_pickle(FILE_PATH_FIT_DATA, "X.pickle", X)
@@ -1793,8 +1799,8 @@ def main():
     gain_accuracy_model_sannrenntann_graph = {k: i for k, i in gain_accuracy_model_sannrenntann.items() if max_trade_count > k}
 
     # シミュレーション結果をグラフにする　x軸:取引回数(回), y軸:回収率(%)
-    graph_plot([gain_accuracy_diff_sannrenntann_graph, gain_accuracy_model_sannrenntann_graph], ["diff", "model"], "sannrenntann_accuracy", "trade_count", "accuracy(%)")
-    graph_plot([gain_return_diff_sannrenntann_graph, gain_return_model_sannrenntann_graph], ["diff", "model"], "sannrenntann_return", "trade_count", "return(%)")
+    # graph_plot([gain_accuracy_diff_sannrenntann_graph, gain_accuracy_model_sannrenntann_graph], ["diff", "model"], "sannrenntann_accuracy", "trade_count", "accuracy(%)")
+    # graph_plot([gain_return_diff_sannrenntann_graph, gain_return_model_sannrenntann_graph], ["diff", "model"], "sannrenntann_return", "trade_count", "return(%)")
 
     # 2.三連複ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
     # 2-1.オッズとモデル予測値の差から”うまい馬券”の購入をする買い方
@@ -1821,8 +1827,8 @@ def main():
     gain_accuracy_model_sannrennpuku_graph = {k: i for k, i in gain_accuracy_model_sannrennpuku.items() if max_trade_count > k}
 
     # シミュレーション結果をグラフにする　x軸:取引回数(回), y軸:回収率(%)
-    graph_plot([gain_accuracy_diff_sannrennpuku_graph, gain_accuracy_model_sannrennpuku_graph], ["diff", "model"], "sannrennpuku_accuracy", "trade_count", "accuracy(%)")
-    graph_plot([gain_return_diff_sannrennpuku_graph, gain_return_model_sannrennpuku_graph], ["diff", "model"], "sannrennpuku_return", "trade_count", "return(%)")
+    # graph_plot([gain_accuracy_diff_sannrennpuku_graph, gain_accuracy_model_sannrennpuku_graph], ["diff", "model"], "sannrennpuku_accuracy", "trade_count", "accuracy(%)")
+    # graph_plot([gain_return_diff_sannrennpuku_graph, gain_return_model_sannrennpuku_graph], ["diff", "model"], "sannrennpuku_return", "trade_count", "return(%)")
 
     # 3.単勝ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
     # 3-1.オッズとモデル予測値の差から”うまい馬券”の購入をする買い方
@@ -1851,8 +1857,8 @@ def main():
     gain_accuracy_model_single_graph = {k: i for k, i in gain_accuracy_model_single.items() if max_trade_count > k}
 
     # シミュレーション結果をグラフにする　x軸:取引回数(回), y軸:回収率(%)
-    graph_plot([gain_accuracy_diff_single_graph, gain_accuracy_model_single_graph], ["diff", "model"], "single_accuracy", "trade_count", "accuracy(%)")
-    graph_plot([gain_return_diff_single_graph, gain_return_model_single_graph], ["diff", "model"], "single_return", "trade_count", "return(%)")
+    # graph_plot([gain_accuracy_diff_single_graph, gain_accuracy_model_single_graph], ["diff", "model"], "single_accuracy", "trade_count", "accuracy(%)")
+    # graph_plot([gain_return_diff_single_graph, gain_return_model_single_graph], ["diff", "model"], "single_return", "trade_count", "return(%)")
 
     # 4.複勝ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
     # 4-1.オッズとモデル予測値の差から”うまい馬券”の購入をする買い方
@@ -1879,8 +1885,8 @@ def main():
     gain_accuracy_model_fukushou_graph = {k: i for k, i in gain_accuracy_model_fukushou.items() if max_trade_count > k}
 
     # シミュレーション結果をグラフにする　x軸:取引回数(回), y軸:回収率(%)
-    graph_plot([gain_accuracy_diff_fukushou_graph, gain_accuracy_model_fukushou_graph], ["diff", "model"], "fukushou_accuracy", "trade_count", "accuracy(%)")
-    graph_plot([gain_return_diff_fukushou_graph, gain_return_model_fukushou_graph], ["diff", "model"], "fukushou_return", "trade_count", "return(%)")
+    # graph_plot([gain_accuracy_diff_fukushou_graph, gain_accuracy_model_fukushou_graph], ["diff", "model"], "fukushou_accuracy", "trade_count", "accuracy(%)")
+    # graph_plot([gain_return_diff_fukushou_graph, gain_return_model_fukushou_graph], ["diff", "model"], "fukushou_return", "trade_count", "return(%)")
 
     # 5.馬連ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
     # 5-1.オッズとモデル予測値の差から”うまい馬券”の購入をする買い方
@@ -1909,8 +1915,8 @@ def main():
     gain_accuracy_model_umaren_graph = {k: i for k, i in gain_accuracy_model_umaren.items() if max_trade_count > k}
 
     # シミュレーション結果をグラフにする　x軸:取引回数(回), y軸:回収率(%)
-    graph_plot([gain_accuracy_diff_umaren_graph, gain_accuracy_model_umaren_graph], ["diff", "model"], "umaren_accuracy", "trade_count", "accuracy(%)")
-    graph_plot([gain_return_diff_umaren_graph, gain_return_model_umaren_graph], ["diff", "model"], "umaren_return", "trade_count", "return(%)")
+    # graph_plot([gain_accuracy_diff_umaren_graph, gain_accuracy_model_umaren_graph], ["diff", "model"], "umaren_accuracy", "trade_count", "accuracy(%)")
+    # graph_plot([gain_return_diff_umaren_graph, gain_return_model_umaren_graph], ["diff", "model"], "umaren_return", "trade_count", "return(%)")
 
     # 6.馬単ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
     # 6-1.オッズとモデル予測値の差から”うまい馬券”の購入をする買い方
@@ -1937,8 +1943,8 @@ def main():
     gain_accuracy_model_umatan_graph = {k: i for k, i in gain_accuracy_model_umatan.items() if max_trade_count > k}
 
     # シミュレーション結果をグラフにする　x軸:取引回数(回), y軸:回収率(%)
-    graph_plot([gain_accuracy_diff_umatan_graph, gain_accuracy_model_umatan_graph], ["diff", "model"], "umatan_accuracy", "trade_count", "accuracy(%)")
-    graph_plot([gain_return_diff_umatan_graph, gain_return_model_umatan_graph], ["diff", "model"], "umatan_return", "trade_count", "return(%)")
+    # graph_plot([gain_accuracy_diff_umatan_graph, gain_accuracy_model_umatan_graph], ["diff", "model"], "umatan_accuracy", "trade_count", "accuracy(%)")
+    # graph_plot([gain_return_diff_umatan_graph, gain_return_model_umatan_graph], ["diff", "model"], "umatan_return", "trade_count", "return(%)")
 
     # --------------------------------------------------------------------------
 
@@ -2013,17 +2019,17 @@ def main():
     del lgb_clf_X_train_o.params["num_iterations"], lgb_clf_X_train_o.params["early_stopping_round"]
 
     # ハイパラメータ調整後の値をここにメモしておく
-    params_o = {'objective': 'binary',
-                'random_state': 100,
-                'feature_pre_filter': False,
-                'lambda_l1': 0.11295238575624765,
-                'lambda_l2': 1.1831583771042914e-08,
-                'num_leaves': 103,
-                'feature_fraction': 0.6839999999999999,
-                'bagging_fraction': 0.4393321382892497,
-                'bagging_freq': 7,
-                'min_child_samples': 50
-                }
+    # params_o = {'objective': 'binary',
+    #             'random_state': 100,
+    #             'feature_pre_filter': False,
+    #             'lambda_l1': 0.11295238575624765,
+    #             'lambda_l2': 1.1831583771042914e-08,
+    #             'num_leaves': 103,
+    #             'feature_fraction': 0.6839999999999999,
+    #             'bagging_fraction': 0.4393321382892497,
+    #             'bagging_freq': 7,
+    #             'min_child_samples': 50
+    #             }
     params_o = lgb_clf_X_train_o.params
 
     # チューニング後のパラメータで学習してみる
@@ -2043,7 +2049,7 @@ def main():
     lgb_clf_X_train_o.fit(X_train.values, y_train.values)
 
     # 訓練データのroc
-    roc_graph_plot(y_train, lgb_clf_X_train_o.predict_proba(X_train)[:, 1])  # roc_graphをplot
+    # roc_graph_plot(y_train, lgb_clf_X_train_o.predict_proba(X_train)[:, 1])  # roc_graphをplot
     # print(f"roc_score:{roc_auc_score(y_train, lgb_clf_X_train_o.predict_proba(X_train)[:, 1])}")  # この値が大きいと過学習している(テストデータのrocと比較して判断する)
 
     # テストデータのroc
@@ -2083,8 +2089,8 @@ def main():
     gain_accuracy_model_sannrenntann_o_graph = {k: i for k, i in gain_accuracy_model_sannrenntann_o.items() if max_trade_count > k}
 
     # シミュレーション結果をグラフにする　x軸:取引回数(回), y軸:回収率(%)
-    graph_plot([gain_accuracy_diff_sannrenntann_o_graph, gain_accuracy_model_sannrenntann_o_graph], ["diff", "model"], "sannrenntann_o_accuracy", "trade_count", "accuracy(%)")
-    graph_plot([gain_return_diff_sannrenntann_o_graph, gain_return_model_sannrenntann_o_graph], ["diff", "model"], "sannrenntann_o_return", "trade_count", "return(%)")
+    # graph_plot([gain_accuracy_diff_sannrenntann_o_graph, gain_accuracy_model_sannrenntann_o_graph], ["diff", "model"], "sannrenntann_o_accuracy", "trade_count", "accuracy(%)")
+    # graph_plot([gain_return_diff_sannrenntann_o_graph, gain_return_model_sannrenntann_o_graph], ["diff", "model"], "sannrenntann_o_return", "trade_count", "return(%)")
 
     # 2.三連複ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
     # 2-1.オッズとモデル予測値の差から”うまい馬券”の購入をする買い方
@@ -2111,8 +2117,8 @@ def main():
     gain_accuracy_model_sannrennpuku_o_graph = {k: i for k, i in gain_accuracy_model_sannrennpuku_o.items() if max_trade_count > k}
 
     # シミュレーション結果をグラフにする　x軸:取引回数(回), y軸:回収率(%)
-    graph_plot([gain_accuracy_diff_sannrennpuku_o_graph, gain_accuracy_model_sannrennpuku_o_graph], ["diff", "model"], "sannrennpuku_o_accuracy", "trade_count", "accuracy(%)")
-    graph_plot([gain_return_diff_sannrennpuku_o_graph, gain_return_model_sannrennpuku_o_graph], ["diff", "model"], "sannrennpuku_o_return", "trade_count", "return(%)")
+    # graph_plot([gain_accuracy_diff_sannrennpuku_o_graph, gain_accuracy_model_sannrennpuku_o_graph], ["diff", "model"], "sannrennpuku_o_accuracy", "trade_count", "accuracy(%)")
+    # graph_plot([gain_return_diff_sannrennpuku_o_graph, gain_return_model_sannrennpuku_o_graph], ["diff", "model"], "sannrennpuku_o_return", "trade_count", "return(%)")
 
     # 3.単勝ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
     # 3-1.オッズとモデル予測値の差から”うまい馬券”の購入をする買い方
@@ -2141,8 +2147,8 @@ def main():
     gain_accuracy_model_single_o_graph = {k: i for k, i in gain_accuracy_model_single_o.items() if max_trade_count > k}
 
     # シミュレーション結果をグラフにする　x軸:取引回数(回), y軸:回収率(%)
-    graph_plot([gain_accuracy_diff_single_o_graph, gain_accuracy_model_single_o_graph], ["diff", "model"], "single_o_accuracy", "trade_count", "accuracy(%)")
-    graph_plot([gain_return_diff_single_o_graph, gain_return_model_single_o_graph], ["diff", "model"], "single_o_return", "trade_count", "return(%)")
+    # graph_plot([gain_accuracy_diff_single_o_graph, gain_accuracy_model_single_o_graph], ["diff", "model"], "single_o_accuracy", "trade_count", "accuracy(%)")
+    # graph_plot([gain_return_diff_single_o_graph, gain_return_model_single_o_graph], ["diff", "model"], "single_o_return", "trade_count", "return(%)")
 
     # 4.複勝ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
     # 4-1.オッズとモデル予測値の差から”うまい馬券”の購入をする買い方
@@ -2169,8 +2175,8 @@ def main():
     gain_accuracy_model_fukushou_o_graph = {k: i for k, i in gain_accuracy_model_fukushou_o.items() if max_trade_count > k}
 
     # シミュレーション結果をグラフにする　x軸:取引回数(回), y軸:回収率(%)
-    graph_plot([gain_accuracy_diff_fukushou_o_graph, gain_accuracy_model_fukushou_o_graph], ["diff", "model"], "fukushou_o_accuracy", "trade_count", "accuracy(%)")
-    graph_plot([gain_return_diff_fukushou_o_graph, gain_return_model_fukushou_o_graph], ["diff", "model"], "fukushou_o_return", "trade_count", "return(%)")
+    # graph_plot([gain_accuracy_diff_fukushou_o_graph, gain_accuracy_model_fukushou_o_graph], ["diff", "model"], "fukushou_o_accuracy", "trade_count", "accuracy(%)")
+    # graph_plot([gain_return_diff_fukushou_o_graph, gain_return_model_fukushou_o_graph], ["diff", "model"], "fukushou_o_return", "trade_count", "return(%)")
 
     # 5.馬連ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
     # 5-1.オッズとモデル予測値の差から”うまい馬券”の購入をする買い方
@@ -2199,8 +2205,8 @@ def main():
     gain_accuracy_model_umaren_o_graph = {k: i for k, i in gain_accuracy_model_umaren_o.items() if max_trade_count > k}
 
     # シミュレーション結果をグラフにする　x軸:取引回数(回), y軸:回収率(%)
-    graph_plot([gain_accuracy_diff_umaren_o_graph, gain_accuracy_model_umaren_o_graph], ["diff", "model"], "umaren_o_accuracy", "trade_count", "accuracy(%)")
-    graph_plot([gain_return_diff_umaren_o_graph, gain_return_model_umaren_o_graph], ["diff", "model"], "umaren_o_return", "trade_count", "return(%)")
+    # graph_plot([gain_accuracy_diff_umaren_o_graph, gain_accuracy_model_umaren_o_graph], ["diff", "model"], "umaren_o_accuracy", "trade_count", "accuracy(%)")
+    # graph_plot([gain_return_diff_umaren_o_graph, gain_return_model_umaren_o_graph], ["diff", "model"], "umaren_o_return", "trade_count", "return(%)")
 
     # 6.馬単ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
     # 6-1.オッズとモデル予測値の差から”うまい馬券”の購入をする買い方
@@ -2227,8 +2233,8 @@ def main():
     gain_accuracy_model_umatan_o_graph = {k: i for k, i in gain_accuracy_model_umatan_o.items() if max_trade_count > k}
 
     # シミュレーション結果をグラフにする　x軸:取引回数(回), y軸:回収率(%)
-    graph_plot([gain_accuracy_diff_umatan_o_graph, gain_accuracy_model_umatan_o_graph], ["diff", "model"], "umatan_o_accuracy", "trade_count", "accuracy(%)")
-    graph_plot([gain_return_diff_umatan_o_graph, gain_return_model_umatan_o_graph], ["diff", "model"], "umatan_o_return", "trade_count", "return(%)")
+    # graph_plot([gain_accuracy_diff_umatan_o_graph, gain_accuracy_model_umatan_o_graph], ["diff", "model"], "umatan_o_accuracy", "trade_count", "accuracy(%)")
+    # graph_plot([gain_return_diff_umatan_o_graph, gain_return_model_umatan_o_graph], ["diff", "model"], "umatan_o_return", "trade_count", "return(%)")
 
     # グラフにする---------------------------------------------------------------------------------------------
     graph_title_single_list = ["single", "single_o"]
@@ -2245,6 +2251,8 @@ def main():
     accuracy_diff_sannrennpuku_list = [gain_accuracy_diff_sannrennpuku_graph, gain_accuracy_diff_sannrennpuku_o_graph]
     accuracy_diff_umatan_list = [gain_accuracy_diff_umatan_graph, gain_accuracy_diff_umatan_o_graph]
     accuracy_diff_umaren_list = [gain_accuracy_diff_umaren_graph, gain_accuracy_diff_umaren_o_graph]
+    gain_accuracy_diff_sannrenntann_graph
+    gain_accuracy_diff_sannrenntann_o_graph
 
     # accuracy(model)のデータプロットのためのデータをリストにまとめる
     accuracy_model_single_list = [gain_accuracy_model_single_graph, gain_accuracy_model_single_o_graph]
@@ -2285,3 +2293,28 @@ def main():
     multi_graph_plot(return_diff_sannrennpuku_list, return_model_sannrennpuku_list, graph_title_sannrennpuku_list, graph_main_title=f"return_sannrennpuku_{GET_DATA_YEAR}", x_label="trade_count", y_label="return(%)", rows=1, columns=2, figsize_width=20, figsize_height=5)
     multi_graph_plot(return_diff_umatan_list, return_model_umatan_list, graph_title_umatan_list, graph_main_title=f"return_umatan_{GET_DATA_YEAR}", x_label="trade_count", y_label="return(%)", rows=1, columns=2, figsize_width=20, figsize_height=5)
     multi_graph_plot(return_diff_umaren_list, return_model_umaren_list, graph_title_umaren_list, graph_main_title=f"return_umaren_{GET_DATA_YEAR}", x_label="trade_count", y_label="return(%)", rows=1, columns=2, figsize_width=20, figsize_height=5)
+
+    # パラメータチューニング前後で成績の良い方のパラメータで学習させたモデルを実際の予測に使用する
+    # とりあえずは、一番回収率の高い三連単での馬券の成績が良い方を採用するプログラムにしている(今後の採用については要検討)
+    # 回収率の比較
+    return_max_tuning_before = max(gain_return_diff_sannrenntann_graph.values())  # チューニング前のモデルの三連単回収率の最大値
+    return_max_tuning_after = max(gain_return_diff_sannrenntann_o_graph.values())  # チューニング後のモデルの三連単回収率の最大値
+    print(f"チューニング前の三連単最大回収率:{return_max_tuning_before}")
+    print(f"チューニング後の三連単最大回収率:{return_max_tuning_after}")
+    if return_max_tuning_before > return_max_tuning_before:
+        print("チューニング前のモデルを採用")
+        use_params = params  # チューニング前のパラメータを使用
+    else:
+        print("チューニング後のモデルを採用")
+        use_params = params_o  # チューニング前のパラメータを使用
+    # 訓練データとテストデータに分割しないデータで学習をさせる(実運用用)
+    X = results_d_single.drop(["rank", "date"], axis=1)
+    y = results_d_single["rank"].copy()
+    X.drop(["単勝", "人気"], axis=1, inplace=True)
+    model = lgb.LGBMClassifier(**use_params)
+    model.fit(X.values, y.values)  # 学習
+    save_pickle(FILE_PATH_FIT_DATA, "model.pickle", model)
+
+
+if __name__ == '__main__':
+    main()

@@ -43,8 +43,8 @@ def scrape_horse_ped(horse_id_list):
     race_id_listから馬ごとのレース結果を取得する関数
     """
     # memo--------------------------------------------------------------------
-    horse_id = 2020102381
-    # memo--------------------------------------------------------------------
+    # horse_id = 2020102381
+
     ped_data = {}
     for horse_id in tqdm(horse_id_list):
 
@@ -80,6 +80,7 @@ def main():
     # url = "https://db.netkeiba.com/horse/ped/2008102636/"
 
     GET_DATA_YEAR_LIST = ["2017", "2018", "2019", "2020", "2021", "2022"]
+    GET_DATA_YEAR = "2017"
 
     for GET_DATA_YEAR in GET_DATA_YEAR_LIST:
         print(f"--------------------------------{GET_DATA_YEAR}--------------------------------------------")
@@ -97,10 +98,10 @@ def main():
             pd_ped_datas_load = load_pickle(FILE_PATH_BASE_DATA, f"pd_ped_datas_{GET_DATA_YEAR}")  # 途中まで抽出しているファイルを読み込み
             drop_lists = pd_ped_datas_load.index.unique()  # 読み込み完了しているhorse_idを取得
             horse_id_list = np.array([horse_id for horse_id in horse_id_list if not horse_id in drop_lists])  # まだ読み込みが完了していないhorse_idを取得
-            print(f"horse_id: {horse_id_list[0]} から取得開始")
             print(f"残:{len(horse_id_list)}")
             if len(horse_id_list) == 0:  # 読み込みが完了している年はスキップする
                 continue
+            print(f"horse_id: {horse_id_list[0]} から取得開始")
         else:
             pass
 
@@ -118,7 +119,7 @@ def main():
 
             # 途中まで読み込みファイルがある場合は、新たに読み込んだデータと結合しておく
             if os.path.isfile(f"{FILE_PATH_BASE_DATA}/pd_ped_datas_{GET_DATA_YEAR}"):
-                pd_ped_datas = pd.concat([pd_ped_datas_load, pd_ped_datas], axis=1)
+                pd_ped_datas = pd.concat([pd_ped_datas_load, pd_ped_datas], axis=0)
 
             # 馬ごとの成績データを保存
             save_pickle(FILE_PATH_BASE_DATA, f"pd_ped_datas_{GET_DATA_YEAR}", pd_ped_datas.sort_index())  # レース結果を保存

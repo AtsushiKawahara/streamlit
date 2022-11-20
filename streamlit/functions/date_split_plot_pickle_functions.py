@@ -68,3 +68,22 @@ def roc_graph_plot(y_label, y_pred):
     plt.grid
     plt.show()
     plt.close()
+
+
+def drop_duplicates_for_id(df):
+    """
+    重複列を削除する関数
+    ただrace_id・horse_idが異なるデータの重複データは消さないようにするために・・・
+    1.一度idをcolumnに加えてdrop_duplicates()を実行する
+    2. 重複データ削除後にidをcolumnから削除する
+    この処理によりidが一致していて重複しているデータ(本当に二重で格納しているデータ)のみを削除できる
+
+    params:
+    df(dataframe):重複データを削除したいデータフレーム
+
+    return:
+    df(dataframe):重複行削除後のデータフレーム
+    """
+    df["id"] = df.index
+    df = df.drop_duplicates().drop("id", axis=1).copy()  # 重複行の削除とidの列を削除
+    return df

@@ -18,6 +18,6 @@ cd /Users/kawaharaatsushi/work_streamlit/streamlit/streamlit/
 ct="$(date +%Y:%m:%d-%H:%M:%S)"
 
 # gitへ更新したデータupする(add, commit, push)
-git add .
-git commit -m $ct
-git push
+# git add .
+# git commit -m $ct
+# git push

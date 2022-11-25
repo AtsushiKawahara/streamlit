@@ -1,4 +1,5 @@
 # coding:utf-8
+print("create_model.py開始--------------------------------------------")
 """
 検証用データの取得プログラム
 
@@ -110,19 +111,19 @@ GET_DATA_YEAR = "2017-2022"  # ここで指定した文字列のディレクト�
 # PATHの設定(相対パス)
 
 # streamlitリポジトリ用
-FILE_PATH = "/Users/kawaharaatsushi/work_streamlit/streamlit/streamlit"
-# dailydevリポジトリ用
-FILE_PATH = "/Users/kawaharaatsushi/work2/daily-dev/atsushi/競馬予測/streamlit"
-sys.path.append(FILE_PATH)
-# path: ~/streamlit/base_data
-FILE_PATH_BASE_DATA = FILE_PATH+'/data/base_data'
-sys.path.append(FILE_PATH_BASE_DATA)
-# path: ~/streamlit/fit_data
-FILE_PATH_FIT_DATA = FILE_PATH+'/data/fit_data'
-sys.path.append(FILE_PATH_BASE_DATA)
-# path: ~/streamlit/result_data
-FILE_PATH_RESULT_DATA = f'{FILE_PATH}/data/result_data/{GET_DATA_YEAR}'
-sys.path.append(FILE_PATH_RESULT_DATA)
+# FILE_PATH = "/Users/kawaharaatsushi/work_streamlit/streamlit/streamlit"
+# # dailydevリポジトリ用
+# # FILE_PATH = "/Users/kawaharaatsushi/work2/daily-dev/atsushi/競馬予測/streamlit"
+# sys.path.append(FILE_PATH)
+# # path: ~/streamlit/base_data
+# FILE_PATH_BASE_DATA = FILE_PATH+'/data/base_data'
+# sys.path.append(FILE_PATH_BASE_DATA)
+# # path: ~/streamlit/fit_data
+# FILE_PATH_FIT_DATA = FILE_PATH+'/data/fit_data'
+# sys.path.append(FILE_PATH_BASE_DATA)
+# # path: ~/streamlit/result_data
+# FILE_PATH_RESULT_DATA = f'{FILE_PATH}/data/result_data/{GET_DATA_YEAR}'
+# sys.path.append(FILE_PATH_RESULT_DATA)
 
 # このファイルの場所を取得してパスを通す(別階層のファイルから呼び出しても変化しない)
 # 参考)__file__: ~/streamlit/apps/predict.py
@@ -2301,7 +2302,7 @@ def main():
     return_max_tuning_after = max(gain_return_diff_sannrenntann_o_graph.values())  # チューニング後のモデルの三連単回収率の最大値
     print(f"チューニング前の三連単最大回収率:{return_max_tuning_before}")
     print(f"チューニング後の三連単最大回収率:{return_max_tuning_after}")
-    if return_max_tuning_before > return_max_tuning_before:
+    if return_max_tuning_before > return_max_tuning_after:
         print("チューニング前のモデルを採用")
         use_params = params  # チューニング前のパラメータを使用
     else:

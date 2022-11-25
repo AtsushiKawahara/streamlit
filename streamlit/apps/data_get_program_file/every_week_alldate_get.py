@@ -1,4 +1,5 @@
 # coding: UTF-8
+print("every_week_alldate_get.py開始--------------------------------------------")
 
 """
 出馬テーブルをネット(https://race.netkeiba.com/top/)からスクレイピングしてAIが扱えるデータに加工するプログラム
@@ -94,7 +95,7 @@ def main():
 
     print(f"target_date{target_date_at_saturday}")
     # 機能確認ようにとりあえず上の部分はとりまコメントアウト
-    # target_date = "20221105"  # とりまの値
+    # target_date = "20221112"  # とりまの値
 
     # 取得したいレース日を取得(直近の土日のレース日を取得)
     sht = Start_Horse_Table()
@@ -107,8 +108,13 @@ def main():
 
     # 土日のrace_id を結合
     race_id_list = race_id_list_saturday + race_id_list_sunday
+    race_id_list
 
     # レース結果(race_result)の取得------------------------------------------------
+
+    # memo----------------------------------------------------------------------
+    # memo----------------------------------------------------------------------
+
     race_results_dict = scrape_race_result(race_id_list)
 
     # レースデータのインデックスをレースIDに変更
@@ -210,7 +216,8 @@ def main():
     pd_ped_datas_new = pd_ped_datas.add_prefix("ped_")
 
     # 途中まで読み込みファイルがある場合は、新たに読み込んだデータと結合しておく
-    pd_ped_datas_base = load_pickle(FILE_PATH_BASE_DATA, f"pd_ped_datas_{GET_DATA_YEAR}0")  # 途中まで抽出しているファイルを読み込み
+    FILE_PATH_BASE_DATA
+    pd_ped_datas_base = load_pickle(FILE_PATH_BASE_DATA, f"pd_ped_datas_{GET_DATA_YEAR}")  # 途中まで抽出しているファイルを読み込み
     pd_ped_datas = pd.concat([pd_ped_datas_base, pd_ped_datas_new], axis=0)
     pd_ped_datas_base.shape
     pd_ped_datas_new.shape

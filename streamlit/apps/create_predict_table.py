@@ -1,4 +1,5 @@
 # coding: UTF-8
+print("create_predict_table.py開始--------------------------------------------")
 
 """
 出馬テーブルをネット(https://race.netkeiba.com/top/)からスクレイピングしてAIが扱えるデータに加工するプログラム
@@ -79,6 +80,7 @@ def main():
     now_date = datetime.datetime.now().date()  # 現在日付 ex)datetime.date(2022, 11, 3)
     now_time = datetime.datetime.now().time()  # 現在時刻 ex)datetime.time(23, 37, 22, 964472)
     current_weekday = now_date.weekday()  # 曜日を取得(0:月曜日 1:火曜日 ... 6:日曜日)
+    current_weekday
     # 取得する曜日を土・日のどちらかを現在日時により決定する（指定条件は上記のとおり）
 
     if current_weekday == 5:  # 現在が土曜日のとき
@@ -103,7 +105,8 @@ def main():
     target_date = (now_date + diff_days).strftime('%Y%m%d')
 
     # memo----------------------------------------------------------------------
-    target_date = 20221120
+    # target_date
+    # target_date = 20221120
     # memo----------------------------------------------------------------------
 
     print(f"target_date{target_date}")

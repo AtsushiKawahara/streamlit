@@ -47,6 +47,7 @@ def scrape_horse_result(horse_id_list):
         try:
             url = f"https://db.netkeiba.com/horse/{horse_id}/"
             # memo-------------------------------------------------------------
+            # url
             # url = "https://db.netkeiba.com/horse/2008104268/"  # 受賞歴あり
             # horse_id = "2008104268"
             # url = "https://db.netkeiba.com/horse/2017103442/"  # 受賞歴なし
@@ -71,12 +72,11 @@ def scrape_horse_result(horse_id_list):
 def main():
     # horse_results(過去成績データ)の取得
 
-    GET_DATA_YEAR_LIST = ["2018", "2019", "2020", "2021", "2022"]
-    GET_DATA_YEAR_LIST = ["2017"]
+    GET_DATA_YEAR_LIST = ["2017", "2018", "2019", "2020", "2021", "2022"]
+    # GET_DATA_YEAR_LIST = ["2017"]
 
     for GET_DATA_YEAR in GET_DATA_YEAR_LIST:
         # memo----------------------------------------------------------------
-        GET_DATA_YEAR = "2017"
         # memo----------------------------------------------------------------
         print(f"--------------------------------{GET_DATA_YEAR}--------------------------------------------")
 

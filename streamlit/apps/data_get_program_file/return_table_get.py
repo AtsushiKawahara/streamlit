@@ -11,15 +11,15 @@ import numpy as np
 # pathの設定
 
 # memo-------------------------------------------------------------------------
-# hydrogen実行用
-# streamlitリポジトリ用
-FILE_PATH = "/Users/kawaharaatsushi/work_streamlit/streamlit/streamlit"
-# dailydevリポジトリ用
-FILE_PATH = "/Users/kawaharaatsushi/work2/daily-dev/atsushi/競馬予測/streamlit"
-sys.path.append(FILE_PATH)
-# path: ~/streamlit/data/base_data
-FILE_PATH_BASE_DATA = FILE_PATH+'/data/base_data'
-sys.path.append(FILE_PATH_BASE_DATA)
+# # hydrogen実行用
+# # streamlitリポジトリ用
+# FILE_PATH = "/Users/kawaharaatsushi/work_streamlit/streamlit/streamlit"
+# # dailydevリポジトリ用
+# FILE_PATH = "/Users/kawaharaatsushi/work2/daily-dev/atsushi/競馬予測/streamlit"
+# sys.path.append(FILE_PATH)
+# # path: ~/streamlit/data/base_data
+# FILE_PATH_BASE_DATA = FILE_PATH+'/data/base_data'
+# sys.path.append(FILE_PATH_BASE_DATA)
 # memo-------------------------------------------------------------------------
 
 # このファイルの場所を取得してパスを通す(別階層のファイルから呼び出しても変化しない)

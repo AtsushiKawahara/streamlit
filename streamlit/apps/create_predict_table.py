@@ -18,16 +18,16 @@ import os
 import datetime
 
 # memo-------------------------------------------------------------------------
-# # pathの設定(hydrogen用)
-# streamlitリポジトリ用
-FILE_PATH = "/Users/kawaharaatsushi/work_streamlit/streamlit/streamlit"
-# dailydevリポジトリ用
-FILE_PATH = "/Users/kawaharaatsushi/work2/daily-dev/atsushi/競馬予測/streamlit"
-sys.path.append(FILE_PATH)
-FILE_PATH_BASE_DATA = FILE_PATH + '/data/base_data'
-sys.path.append(FILE_PATH_BASE_DATA)
-FILE_PATH_FIT_DATA = FILE_PATH + '/data/fit_data'
-sys.path.append(FILE_PATH_FIT_DATA)
+# # # pathの設定(hydrogen用)
+# # streamlitリポジトリ用
+# FILE_PATH = "/Users/kawaharaatsushi/work_streamlit/streamlit/streamlit"
+# # dailydevリポジトリ用
+# # FILE_PATH = "/Users/kawaharaatsushi/work2/daily-dev/atsushi/競馬予測/streamlit"
+# sys.path.append(FILE_PATH)
+# FILE_PATH_BASE_DATA = FILE_PATH + '/data/base_data'
+# sys.path.append(FILE_PATH_BASE_DATA)
+# FILE_PATH_FIT_DATA = FILE_PATH + '/data/fit_data'
+# sys.path.append(FILE_PATH_FIT_DATA)
 # memo-------------------------------------------------------------------------
 
 # このファイルの場所を取得してパスを通す(別階層のファイルから呼び出しても変化しない)
@@ -88,7 +88,7 @@ def main():
             target_weekday = 6  # 日曜日
         else:
             target_weekday = 5  # 土曜日
-    if current_weekday == 6:  # 現在が日曜日のとき
+    elif current_weekday == 6:  # 現在が日曜日のとき
         if now_time > datetime.time(18, 00, 00):
             target_weekday = 5  # 土曜日
         else:
@@ -105,8 +105,9 @@ def main():
     target_date = (now_date + diff_days).strftime('%Y%m%d')
 
     # memo----------------------------------------------------------------------
+    # target_weekday
     # target_date
-    # target_date = 20221120
+    # target_date = 20221126
     # memo----------------------------------------------------------------------
 
     print(f"target_date{target_date}")
@@ -119,7 +120,7 @@ def main():
     # 学習時に使用したデータを用意(ラベルエンコーディング等をするときに必要なため)
     # 馬ごとの成績データの処理(過去データの着順・賞金の平均を説明変数にするために使用する)
     hr = Preprocessing_Horse_Result.load_pickle(GET_DATA_YEAR_LIST)
-
+    GET_DATA_YEAR_LIST
     # 2.出馬テーブルを取得---------------------------------------------------------
 
     # 取得したいレース日を指定してスクレイピングする
@@ -141,6 +142,15 @@ def main():
     # 3.出馬テーブルの加工(データ型の変更やデータの分割など)------------------------------
 
     sht.preprocessing_shutuba_table()
+
+    # memo---------------------------------------------------------------------
+    # save_pickle(FILE_PATH_FIT_DATA, "iiiiiiiiiiii.pickle", sht.data)
+    # FILE_PATH_FIT_DATA
+    # df = sht.data.copy()
+    # df["馬体重(増減)"].value_counts()
+    # df[df["馬体重(増減)"]]202205050702
+    # df[df.index == "202205050702"]
+    # memo---------------------------------------------------------------------
 
     # 3-1.過去成績データを追加------------------------------------------------------
 

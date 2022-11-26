@@ -55,7 +55,7 @@ sys.path.append('/'.join(os.path.abspath(__file__).split('/')[:-2])+'/')
 # # streamlitリポジトリ用
 # FILE_PATH = "/Users/kawaharaatsushi/work_streamlit/streamlit/streamlit"
 # # dailydevリポジトリ用
-# FILE_PATH = "/Users/kawaharaatsushi/work2/daily-dev/atsushi/競馬予測/streamlit"
+# # FILE_PATH = "/Users/kawaharaatsushi/work2/daily-dev/atsushi/競馬予測/streamlit"
 # sys.path.append(FILE_PATH)
 # # path: ~/streamlit/base_data
 # FILE_PATH_BASE_DATA = FILE_PATH+'/data/base_data'
@@ -69,6 +69,10 @@ sys.path.append('/'.join(os.path.abspath(__file__).split('/')[:-2])+'/')
 
 # 自作関数のインポート
 from apps.create_model import Data_Processer
+# memo-------------------------------------------------------------------------
+# from functions.date_split_plot_pickle_functions import load_pickle
+# from functions.date_split_plot_pickle_functions import save_pickle
+# memo-------------------------------------------------------------------------
 
 
 class Start_Horse_Table(Data_Processer):
@@ -322,6 +326,8 @@ class Start_Horse_Table(Data_Processer):
         スクレイピングした出馬テーブルの前処理
         """
         # memo-----------------------------------------------------------------
+        # save_pickle(FILE_PATH_FIT_DATA, "iiiiiiiiiiii.pickle", sht.data)
+        # df = load_pickle(FILE_PATH_FIT_DATA, "iiiiiiiiiiii.pickle")
         # df_shutuba_tables_X, df_shutuba_tables, race_info_dict = self.shutuba_tables_scrape(race_id_list, driver)
         # self.data = df_shutuba_tables_X  # 説明変数作成用
         # self.shutuba_tables = df_shutuba_tables  # streamlitで表示用の出馬テーブル

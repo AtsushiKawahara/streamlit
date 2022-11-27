@@ -30,10 +30,6 @@ from selenium.webdriver.common.keys import Keys
 import configparser
 # from webdriver_manager.core.utils import ChromeType
 
-# 自作関数のインポート
-from functions.date_split_plot_pickle_functions import load_pickle
-from functions.date_split_plot_pickle_functions import save_pickle
-
 # config.iniから変数を読み込んでおく
 config_ini = configparser.ConfigParser()
 config_ini.read("config.ini", encoding="utf-8")
@@ -45,22 +41,23 @@ PERSONAL_NUMBER = config_ini["oddspark.com/keiba/"]["personal_number"]
 BET_MONEY = 1  # この数値 * 100 の金額を１レースでbetする
 
 # memo-------------------------------------------------------------------------
-# pathの設定(hydrogen用)
-# streamlitリポジトリ用
-FILE_PATH = "/Users/kawaharaatsushi/work_streamlit/streamlit/streamlit"
-# dailydevリポジトリ用
-FILE_PATH = "/Users/kawaharaatsushi/work2/daily-dev/atsushi/競馬予測/streamlit"
-sys.path.append(FILE_PATH)
-FILE_PATH_BASE_DATA = FILE_PATH + '/data/base_data'
-sys.path.append(FILE_PATH_BASE_DATA)
-FILE_PATH_FIT_DATA = FILE_PATH + '/data/fit_data'
-sys.path.append(FILE_PATH_FIT_DATA)
+# # pathの設定(hydrogen用)
+# # streamlitリポジトリ用
+# FILE_PATH = "/Users/kawaharaatsushi/work_streamlit/streamlit/streamlit"
+# # dailydevリポジトリ用
+# FILE_PATH = "/Users/kawaharaatsushi/work2/daily-dev/atsushi/競馬予測/streamlit"
+# sys.path.append(FILE_PATH)
+# FILE_PATH_BASE_DATA = FILE_PATH + '/data/base_data'
+# sys.path.append(FILE_PATH_BASE_DATA)
+# FILE_PATH_FIT_DATA = FILE_PATH + '/data/fit_data'
+# sys.path.append(FILE_PATH_FIT_DATA)
 # memo-------------------------------------------------------------------------
 
 # このファイルの場所を取得してパスを通す(別階層のファイルから呼び出しても変化しない)
 # 参考)__file__: ~/streamlit/app.py
 # path: ~/streamlit/
-sys.path.append('/'.join(os.path.abspath(__file__).split('/')[:-1])+'/')
+FILE_PATH = '/'.join(os.path.abspath(__file__).split('/')[:-1])+'/'
+sys.path.append(FILE_PATH)
 # path: ~/streamlit/data/base_data
 FILE_PATH_BASE_DATA = '/'.join(os.path.abspath(__file__).split('/')[:-1])+'/data/base_data'
 sys.path.append(FILE_PATH_BASE_DATA)
@@ -69,8 +66,9 @@ FILE_PATH_FIT_DATA = '/'.join(os.path.abspath(__file__).split('/')[:-1])+'/data/
 sys.path.append(FILE_PATH_FIT_DATA)
 
 # 自作関数のimport
-from apps import create_predict_table
 from functions.date_split_plot_pickle_functions import load_pickle
+from functions.date_split_plot_pickle_functions import save_pickle
+from apps import create_predict_table
 
 
 def main():

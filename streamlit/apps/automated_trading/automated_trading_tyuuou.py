@@ -30,27 +30,28 @@ import configparser
 # from webdriver_manager.core.utils import ChromeType
 
 # memo-------------------------------------------------------------------------
-# pathの設定(hydrogen用)
-# streamlitリポジトリ用
-FILE_PATH = "/Users/kawaharaatsushi/work_streamlit/streamlit/streamlit"
-# dailydevリポジトリ用
-# FILE_PATH = "/Users/kawaharaatsushi/work2/daily-dev/atsushi/競馬予測/streamlit"
-sys.path.append(FILE_PATH)
-FILE_PATH_BASE_DATA = FILE_PATH + '/data/base_data'
-sys.path.append(FILE_PATH_BASE_DATA)
-FILE_PATH_FIT_DATA = FILE_PATH + '/data/fit_data'
-sys.path.append(FILE_PATH_FIT_DATA)
+# # pathの設定(hydrogen用)
+# # streamlitリポジトリ用
+# FILE_PATH = "/Users/kawaharaatsushi/work_streamlit/streamlit/streamlit"
+# # dailydevリポジトリ用
+# # FILE_PATH = "/Users/kawaharaatsushi/work2/daily-dev/atsushi/競馬予測/streamlit"
+# sys.path.append(FILE_PATH)
+# FILE_PATH_BASE_DATA = FILE_PATH + '/data/base_data'
+# sys.path.append(FILE_PATH_BASE_DATA)
+# FILE_PATH_FIT_DATA = FILE_PATH + '/data/fit_data'
+# sys.path.append(FILE_PATH_FIT_DATA)
 # memo-------------------------------------------------------------------------
 
 # このファイルの場所を取得してパスを通す(別階層のファイルから呼び出しても変化しない)
-# 参考)__file__: ~/streamlit/app.py
+# 参考)__file__: ~/streamlit/apps/predict.py
 # path: ~/streamlit/
-sys.path.append('/'.join(os.path.abspath(__file__).split('/')[:-1])+'/')
-# path: ~/streamlit/data/base_data
-FILE_PATH_BASE_DATA = '/'.join(os.path.abspath(__file__).split('/')[:-1])+'/data/base_data'
+FILE_PATH = '/'.join(os.path.abspath(__file__).split('/')[:-3])+'/'
+sys.path.append(FILE_PATH)
+# path: ~/streamlit/base_data
+FILE_PATH_BASE_DATA = FILE_PATH + '/data/base_data'
 sys.path.append(FILE_PATH_BASE_DATA)
-# path: ~/streamlit/data/fit_data
-FILE_PATH_FIT_DATA = '/'.join(os.path.abspath(__file__).split('/')[:-1])+'/data/fit_data'
+# path: ~/streamlit/fit_data
+FILE_PATH_FIT_DATA = FILE_PATH + '/data/fit_data'
 sys.path.append(FILE_PATH_FIT_DATA)
 
 # 自作関数のimport

@@ -87,3 +87,9 @@ def drop_duplicates_for_id(df):
     df["id"] = df.index
     df = df.drop_duplicates().drop("id", axis=1).copy()  # 重複行の削除とidの列を削除
     return df
+
+def get_swap_dict(d):
+    """
+    辞書のkeyとvalueを入れ替える
+    """
+    return {v: k for k, v in d.items()}

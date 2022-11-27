@@ -17,16 +17,16 @@ from datetime import date
 from datetime import datetime
 
 # memo-------------------------------------------------------------------------
-# pathの設定(hydrogen用)
-# streamlitリポジトリ用
-FILE_PATH = "/Users/kawaharaatsushi/work_streamlit/streamlit/streamlit"
-# dailydevリポジトリ用
-FILE_PATH = "/Users/kawaharaatsushi/work2/daily-dev/atsushi/競馬予測/streamlit"
-sys.path.append(FILE_PATH)
-FILE_PATH_BASE_DATA = FILE_PATH + '/data/base_data'
-sys.path.append(FILE_PATH_BASE_DATA)
-FILE_PATH_FIT_DATA = FILE_PATH + '/data/fit_data'
-sys.path.append(FILE_PATH_FIT_DATA)
+# # pathの設定(hydrogen用)
+# # streamlitリポジトリ用
+# FILE_PATH = "/Users/kawaharaatsushi/work_streamlit/streamlit/streamlit"
+# # dailydevリポジトリ用
+# FILE_PATH = "/Users/kawaharaatsushi/work2/daily-dev/atsushi/競馬予測/streamlit"
+# sys.path.append(FILE_PATH)
+# FILE_PATH_BASE_DATA = FILE_PATH + '/data/base_data'
+# sys.path.append(FILE_PATH_BASE_DATA)
+# FILE_PATH_FIT_DATA = FILE_PATH + '/data/fit_data'
+# sys.path.append(FILE_PATH_FIT_DATA)
 # memo-------------------------------------------------------------------------
 
 # このファイルの場所を取得してパスを通す(別階層のファイルから呼び出しても変化しない)
@@ -59,12 +59,12 @@ def main():
 
     # あらかじめ予測したレースの日付・予測結果を更新した時刻を読み込む
     # 予測したレースの年月日
-    target_date = datetime.strptime(load_pickle(FILE_PATH_FIT_DATA, 'target_date'), "%Y%m%d")  # pickleに保存している年月日の８桁の数字をdatetime型に変換
+    target_date = datetime.strptime(load_pickle(FILE_PATH_FIT_DATA, 'target_date.pickle'), "%Y%m%d")  # pickleに保存している年月日の８桁の数字をdatetime型に変換
     target_year = target_date.year  # 年
     target_month = target_date.month  # 月
     target_day = target_date.day  # 日
     # 予測レース情報をスクレイピングした時間
-    scraping_time = load_pickle(FILE_PATH_FIT_DATA, "scraping_time")
+    scraping_time = load_pickle(FILE_PATH_FIT_DATA, "scrape_time.pickle")
     scraping_hour = scraping_time.hour  # 時
     scraping_minute = scraping_time.minute  # 分
 

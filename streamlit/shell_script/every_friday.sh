@@ -4,7 +4,6 @@
 # /Users/kawaharaatsushi/.pyenv/shims/python3 /Users/kawaharaatsushi/work2/daily-dev/atsushi/競馬予測/streamlit/apps/data_get_program_file/every_week_alldate_get.py >> /Users/kawaharaatsushi/work2/daily-dev/atsushi/競馬予測/streamlit/cron.log 2>&1
 
 cd /Users/kawaharaatsushi/work_streamlit/streamlit/streamlit/
-/Users/kawaharaatsushi/.pyenv/shims/python3 /Users/kawaharaatsushi/work_streamlit/streamlit/streamlit/hello.py >> /Users/kawaharaatsushi/work_streamlit/streamlit/streamlit/cron.log 2>&1
 # 追加データの取得
 /Users/kawaharaatsushi/.pyenv/shims/python3 /Users/kawaharaatsushi/work_streamlit/streamlit/streamlit/apps/data_get_program_file/every_week_alldate_get.py >> /Users/kawaharaatsushi/work_streamlit/streamlit/streamlit/cron.log 2>&1
 # モデルの更新

@@ -107,13 +107,15 @@ def main():
     # memo----------------------------------------------------------------------
     # target_weekday
     # target_date
-    # target_date = 20221126
+    # # target_date = 20221126
+    # now_time
     # memo----------------------------------------------------------------------
 
     print(f"target_date{target_date}")
 
     # スクレイピングをした日付・時刻を保存しておく(streamlitアプリ上で表示するため)
-    save_pickle(FILE_PATH_FIT_DATA, "target_date", target_date)
+    save_pickle(FILE_PATH_FIT_DATA, "target_date.pickle", target_date)
+    save_pickle(FILE_PATH_FIT_DATA, "scrape_time.pickle", now_time)
 
     # 1.学習データの読み込み-------------------------------------------------------
 

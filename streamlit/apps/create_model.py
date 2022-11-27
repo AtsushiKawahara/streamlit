@@ -111,7 +111,7 @@ GET_DATA_YEAR = "2017-2022"  # ここで指定した文字列のディレクト�
 # PATHの設定(相対パス)
 
 # streamlitリポジトリ用
-# FILE_PATH = "/Users/kawaharaatsushi/work_streamlit/streamlit/streamlit"
+FILE_PATH = "/Users/kawaharaatsushi/work_streamlit/streamlit/streamlit"
 # # dailydevリポジトリ用
 # # FILE_PATH = "/Users/kawaharaatsushi/work2/daily-dev/atsushi/競馬予測/streamlit"
 # sys.path.append(FILE_PATH)
@@ -127,18 +127,19 @@ GET_DATA_YEAR = "2017-2022"  # ここで指定した文字列のディレクト�
 
 # このファイルの場所を取得してパスを通す(別階層のファイルから呼び出しても変化しない)
 # 参考)__file__: ~/streamlit/apps/predict.py
-# path: ~/streamlit/apps/
-sys.path.append('/'.join(os.path.abspath(__file__).split('/')[:-1])+'/')
 # path: ~/streamlit/
-sys.path.append('/'.join(os.path.abspath(__file__).split('/')[:-2])+'/')
+FILE_PATH = '/'.join(os.path.abspath(__file__).split('/')[:-3])+'/'
+sys.path.append(FILE_PATH)
+# path: ~/streamlit/apps/
+sys.path.append(FILE_PATH + '/apps')
 # path: ~/streamlit/base_data
-FILE_PATH_BASE_DATA = '/'.join(os.path.abspath(__file__).split('/')[:-2])+'/data/base_data'
+FILE_PATH_BASE_DATA = FILE_PATH + '/data/base_data'
 sys.path.append(FILE_PATH_BASE_DATA)
 # path: ~/streamlit/fit_data
-FILE_PATH_FIT_DATA = '/'.join(os.path.abspath(__file__).split('/')[:-2])+'/data/fit_data'
+FILE_PATH_FIT_DATA = FILE_PATH + '/data/fit_data'
 sys.path.append(FILE_PATH_FIT_DATA)
 # path: ~/streamlit/result_data
-FILE_PATH_RESULT_DATA = '/'.join(os.path.abspath(__file__).split('/')[:-2])+f'/data/result_data/{GET_DATA_YEAR}'
+FILE_PATH_RESULT_DATA = FILE_PATH + f'/data/result_data/{GET_DATA_YEAR}'
 sys.path.append(FILE_PATH_RESULT_DATA)
 
 # 自作関数のインポート

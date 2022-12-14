@@ -1,1 +1,2 @@
-chromium
+pyxel
+libsdl2-dev

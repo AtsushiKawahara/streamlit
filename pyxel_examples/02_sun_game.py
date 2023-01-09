@@ -54,7 +54,7 @@ class App:
 
         # カウントダウン用
         self.countdown_game_start = 90  # カウントダウン用(1秒間に30フレーム減る。3秒カウントダウンしたいから90)
-        self.countdown_game_time = 150  # カウントダウン用(1秒間に30フレーム減る。60秒カウントダウンしたいから1800)
+        self.countdown_game_time = 1800  # カウントダウン用(1秒間に30フレーム減る。60秒カウントダウンしたいから1800)
 
         # pop_num(question_listから取り除く値:初期値0)
         self.pop_num = 0
@@ -150,7 +150,7 @@ class App:
             pyxel.play(3, 9)
             self.scene = self.scene_result_select_menu  # 現在選択中のメニュー画面へ推移
             self.score = 0
-            self.countdown_game_time = 150
+            self.countdown_game_time = 1800
             self.question_list, self.yazirusi_position_list, self.quesution_dict, self.answer = self.question_create(element_count=7)
             self.block_count = len(self.question_list)
 
@@ -174,7 +174,7 @@ class App:
             pyxel.play(3, 9)
             self.scene = SCENE_COUNTDOWN
             self.score = 0
-            self.countdown_game_time = 150
+            self.countdown_game_time = 1800
             self.question_list, self.yazirusi_position_list, self.quesution_dict, self.answer = self.question_create(element_count=7)
             self.block_count = len(self.question_list)
 

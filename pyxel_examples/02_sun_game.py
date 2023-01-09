@@ -123,7 +123,7 @@ class App:
         pyxel.run(self.update, self.draw)
 
     def update(self):
-        if pyxel.btnp(pyxel.KEY_Q) or pyxel.btnp(pyxel.GAMEPAD1_BUTTON_Y):
+        if pyxel.btnp(pyxel.KEY_Q):
             pyxel.quit()
 
         if self.scene == SCENE_TITLE:
@@ -146,7 +146,7 @@ class App:
                 self.scene_result_select_menu = SCENE_PLAY
             if self.scene_result_select_menu == SCENE_PLAY:
                 pass
-        if pyxel.btnp(pyxel.KEY_SPACE) or pyxel.btnp(pyxel.GAMEPAD1_BUTTON_A):
+        if pyxel.btnp(pyxel.KEY_SPACE) or pyxel.btnp(pyxel.GAMEPAD1_BUTTON_B):
             pyxel.play(3, 9)
             self.scene = self.scene_result_select_menu  # 現在選択中のメニュー画面へ推移
             self.score = 0
@@ -170,7 +170,7 @@ class App:
                 pass
             if self.difficulty == HARD or self.difficulty == NORMAL:
                 self.difficulty -= 1  # 1つ難易度をdown
-        if pyxel.btnp(pyxel.KEY_SPACE) or pyxel.btnp(pyxel.GAMEPAD1_BUTTON_A):
+        if pyxel.btnp(pyxel.KEY_SPACE) or pyxel.btnp(pyxel.GAMEPAD1_BUTTON_B):
             pyxel.play(3, 9)
             self.scene = SCENE_COUNTDOWN
             self.score = 0
@@ -179,15 +179,15 @@ class App:
             self.block_count = len(self.question_list)
 
     def update_play_scene(self):
-        if pyxel.btnp(pyxel.KEY_R) or pyxel.btnp(pyxel.GAMEPAD1_BUTTON_X):
+        if pyxel.btnp(pyxel.KEY_R) or pyxel.btnp(pyxel.GAMEPAD1_BUTTON_Y):
             self.update_block_retry()
         if pyxel.btnp(pyxel.KEY_UP) or pyxel.btnp(pyxel.GAMEPAD1_BUTTON_DPAD_UP):
             self.move_yazirusi(is_up=True)
         if pyxel.btnp(pyxel.KEY_DOWN) or pyxel.btnp(pyxel.GAMEPAD1_BUTTON_DPAD_DOWN):
             self.move_yazirusi(is_up=False)
-        if pyxel.btnp(pyxel.KEY_SPACE) or pyxel.btnp(pyxel.GAMEPAD1_BUTTON_A):
+        if pyxel.btnp(pyxel.KEY_SPACE) or pyxel.btnp(pyxel.GAMEPAD1_BUTTON_B):
             self.update_block_and_beem()
-        if pyxel.btnp(pyxel.KEY_B) or pyxel.btnp(pyxel.GAMEPAD1_BUTTON_B):
+        if pyxel.btnp(pyxel.KEY_B) or pyxel.btnp(pyxel.GAMEPAD1_BUTTON_A):
             self.scene = SCENE_TITLE
             self.update_block_retry()
         if self.countdown_game_time == 0:

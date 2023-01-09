@@ -1,6 +1,6 @@
 import pyxel
 import collections
-import numpy as np
+# import numpy as np
 import random
 import copy
 
